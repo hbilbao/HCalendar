@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.data.hcalendar.com/workedhours"
+	xmlns:tns="http://www.data.hcalendar.com/workedhours" elementFormDefault="qualified">
+
+	<element name="anualHours" nillable="false">
+		<complexType>
+			<sequence>
+				<element name="userInput" minOccurs="0" maxOccurs="unbounded">
+					<complexType>
+						<sequence>
+							<element name="userName" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="workedHours" minOccurs="0" maxOccurs="unbounded">
+								<complexType>
+									<sequence>
+										<element name="date" type="date" minOccurs="1" maxOccurs="1" />
+										<element name="hours" type="float" minOccurs="1" maxOccurs="1" />
+										<element name="description" type="string" minOccurs="0" maxOccurs="1" />
+									</sequence>
+								</complexType>
+							</element>
+							<element name="holidays" minOccurs="0" maxOccurs="unbounded">
+								<complexType>
+									<sequence>
+										<element name="date" type="date" minOccurs="1" maxOccurs="1" />
+										<element name="comment" type="string" minOccurs="0" maxOccurs="1" />
+									</sequence>
+								</complexType>
+							</element>
+						</sequence>
+					</complexType>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+</schema>

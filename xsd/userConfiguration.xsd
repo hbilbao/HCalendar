@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.data.hcalendar.com/userconfiguration"
+	xmlns:tns="http://www.data.hcalendar.com/userconfiguration" elementFormDefault="qualified">
+	<element name="userConfiguration"  >
+		<complexType>
+			<sequence>
+				<element name="user" nillable="false" minOccurs="1" maxOccurs="unbounded">
+					<complexType>
+						<sequence>
+							<element name="name" type="string" minOccurs="1" maxOccurs="1" />
+							<element name="yearConf" minOccurs="1" maxOccurs="unbounded">
+								<complexType>
+									<sequence>
+										<element name="year" type="int" minOccurs="1" maxOccurs="1" />
+										<element name="calendarHours" type="float" minOccurs="1" maxOccurs="1" />
+										<element name="workingDays" minOccurs="0" maxOccurs="7">
+											<complexType>
+												<sequence>
+													<element name="workingDay">
+														<simpleType>
+															<restriction base="string">
+																<enumeration value="Lunes" />
+																<enumeration value="Martes" />
+																<enumeration value="Miercoles" />
+																<enumeration value="Jueves" />
+																<enumeration value="Viernes" />
+																<enumeration value="Sabado" />
+																<enumeration value="Domingo" />
+															</restriction>
+														</simpleType>
+													</element>
+													<element name="hours" type="float" minOccurs="1" maxOccurs="1" />
+												</sequence>
+											</complexType>
+										</element>
+										<element name="freeDays" minOccurs="0" maxOccurs="1">
+											<complexType>
+												<sequence>
+													<element name="freeDay" minOccurs="1" maxOccurs="unbounded">
+														<complexType>
+															<sequence>
+																<element name="day" type="date" minOccurs="1" maxOccurs="1" />
+																<element name="comment" type="string" minOccurs="0" maxOccurs="1" />
+															</sequence>
+														</complexType>
+													</element>
+												</sequence>
+											</complexType>
+										</element>
+									</sequence>
+								</complexType>
+							</element>
+						</sequence>
+					</complexType>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+
+</schema>
