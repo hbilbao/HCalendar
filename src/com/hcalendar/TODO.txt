@@ -1,8 +1,8 @@
 - [ok] Exportacion a excel
 - [ok] Dispose, destroy... elimininacion del proceso java
-- GitHub
--  [ok] Dejar borra los perfiles de usuario, con todas sus horas imputadas
--  [ok] No se visualizan bien los datos de horas, de años que no son 2011....com.hcalendar.ui.HourManagerWindow:95
+- [ok] GitHub
+- [ok] Dejar borra los perfiles de usuario, con todas sus horas imputadas
+- [ok] No se visualizan bien los datos de horas, de años que no son 2011....com.hcalendar.ui.HourManagerWindow:95
 - Actualización de formularios, algo tipo calculados, cuando cambia algo, PUM. Por lo menos el initWindow
 - [ok] Bloquear el año del hour manager, que abre la conf para un año fijo
 - Javadoc, cambiar nombres
