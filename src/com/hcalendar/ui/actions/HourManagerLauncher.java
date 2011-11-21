@@ -9,11 +9,11 @@ import com.hcalendar.HCalendarConstants;
 import com.hcalendar.data.orm.IORMClient;
 import com.hcalendar.ui.HourManagerWindow;
 
-public class HourManager implements ActionListener {
+public class HourManagerLauncher implements ActionListener {
 
 	private IORMClient orm;
 
-	public HourManager(IORMClient orm) {
+	public HourManagerLauncher(IORMClient orm) {
 		this.orm = orm;
 	}
 

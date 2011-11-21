@@ -7,12 +7,12 @@ import com.hcalendar.data.IHCCallback;
 import com.hcalendar.data.orm.IORMClient;
 import com.hcalendar.ui.UserConfigurationWindow;
 
-public class CreateUserProfile implements ActionListener {
+public class CreateProfileLauncher implements ActionListener {
 
 	private IHCCallback callback;
 	private IORMClient orm;
 
-	public CreateUserProfile(IORMClient orm, IHCCallback callback) {
+	public CreateProfileLauncher(IORMClient orm, IHCCallback callback) {
 		this.callback = callback;
 		this.orm = orm;
 	}
