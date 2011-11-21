@@ -22,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 
 import com.hcalendar.ConfigurationConstants;
 import com.hcalendar.data.DataServices;
@@ -77,7 +78,7 @@ public class HourManagerWindow extends JFrame {
 			}
 			this.setSize(1000, 600);
 			this.setMaximumSize(new Dimension(1500, 900));
-			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			this.setTitle("Gestión de horas");
 			Container content = this.getContentPane();
 			JPanel panel4 = new JPanel(new GridLayout(1, 2));
@@ -116,7 +117,6 @@ public class HourManagerWindow extends JFrame {
 	// private final String DATE_SEPARATOR = "\n";
 
 	private void createUserAndCalendar(Container panel) throws ORMException {
-		// FIXME esto no va...
 		// Poner en el calendar el año actual, y si no tiene configuración,
 		// el más cercano hacia arriba y luego para abajo.
 		int yearToShow = ORMHelper.calculateYearConfigForProfile(orm.getUserConfiguration(), this.username,

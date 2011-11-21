@@ -5,11 +5,11 @@
 // Generated on: 2011.11.19 at 02:35:18 PM CET 
 //
 
-
 package com.hcalendar.data.xml.userconfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -18,11 +18,13 @@ import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType>
@@ -107,595 +109,579 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "user"
-})
+@XmlType(name = "", propOrder = { "user" })
 @XmlRootElement(name = "userConfiguration")
 public class UserConfiguration {
 
-    @XmlElement(required = true)
-    protected List<UserConfiguration.User> user;
+	@XmlElement(required = true)
+	protected List<UserConfiguration.User> user;
 
-    /**
-     * Gets the value of the user property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the user property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getUser().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link UserConfiguration.User }
-     * 
-     * 
-     */
-    public List<UserConfiguration.User> getUser() {
-        if (user == null) {
-            user = new ArrayList<UserConfiguration.User>();
-        }
-        return this.user;
-    }
+	/**
+	 * Gets the value of the user property.
+	 * 
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the user property.
+	 * 
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getUser().add(newItem);
+	 * </pre>
+	 * 
+	 * 
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list
+	 * {@link UserConfiguration.User }
+	 * 
+	 * 
+	 */
+	public List<UserConfiguration.User> getUser() {
+		if (user == null) {
+			user = new ArrayList<UserConfiguration.User>();
+		}
+		return this.user;
+	}
 
+	/**
+	 * <p>
+	 * Java class for anonymous complex type.
+	 * 
+	 * <p>
+	 * The following schema fragment specifies the expected content contained
+	 * within this class.
+	 * 
+	 * <pre>
+	 * &lt;complexType>
+	 *   &lt;complexContent>
+	 *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+	 *       &lt;sequence>
+	 *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *         &lt;element name="yearConf" maxOccurs="unbounded">
+	 *           &lt;complexType>
+	 *             &lt;complexContent>
+	 *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+	 *                 &lt;sequence>
+	 *                   &lt;element name="year" type="{http://www.w3.org/2001/XMLSchema}int"/>
+	 *                   &lt;element name="calendarHours" type="{http://www.w3.org/2001/XMLSchema}float"/>
+	 *                   &lt;element name="workingDays" maxOccurs="7" minOccurs="0">
+	 *                     &lt;complexType>
+	 *                       &lt;complexContent>
+	 *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+	 *                           &lt;sequence>
+	 *                             &lt;element name="workingDay">
+	 *                               &lt;simpleType>
+	 *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+	 *                                   &lt;enumeration value="Lunes"/>
+	 *                                   &lt;enumeration value="Martes"/>
+	 *                                   &lt;enumeration value="Miercoles"/>
+	 *                                   &lt;enumeration value="Jueves"/>
+	 *                                   &lt;enumeration value="Viernes"/>
+	 *                                   &lt;enumeration value="Sabado"/>
+	 *                                   &lt;enumeration value="Domingo"/>
+	 *                                 &lt;/restriction>
+	 *                               &lt;/simpleType>
+	 *                             &lt;/element>
+	 *                             &lt;element name="hours" type="{http://www.w3.org/2001/XMLSchema}float"/>
+	 *                           &lt;/sequence>
+	 *                         &lt;/restriction>
+	 *                       &lt;/complexContent>
+	 *                     &lt;/complexType>
+	 *                   &lt;/element>
+	 *                   &lt;element name="freeDays" minOccurs="0">
+	 *                     &lt;complexType>
+	 *                       &lt;complexContent>
+	 *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+	 *                           &lt;sequence>
+	 *                             &lt;element name="freeDay" maxOccurs="unbounded">
+	 *                               &lt;complexType>
+	 *                                 &lt;complexContent>
+	 *                                   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+	 *                                     &lt;sequence>
+	 *                                       &lt;element name="day" type="{http://www.w3.org/2001/XMLSchema}date"/>
+	 *                                       &lt;element name="comment" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+	 *                                     &lt;/sequence>
+	 *                                   &lt;/restriction>
+	 *                                 &lt;/complexContent>
+	 *                               &lt;/complexType>
+	 *                             &lt;/element>
+	 *                           &lt;/sequence>
+	 *                         &lt;/restriction>
+	 *                       &lt;/complexContent>
+	 *                     &lt;/complexType>
+	 *                   &lt;/element>
+	 *                 &lt;/sequence>
+	 *               &lt;/restriction>
+	 *             &lt;/complexContent>
+	 *           &lt;/complexType>
+	 *         &lt;/element>
+	 *       &lt;/sequence>
+	 *     &lt;/restriction>
+	 *   &lt;/complexContent>
+	 * &lt;/complexType>
+	 * </pre>
+	 * 
+	 * 
+	 */
+	@XmlAccessorType(XmlAccessType.FIELD)
+	@XmlType(name = "", propOrder = { "name", "yearConf" })
+	public static class User {
 
-    /**
-     * <p>Java class for anonymous complex type.
-     * 
-     * <p>The following schema fragment specifies the expected content contained within this class.
-     * 
-     * <pre>
-     * &lt;complexType>
-     *   &lt;complexContent>
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *       &lt;sequence>
-     *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
-     *         &lt;element name="yearConf" maxOccurs="unbounded">
-     *           &lt;complexType>
-     *             &lt;complexContent>
-     *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *                 &lt;sequence>
-     *                   &lt;element name="year" type="{http://www.w3.org/2001/XMLSchema}int"/>
-     *                   &lt;element name="calendarHours" type="{http://www.w3.org/2001/XMLSchema}float"/>
-     *                   &lt;element name="workingDays" maxOccurs="7" minOccurs="0">
-     *                     &lt;complexType>
-     *                       &lt;complexContent>
-     *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *                           &lt;sequence>
-     *                             &lt;element name="workingDay">
-     *                               &lt;simpleType>
-     *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
-     *                                   &lt;enumeration value="Lunes"/>
-     *                                   &lt;enumeration value="Martes"/>
-     *                                   &lt;enumeration value="Miercoles"/>
-     *                                   &lt;enumeration value="Jueves"/>
-     *                                   &lt;enumeration value="Viernes"/>
-     *                                   &lt;enumeration value="Sabado"/>
-     *                                   &lt;enumeration value="Domingo"/>
-     *                                 &lt;/restriction>
-     *                               &lt;/simpleType>
-     *                             &lt;/element>
-     *                             &lt;element name="hours" type="{http://www.w3.org/2001/XMLSchema}float"/>
-     *                           &lt;/sequence>
-     *                         &lt;/restriction>
-     *                       &lt;/complexContent>
-     *                     &lt;/complexType>
-     *                   &lt;/element>
-     *                   &lt;element name="freeDays" minOccurs="0">
-     *                     &lt;complexType>
-     *                       &lt;complexContent>
-     *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *                           &lt;sequence>
-     *                             &lt;element name="freeDay" maxOccurs="unbounded">
-     *                               &lt;complexType>
-     *                                 &lt;complexContent>
-     *                                   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *                                     &lt;sequence>
-     *                                       &lt;element name="day" type="{http://www.w3.org/2001/XMLSchema}date"/>
-     *                                       &lt;element name="comment" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-     *                                     &lt;/sequence>
-     *                                   &lt;/restriction>
-     *                                 &lt;/complexContent>
-     *                               &lt;/complexType>
-     *                             &lt;/element>
-     *                           &lt;/sequence>
-     *                         &lt;/restriction>
-     *                       &lt;/complexContent>
-     *                     &lt;/complexType>
-     *                   &lt;/element>
-     *                 &lt;/sequence>
-     *               &lt;/restriction>
-     *             &lt;/complexContent>
-     *           &lt;/complexType>
-     *         &lt;/element>
-     *       &lt;/sequence>
-     *     &lt;/restriction>
-     *   &lt;/complexContent>
-     * &lt;/complexType>
-     * </pre>
-     * 
-     * 
-     */
-    @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "name",
-        "yearConf"
-    })
-    public static class User {
+		@XmlElement(required = true)
+		protected String name;
+		@XmlElement(required = true)
+		protected List<UserConfiguration.User.YearConf> yearConf;
 
-        @XmlElement(required = true)
-        protected String name;
-        @XmlElement(required = true)
-        protected List<UserConfiguration.User.YearConf> yearConf;
+		/**
+		 * Gets the value of the name property.
+		 * 
+		 * @return possible object is {@link String }
+		 * 
+		 */
+		public String getName() {
+			return name;
+		}
 
-        /**
-         * Gets the value of the name property.
-         * 
-         * @return
-         *     possible object is
-         *     {@link String }
-         *     
-         */
-        public String getName() {
-            return name;
-        }
+		/**
+		 * Sets the value of the name property.
+		 * 
+		 * @param value
+		 *            allowed object is {@link String }
+		 * 
+		 */
+		public void setName(String value) {
+			this.name = value;
+		}
 
-        /**
-         * Sets the value of the name property.
-         * 
-         * @param value
-         *     allowed object is
-         *     {@link String }
-         *     
-         */
-        public void setName(String value) {
-            this.name = value;
-        }
+		/**
+		 * Gets the value of the yearConf property.
+		 * 
+		 * <p>
+		 * This accessor method returns a reference to the live list, not a
+		 * snapshot. Therefore any modification you make to the returned list
+		 * will be present inside the JAXB object. This is why there is not a
+		 * <CODE>set</CODE> method for the yearConf property.
+		 * 
+		 * <p>
+		 * For example, to add a new item, do as follows:
+		 * 
+		 * <pre>
+		 * getYearConf().add(newItem);
+		 * </pre>
+		 * 
+		 * 
+		 * <p>
+		 * Objects of the following type(s) are allowed in the list
+		 * {@link UserConfiguration.User.YearConf }
+		 * 
+		 * 
+		 */
+		public List<UserConfiguration.User.YearConf> getYearConf() {
+			if (yearConf == null) {
+				yearConf = new ArrayList<UserConfiguration.User.YearConf>();
+			}
+			return this.yearConf;
+		}
 
-        /**
-         * Gets the value of the yearConf property.
-         * 
-         * <p>
-         * This accessor method returns a reference to the live list,
-         * not a snapshot. Therefore any modification you make to the
-         * returned list will be present inside the JAXB object.
-         * This is why there is not a <CODE>set</CODE> method for the yearConf property.
-         * 
-         * <p>
-         * For example, to add a new item, do as follows:
-         * <pre>
-         *    getYearConf().add(newItem);
-         * </pre>
-         * 
-         * 
-         * <p>
-         * Objects of the following type(s) are allowed in the list
-         * {@link UserConfiguration.User.YearConf }
-         * 
-         * 
-         */
-        public List<UserConfiguration.User.YearConf> getYearConf() {
-            if (yearConf == null) {
-                yearConf = new ArrayList<UserConfiguration.User.YearConf>();
-            }
-            return this.yearConf;
-        }
+		/**
+		 * <p>
+		 * Java class for anonymous complex type.
+		 * 
+		 * <p>
+		 * The following schema fragment specifies the expected content
+		 * contained within this class.
+		 * 
+		 * <pre>
+		 * &lt;complexType>
+		 *   &lt;complexContent>
+		 *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+		 *       &lt;sequence>
+		 *         &lt;element name="year" type="{http://www.w3.org/2001/XMLSchema}int"/>
+		 *         &lt;element name="calendarHours" type="{http://www.w3.org/2001/XMLSchema}float"/>
+		 *         &lt;element name="workingDays" maxOccurs="7" minOccurs="0">
+		 *           &lt;complexType>
+		 *             &lt;complexContent>
+		 *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+		 *                 &lt;sequence>
+		 *                   &lt;element name="workingDay">
+		 *                     &lt;simpleType>
+		 *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+		 *                         &lt;enumeration value="Lunes"/>
+		 *                         &lt;enumeration value="Martes"/>
+		 *                         &lt;enumeration value="Miercoles"/>
+		 *                         &lt;enumeration value="Jueves"/>
+		 *                         &lt;enumeration value="Viernes"/>
+		 *                         &lt;enumeration value="Sabado"/>
+		 *                         &lt;enumeration value="Domingo"/>
+		 *                       &lt;/restriction>
+		 *                     &lt;/simpleType>
+		 *                   &lt;/element>
+		 *                   &lt;element name="hours" type="{http://www.w3.org/2001/XMLSchema}float"/>
+		 *                 &lt;/sequence>
+		 *               &lt;/restriction>
+		 *             &lt;/complexContent>
+		 *           &lt;/complexType>
+		 *         &lt;/element>
+		 *         &lt;element name="freeDays" minOccurs="0">
+		 *           &lt;complexType>
+		 *             &lt;complexContent>
+		 *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+		 *                 &lt;sequence>
+		 *                   &lt;element name="freeDay" maxOccurs="unbounded">
+		 *                     &lt;complexType>
+		 *                       &lt;complexContent>
+		 *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+		 *                           &lt;sequence>
+		 *                             &lt;element name="day" type="{http://www.w3.org/2001/XMLSchema}date"/>
+		 *                             &lt;element name="comment" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+		 *                           &lt;/sequence>
+		 *                         &lt;/restriction>
+		 *                       &lt;/complexContent>
+		 *                     &lt;/complexType>
+		 *                   &lt;/element>
+		 *                 &lt;/sequence>
+		 *               &lt;/restriction>
+		 *             &lt;/complexContent>
+		 *           &lt;/complexType>
+		 *         &lt;/element>
+		 *       &lt;/sequence>
+		 *     &lt;/restriction>
+		 *   &lt;/complexContent>
+		 * &lt;/complexType>
+		 * </pre>
+		 * 
+		 * 
+		 */
+		@XmlAccessorType(XmlAccessType.FIELD)
+		@XmlType(name = "", propOrder = { "year", "calendarHours", "workingDays", "freeDays" })
+		public static class YearConf {
 
+			protected int year;
+			protected float calendarHours;
+			protected List<UserConfiguration.User.YearConf.WorkingDays> workingDays;
+			protected UserConfiguration.User.YearConf.FreeDays freeDays;
 
-        /**
-         * <p>Java class for anonymous complex type.
-         * 
-         * <p>The following schema fragment specifies the expected content contained within this class.
-         * 
-         * <pre>
-         * &lt;complexType>
-         *   &lt;complexContent>
-         *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-         *       &lt;sequence>
-         *         &lt;element name="year" type="{http://www.w3.org/2001/XMLSchema}int"/>
-         *         &lt;element name="calendarHours" type="{http://www.w3.org/2001/XMLSchema}float"/>
-         *         &lt;element name="workingDays" maxOccurs="7" minOccurs="0">
-         *           &lt;complexType>
-         *             &lt;complexContent>
-         *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-         *                 &lt;sequence>
-         *                   &lt;element name="workingDay">
-         *                     &lt;simpleType>
-         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
-         *                         &lt;enumeration value="Lunes"/>
-         *                         &lt;enumeration value="Martes"/>
-         *                         &lt;enumeration value="Miercoles"/>
-         *                         &lt;enumeration value="Jueves"/>
-         *                         &lt;enumeration value="Viernes"/>
-         *                         &lt;enumeration value="Sabado"/>
-         *                         &lt;enumeration value="Domingo"/>
-         *                       &lt;/restriction>
-         *                     &lt;/simpleType>
-         *                   &lt;/element>
-         *                   &lt;element name="hours" type="{http://www.w3.org/2001/XMLSchema}float"/>
-         *                 &lt;/sequence>
-         *               &lt;/restriction>
-         *             &lt;/complexContent>
-         *           &lt;/complexType>
-         *         &lt;/element>
-         *         &lt;element name="freeDays" minOccurs="0">
-         *           &lt;complexType>
-         *             &lt;complexContent>
-         *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-         *                 &lt;sequence>
-         *                   &lt;element name="freeDay" maxOccurs="unbounded">
-         *                     &lt;complexType>
-         *                       &lt;complexContent>
-         *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-         *                           &lt;sequence>
-         *                             &lt;element name="day" type="{http://www.w3.org/2001/XMLSchema}date"/>
-         *                             &lt;element name="comment" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-         *                           &lt;/sequence>
-         *                         &lt;/restriction>
-         *                       &lt;/complexContent>
-         *                     &lt;/complexType>
-         *                   &lt;/element>
-         *                 &lt;/sequence>
-         *               &lt;/restriction>
-         *             &lt;/complexContent>
-         *           &lt;/complexType>
-         *         &lt;/element>
-         *       &lt;/sequence>
-         *     &lt;/restriction>
-         *   &lt;/complexContent>
-         * &lt;/complexType>
-         * </pre>
-         * 
-         * 
-         */
-        @XmlAccessorType(XmlAccessType.FIELD)
-        @XmlType(name = "", propOrder = {
-            "year",
-            "calendarHours",
-            "workingDays",
-            "freeDays"
-        })
-        public static class YearConf {
+			/**
+			 * Gets the value of the year property.
+			 * 
+			 */
+			public int getYear() {
+				return year;
+			}
 
-            protected int year;
-            protected float calendarHours;
-            protected List<UserConfiguration.User.YearConf.WorkingDays> workingDays;
-            protected UserConfiguration.User.YearConf.FreeDays freeDays;
+			/**
+			 * Sets the value of the year property.
+			 * 
+			 */
+			public void setYear(int value) {
+				this.year = value;
+			}
 
-            /**
-             * Gets the value of the year property.
-             * 
-             */
-            public int getYear() {
-                return year;
-            }
+			/**
+			 * Gets the value of the calendarHours property.
+			 * 
+			 */
+			public float getCalendarHours() {
+				return calendarHours;
+			}
 
-            /**
-             * Sets the value of the year property.
-             * 
-             */
-            public void setYear(int value) {
-                this.year = value;
-            }
+			/**
+			 * Sets the value of the calendarHours property.
+			 * 
+			 */
+			public void setCalendarHours(float value) {
+				this.calendarHours = value;
+			}
 
-            /**
-             * Gets the value of the calendarHours property.
-             * 
-             */
-            public float getCalendarHours() {
-                return calendarHours;
-            }
+			/**
+			 * Gets the value of the workingDays property.
+			 * 
+			 * <p>
+			 * This accessor method returns a reference to the live list, not a
+			 * snapshot. Therefore any modification you make to the returned
+			 * list will be present inside the JAXB object. This is why there is
+			 * not a <CODE>set</CODE> method for the workingDays property.
+			 * 
+			 * <p>
+			 * For example, to add a new item, do as follows:
+			 * 
+			 * <pre>
+			 * getWorkingDays().add(newItem);
+			 * </pre>
+			 * 
+			 * 
+			 * <p>
+			 * Objects of the following type(s) are allowed in the list
+			 * {@link UserConfiguration.User.YearConf.WorkingDays }
+			 * 
+			 * 
+			 */
+			public List<UserConfiguration.User.YearConf.WorkingDays> getWorkingDays() {
+				if (workingDays == null) {
+					workingDays = new ArrayList<UserConfiguration.User.YearConf.WorkingDays>();
+				}
+				return this.workingDays;
+			}
 
-            /**
-             * Sets the value of the calendarHours property.
-             * 
-             */
-            public void setCalendarHours(float value) {
-                this.calendarHours = value;
-            }
+			/**
+			 * Gets the value of the freeDays property.
+			 * 
+			 * @return possible object is
+			 *         {@link UserConfiguration.User.YearConf.FreeDays }
+			 * 
+			 */
+			public UserConfiguration.User.YearConf.FreeDays getFreeDays() {
+				return freeDays;
+			}
 
-            /**
-             * Gets the value of the workingDays property.
-             * 
-             * <p>
-             * This accessor method returns a reference to the live list,
-             * not a snapshot. Therefore any modification you make to the
-             * returned list will be present inside the JAXB object.
-             * This is why there is not a <CODE>set</CODE> method for the workingDays property.
-             * 
-             * <p>
-             * For example, to add a new item, do as follows:
-             * <pre>
-             *    getWorkingDays().add(newItem);
-             * </pre>
-             * 
-             * 
-             * <p>
-             * Objects of the following type(s) are allowed in the list
-             * {@link UserConfiguration.User.YearConf.WorkingDays }
-             * 
-             * 
-             */
-            public List<UserConfiguration.User.YearConf.WorkingDays> getWorkingDays() {
-                if (workingDays == null) {
-                    workingDays = new ArrayList<UserConfiguration.User.YearConf.WorkingDays>();
-                }
-                return this.workingDays;
-            }
+			/**
+			 * Sets the value of the freeDays property.
+			 * 
+			 * @param value
+			 *            allowed object is
+			 *            {@link UserConfiguration.User.YearConf.FreeDays }
+			 * 
+			 */
+			public void setFreeDays(UserConfiguration.User.YearConf.FreeDays value) {
+				this.freeDays = value;
+			}
 
-            /**
-             * Gets the value of the freeDays property.
-             * 
-             * @return
-             *     possible object is
-             *     {@link UserConfiguration.User.YearConf.FreeDays }
-             *     
-             */
-            public UserConfiguration.User.YearConf.FreeDays getFreeDays() {
-                return freeDays;
-            }
+			/**
+			 * <p>
+			 * Java class for anonymous complex type.
+			 * 
+			 * <p>
+			 * The following schema fragment specifies the expected content
+			 * contained within this class.
+			 * 
+			 * <pre>
+			 * &lt;complexType>
+			 *   &lt;complexContent>
+			 *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+			 *       &lt;sequence>
+			 *         &lt;element name="freeDay" maxOccurs="unbounded">
+			 *           &lt;complexType>
+			 *             &lt;complexContent>
+			 *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+			 *                 &lt;sequence>
+			 *                   &lt;element name="day" type="{http://www.w3.org/2001/XMLSchema}date"/>
+			 *                   &lt;element name="comment" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+			 *                 &lt;/sequence>
+			 *               &lt;/restriction>
+			 *             &lt;/complexContent>
+			 *           &lt;/complexType>
+			 *         &lt;/element>
+			 *       &lt;/sequence>
+			 *     &lt;/restriction>
+			 *   &lt;/complexContent>
+			 * &lt;/complexType>
+			 * </pre>
+			 * 
+			 * 
+			 */
+			@XmlAccessorType(XmlAccessType.FIELD)
+			@XmlType(name = "", propOrder = { "freeDay" })
+			public static class FreeDays {
 
-            /**
-             * Sets the value of the freeDays property.
-             * 
-             * @param value
-             *     allowed object is
-             *     {@link UserConfiguration.User.YearConf.FreeDays }
-             *     
-             */
-            public void setFreeDays(UserConfiguration.User.YearConf.FreeDays value) {
-                this.freeDays = value;
-            }
+				@XmlElement(required = true)
+				protected List<UserConfiguration.User.YearConf.FreeDays.FreeDay> freeDay;
 
+				/**
+				 * Gets the value of the freeDay property.
+				 * 
+				 * <p>
+				 * This accessor method returns a reference to the live list,
+				 * not a snapshot. Therefore any modification you make to the
+				 * returned list will be present inside the JAXB object. This is
+				 * why there is not a <CODE>set</CODE> method for the freeDay
+				 * property.
+				 * 
+				 * <p>
+				 * For example, to add a new item, do as follows:
+				 * 
+				 * <pre>
+				 * getFreeDay().add(newItem);
+				 * </pre>
+				 * 
+				 * 
+				 * <p>
+				 * Objects of the following type(s) are allowed in the list
+				 * {@link UserConfiguration.User.YearConf.FreeDays.FreeDay }
+				 * 
+				 * 
+				 */
+				public List<UserConfiguration.User.YearConf.FreeDays.FreeDay> getFreeDay() {
+					if (freeDay == null) {
+						freeDay = new ArrayList<UserConfiguration.User.YearConf.FreeDays.FreeDay>();
+					}
+					return this.freeDay;
+				}
 
-            /**
-             * <p>Java class for anonymous complex type.
-             * 
-             * <p>The following schema fragment specifies the expected content contained within this class.
-             * 
-             * <pre>
-             * &lt;complexType>
-             *   &lt;complexContent>
-             *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-             *       &lt;sequence>
-             *         &lt;element name="freeDay" maxOccurs="unbounded">
-             *           &lt;complexType>
-             *             &lt;complexContent>
-             *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-             *                 &lt;sequence>
-             *                   &lt;element name="day" type="{http://www.w3.org/2001/XMLSchema}date"/>
-             *                   &lt;element name="comment" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-             *                 &lt;/sequence>
-             *               &lt;/restriction>
-             *             &lt;/complexContent>
-             *           &lt;/complexType>
-             *         &lt;/element>
-             *       &lt;/sequence>
-             *     &lt;/restriction>
-             *   &lt;/complexContent>
-             * &lt;/complexType>
-             * </pre>
-             * 
-             * 
-             */
-            @XmlAccessorType(XmlAccessType.FIELD)
-            @XmlType(name = "", propOrder = {
-                "freeDay"
-            })
-            public static class FreeDays {
+				/**
+				 * <p>
+				 * Java class for anonymous complex type.
+				 * 
+				 * <p>
+				 * The following schema fragment specifies the expected content
+				 * contained within this class.
+				 * 
+				 * <pre>
+				 * &lt;complexType>
+				 *   &lt;complexContent>
+				 *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+				 *       &lt;sequence>
+				 *         &lt;element name="day" type="{http://www.w3.org/2001/XMLSchema}date"/>
+				 *         &lt;element name="comment" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+				 *       &lt;/sequence>
+				 *     &lt;/restriction>
+				 *   &lt;/complexContent>
+				 * &lt;/complexType>
+				 * </pre>
+				 * 
+				 * 
+				 */
+				@XmlAccessorType(XmlAccessType.FIELD)
+				@XmlType(name = "", propOrder = { "day", "comment" })
+				public static class FreeDay {
 
-                @XmlElement(required = true)
-                protected List<UserConfiguration.User.YearConf.FreeDays.FreeDay> freeDay;
+					@XmlElement(required = true)
+					@XmlSchemaType(name = "date")
+					protected XMLGregorianCalendar day;
+					protected String comment;
 
-                /**
-                 * Gets the value of the freeDay property.
-                 * 
-                 * <p>
-                 * This accessor method returns a reference to the live list,
-                 * not a snapshot. Therefore any modification you make to the
-                 * returned list will be present inside the JAXB object.
-                 * This is why there is not a <CODE>set</CODE> method for the freeDay property.
-                 * 
-                 * <p>
-                 * For example, to add a new item, do as follows:
-                 * <pre>
-                 *    getFreeDay().add(newItem);
-                 * </pre>
-                 * 
-                 * 
-                 * <p>
-                 * Objects of the following type(s) are allowed in the list
-                 * {@link UserConfiguration.User.YearConf.FreeDays.FreeDay }
-                 * 
-                 * 
-                 */
-                public List<UserConfiguration.User.YearConf.FreeDays.FreeDay> getFreeDay() {
-                    if (freeDay == null) {
-                        freeDay = new ArrayList<UserConfiguration.User.YearConf.FreeDays.FreeDay>();
-                    }
-                    return this.freeDay;
-                }
+					/**
+					 * Gets the value of the day property.
+					 * 
+					 * @return possible object is {@link XMLGregorianCalendar }
+					 * 
+					 */
+					public XMLGregorianCalendar getDay() {
+						return day;
+					}
 
+					/**
+					 * Sets the value of the day property.
+					 * 
+					 * @param value
+					 *            allowed object is {@link XMLGregorianCalendar }
+					 * 
+					 */
+					public void setDay(XMLGregorianCalendar value) {
+						this.day = value;
+					}
 
-                /**
-                 * <p>Java class for anonymous complex type.
-                 * 
-                 * <p>The following schema fragment specifies the expected content contained within this class.
-                 * 
-                 * <pre>
-                 * &lt;complexType>
-                 *   &lt;complexContent>
-                 *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-                 *       &lt;sequence>
-                 *         &lt;element name="day" type="{http://www.w3.org/2001/XMLSchema}date"/>
-                 *         &lt;element name="comment" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-                 *       &lt;/sequence>
-                 *     &lt;/restriction>
-                 *   &lt;/complexContent>
-                 * &lt;/complexType>
-                 * </pre>
-                 * 
-                 * 
-                 */
-                @XmlAccessorType(XmlAccessType.FIELD)
-                @XmlType(name = "", propOrder = {
-                    "day",
-                    "comment"
-                })
-                public static class FreeDay {
+					/**
+					 * Gets the value of the comment property.
+					 * 
+					 * @return possible object is {@link String }
+					 * 
+					 */
+					public String getComment() {
+						return comment;
+					}
 
-                    @XmlElement(required = true)
-                    @XmlSchemaType(name = "date")
-                    protected XMLGregorianCalendar day;
-                    protected String comment;
+					/**
+					 * Sets the value of the comment property.
+					 * 
+					 * @param value
+					 *            allowed object is {@link String }
+					 * 
+					 */
+					public void setComment(String value) {
+						this.comment = value;
+					}
 
-                    /**
-                     * Gets the value of the day property.
-                     * 
-                     * @return
-                     *     possible object is
-                     *     {@link XMLGregorianCalendar }
-                     *     
-                     */
-                    public XMLGregorianCalendar getDay() {
-                        return day;
-                    }
+				}
 
-                    /**
-                     * Sets the value of the day property.
-                     * 
-                     * @param value
-                     *     allowed object is
-                     *     {@link XMLGregorianCalendar }
-                     *     
-                     */
-                    public void setDay(XMLGregorianCalendar value) {
-                        this.day = value;
-                    }
+			}
 
-                    /**
-                     * Gets the value of the comment property.
-                     * 
-                     * @return
-                     *     possible object is
-                     *     {@link String }
-                     *     
-                     */
-                    public String getComment() {
-                        return comment;
-                    }
+			/**
+			 * <p>
+			 * Java class for anonymous complex type.
+			 * 
+			 * <p>
+			 * The following schema fragment specifies the expected content
+			 * contained within this class.
+			 * 
+			 * <pre>
+			 * &lt;complexType>
+			 *   &lt;complexContent>
+			 *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+			 *       &lt;sequence>
+			 *         &lt;element name="workingDay">
+			 *           &lt;simpleType>
+			 *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+			 *               &lt;enumeration value="Lunes"/>
+			 *               &lt;enumeration value="Martes"/>
+			 *               &lt;enumeration value="Miercoles"/>
+			 *               &lt;enumeration value="Jueves"/>
+			 *               &lt;enumeration value="Viernes"/>
+			 *               &lt;enumeration value="Sabado"/>
+			 *               &lt;enumeration value="Domingo"/>
+			 *             &lt;/restriction>
+			 *           &lt;/simpleType>
+			 *         &lt;/element>
+			 *         &lt;element name="hours" type="{http://www.w3.org/2001/XMLSchema}float"/>
+			 *       &lt;/sequence>
+			 *     &lt;/restriction>
+			 *   &lt;/complexContent>
+			 * &lt;/complexType>
+			 * </pre>
+			 * 
+			 * 
+			 */
+			@XmlAccessorType(XmlAccessType.FIELD)
+			@XmlType(name = "", propOrder = { "workingDay", "hours" })
+			public static class WorkingDays {
 
-                    /**
-                     * Sets the value of the comment property.
-                     * 
-                     * @param value
-                     *     allowed object is
-                     *     {@link String }
-                     *     
-                     */
-                    public void setComment(String value) {
-                        this.comment = value;
-                    }
+				@XmlElement(required = true)
+				protected String workingDay;
+				protected float hours;
 
-                }
+				/**
+				 * Gets the value of the workingDay property.
+				 * 
+				 * @return possible object is {@link String }
+				 * 
+				 */
+				public String getWorkingDay() {
+					return workingDay;
+				}
 
-            }
+				/**
+				 * Sets the value of the workingDay property.
+				 * 
+				 * @param value
+				 *            allowed object is {@link String }
+				 * 
+				 */
+				public void setWorkingDay(String value) {
+					this.workingDay = value;
+				}
 
+				/**
+				 * Gets the value of the hours property.
+				 * 
+				 */
+				public float getHours() {
+					return hours;
+				}
 
-            /**
-             * <p>Java class for anonymous complex type.
-             * 
-             * <p>The following schema fragment specifies the expected content contained within this class.
-             * 
-             * <pre>
-             * &lt;complexType>
-             *   &lt;complexContent>
-             *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-             *       &lt;sequence>
-             *         &lt;element name="workingDay">
-             *           &lt;simpleType>
-             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
-             *               &lt;enumeration value="Lunes"/>
-             *               &lt;enumeration value="Martes"/>
-             *               &lt;enumeration value="Miercoles"/>
-             *               &lt;enumeration value="Jueves"/>
-             *               &lt;enumeration value="Viernes"/>
-             *               &lt;enumeration value="Sabado"/>
-             *               &lt;enumeration value="Domingo"/>
-             *             &lt;/restriction>
-             *           &lt;/simpleType>
-             *         &lt;/element>
-             *         &lt;element name="hours" type="{http://www.w3.org/2001/XMLSchema}float"/>
-             *       &lt;/sequence>
-             *     &lt;/restriction>
-             *   &lt;/complexContent>
-             * &lt;/complexType>
-             * </pre>
-             * 
-             * 
-             */
-            @XmlAccessorType(XmlAccessType.FIELD)
-            @XmlType(name = "", propOrder = {
-                "workingDay",
-                "hours"
-            })
-            public static class WorkingDays {
+				/**
+				 * Sets the value of the hours property.
+				 * 
+				 */
+				public void setHours(float value) {
+					this.hours = value;
+				}
 
-                @XmlElement(required = true)
-                protected String workingDay;
-                protected float hours;
+			}
 
-                /**
-                 * Gets the value of the workingDay property.
-                 * 
-                 * @return
-                 *     possible object is
-                 *     {@link String }
-                 *     
-                 */
-                public String getWorkingDay() {
-                    return workingDay;
-                }
+		}
 
-                /**
-                 * Sets the value of the workingDay property.
-                 * 
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
-                 *     
-                 */
-                public void setWorkingDay(String value) {
-                    this.workingDay = value;
-                }
-
-                /**
-                 * Gets the value of the hours property.
-                 * 
-                 */
-                public float getHours() {
-                    return hours;
-                }
-
-                /**
-                 * Sets the value of the hours property.
-                 * 
-                 */
-                public void setHours(float value) {
-                    this.hours = value;
-                }
-
-            }
-
-        }
-
-    }
+	}
 
 }

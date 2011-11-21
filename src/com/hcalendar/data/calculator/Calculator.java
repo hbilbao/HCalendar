@@ -17,7 +17,6 @@ import com.hcalendar.data.orm.exception.ORMException;
 import com.hcalendar.data.orm.impl.ORMHelper;
 import com.hcalendar.data.utils.DateHelper;
 import com.hcalendar.data.utils.DateIterator;
-import com.hcalendar.data.xml.userconfiguration.UserConfiguration.User;
 import com.hcalendar.data.xml.workedhours.AnualHours;
 import com.hcalendar.data.xml.workedhours.AnualHours.UserInput;
 import com.hcalendar.data.xml.workedhours.AnualHours.UserInput.WorkedHours;
@@ -26,11 +25,12 @@ public class Calculator {
 
 	@SuppressWarnings("deprecation")
 	public static AnualHours calculatePlannedHoursOfYear(IORMClient orm, String name, Integer year,
-			Map<Integer, String> listaDiasLaborales, List<String> dLibresList, boolean ovewriteProfile) throws CalculatorException {
+			Map<Integer, String> listaDiasLaborales, List<String> dLibresList, boolean ovewriteProfile)
+			throws CalculatorException {
 		try {
 			final AnualHours anualHours = orm.getAnualHours();
 			com.hcalendar.data.xml.workedhours.ObjectFactory of = new com.hcalendar.data.xml.workedhours.ObjectFactory();
-			
+
 			if (ovewriteProfile) {
 				for (UserInput userTemp : anualHours.getUserInput())
 					if (userTemp.getUserName().equals(name)) {
@@ -38,7 +38,7 @@ public class Calculator {
 						break;
 					}
 			}
-				
+
 			UserInput userInput = of.createAnualHoursUserInput();
 			userInput.setUserName(name);
 			List<Date> dLibresDateList = DateHelper.convertToDate(dLibresList);

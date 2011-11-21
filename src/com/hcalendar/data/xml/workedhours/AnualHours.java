@@ -5,11 +5,11 @@
 // Generated on: 2011.11.19 at 02:35:30 PM CET 
 //
 
-
 package com.hcalendar.data.xml.workedhours;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -18,11 +18,13 @@ import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType>
@@ -74,368 +76,349 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "userInput"
-})
+@XmlType(name = "", propOrder = { "userInput" })
 @XmlRootElement(name = "anualHours")
 public class AnualHours {
 
-    protected List<AnualHours.UserInput> userInput;
+	protected List<AnualHours.UserInput> userInput;
 
-    /**
-     * Gets the value of the userInput property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the userInput property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getUserInput().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link AnualHours.UserInput }
-     * 
-     * 
-     */
-    public List<AnualHours.UserInput> getUserInput() {
-        if (userInput == null) {
-            userInput = new ArrayList<AnualHours.UserInput>();
-        }
-        return this.userInput;
-    }
+	/**
+	 * Gets the value of the userInput property.
+	 * 
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the userInput property.
+	 * 
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getUserInput().add(newItem);
+	 * </pre>
+	 * 
+	 * 
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list
+	 * {@link AnualHours.UserInput }
+	 * 
+	 * 
+	 */
+	public List<AnualHours.UserInput> getUserInput() {
+		if (userInput == null) {
+			userInput = new ArrayList<AnualHours.UserInput>();
+		}
+		return this.userInput;
+	}
 
+	/**
+	 * <p>
+	 * Java class for anonymous complex type.
+	 * 
+	 * <p>
+	 * The following schema fragment specifies the expected content contained
+	 * within this class.
+	 * 
+	 * <pre>
+	 * &lt;complexType>
+	 *   &lt;complexContent>
+	 *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+	 *       &lt;sequence>
+	 *         &lt;element name="userName" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *         &lt;element name="workedHours" maxOccurs="unbounded" minOccurs="0">
+	 *           &lt;complexType>
+	 *             &lt;complexContent>
+	 *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+	 *                 &lt;sequence>
+	 *                   &lt;element name="date" type="{http://www.w3.org/2001/XMLSchema}date"/>
+	 *                   &lt;element name="hours" type="{http://www.w3.org/2001/XMLSchema}float"/>
+	 *                   &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+	 *                 &lt;/sequence>
+	 *               &lt;/restriction>
+	 *             &lt;/complexContent>
+	 *           &lt;/complexType>
+	 *         &lt;/element>
+	 *         &lt;element name="holidays" maxOccurs="unbounded" minOccurs="0">
+	 *           &lt;complexType>
+	 *             &lt;complexContent>
+	 *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+	 *                 &lt;sequence>
+	 *                   &lt;element name="date" type="{http://www.w3.org/2001/XMLSchema}date"/>
+	 *                   &lt;element name="comment" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+	 *                 &lt;/sequence>
+	 *               &lt;/restriction>
+	 *             &lt;/complexContent>
+	 *           &lt;/complexType>
+	 *         &lt;/element>
+	 *       &lt;/sequence>
+	 *     &lt;/restriction>
+	 *   &lt;/complexContent>
+	 * &lt;/complexType>
+	 * </pre>
+	 * 
+	 * 
+	 */
+	@XmlAccessorType(XmlAccessType.FIELD)
+	@XmlType(name = "", propOrder = { "userName", "workedHours", "holidays" })
+	public static class UserInput {
 
-    /**
-     * <p>Java class for anonymous complex type.
-     * 
-     * <p>The following schema fragment specifies the expected content contained within this class.
-     * 
-     * <pre>
-     * &lt;complexType>
-     *   &lt;complexContent>
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *       &lt;sequence>
-     *         &lt;element name="userName" type="{http://www.w3.org/2001/XMLSchema}string"/>
-     *         &lt;element name="workedHours" maxOccurs="unbounded" minOccurs="0">
-     *           &lt;complexType>
-     *             &lt;complexContent>
-     *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *                 &lt;sequence>
-     *                   &lt;element name="date" type="{http://www.w3.org/2001/XMLSchema}date"/>
-     *                   &lt;element name="hours" type="{http://www.w3.org/2001/XMLSchema}float"/>
-     *                   &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-     *                 &lt;/sequence>
-     *               &lt;/restriction>
-     *             &lt;/complexContent>
-     *           &lt;/complexType>
-     *         &lt;/element>
-     *         &lt;element name="holidays" maxOccurs="unbounded" minOccurs="0">
-     *           &lt;complexType>
-     *             &lt;complexContent>
-     *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *                 &lt;sequence>
-     *                   &lt;element name="date" type="{http://www.w3.org/2001/XMLSchema}date"/>
-     *                   &lt;element name="comment" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-     *                 &lt;/sequence>
-     *               &lt;/restriction>
-     *             &lt;/complexContent>
-     *           &lt;/complexType>
-     *         &lt;/element>
-     *       &lt;/sequence>
-     *     &lt;/restriction>
-     *   &lt;/complexContent>
-     * &lt;/complexType>
-     * </pre>
-     * 
-     * 
-     */
-    @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "userName",
-        "workedHours",
-        "holidays"
-    })
-    public static class UserInput {
+		@XmlElement(required = true)
+		protected String userName;
+		protected List<AnualHours.UserInput.WorkedHours> workedHours;
+		protected List<AnualHours.UserInput.Holidays> holidays;
 
-        @XmlElement(required = true)
-        protected String userName;
-        protected List<AnualHours.UserInput.WorkedHours> workedHours;
-        protected List<AnualHours.UserInput.Holidays> holidays;
+		/**
+		 * Gets the value of the userName property.
+		 * 
+		 * @return possible object is {@link String }
+		 * 
+		 */
+		public String getUserName() {
+			return userName;
+		}
 
-        /**
-         * Gets the value of the userName property.
-         * 
-         * @return
-         *     possible object is
-         *     {@link String }
-         *     
-         */
-        public String getUserName() {
-            return userName;
-        }
+		/**
+		 * Sets the value of the userName property.
+		 * 
+		 * @param value
+		 *            allowed object is {@link String }
+		 * 
+		 */
+		public void setUserName(String value) {
+			this.userName = value;
+		}
 
-        /**
-         * Sets the value of the userName property.
-         * 
-         * @param value
-         *     allowed object is
-         *     {@link String }
-         *     
-         */
-        public void setUserName(String value) {
-            this.userName = value;
-        }
+		/**
+		 * Gets the value of the workedHours property.
+		 * 
+		 * <p>
+		 * This accessor method returns a reference to the live list, not a
+		 * snapshot. Therefore any modification you make to the returned list
+		 * will be present inside the JAXB object. This is why there is not a
+		 * <CODE>set</CODE> method for the workedHours property.
+		 * 
+		 * <p>
+		 * For example, to add a new item, do as follows:
+		 * 
+		 * <pre>
+		 * getWorkedHours().add(newItem);
+		 * </pre>
+		 * 
+		 * 
+		 * <p>
+		 * Objects of the following type(s) are allowed in the list
+		 * {@link AnualHours.UserInput.WorkedHours }
+		 * 
+		 * 
+		 */
+		public List<AnualHours.UserInput.WorkedHours> getWorkedHours() {
+			if (workedHours == null) {
+				workedHours = new ArrayList<AnualHours.UserInput.WorkedHours>();
+			}
+			return this.workedHours;
+		}
 
-        /**
-         * Gets the value of the workedHours property.
-         * 
-         * <p>
-         * This accessor method returns a reference to the live list,
-         * not a snapshot. Therefore any modification you make to the
-         * returned list will be present inside the JAXB object.
-         * This is why there is not a <CODE>set</CODE> method for the workedHours property.
-         * 
-         * <p>
-         * For example, to add a new item, do as follows:
-         * <pre>
-         *    getWorkedHours().add(newItem);
-         * </pre>
-         * 
-         * 
-         * <p>
-         * Objects of the following type(s) are allowed in the list
-         * {@link AnualHours.UserInput.WorkedHours }
-         * 
-         * 
-         */
-        public List<AnualHours.UserInput.WorkedHours> getWorkedHours() {
-            if (workedHours == null) {
-                workedHours = new ArrayList<AnualHours.UserInput.WorkedHours>();
-            }
-            return this.workedHours;
-        }
+		/**
+		 * Gets the value of the holidays property.
+		 * 
+		 * <p>
+		 * This accessor method returns a reference to the live list, not a
+		 * snapshot. Therefore any modification you make to the returned list
+		 * will be present inside the JAXB object. This is why there is not a
+		 * <CODE>set</CODE> method for the holidays property.
+		 * 
+		 * <p>
+		 * For example, to add a new item, do as follows:
+		 * 
+		 * <pre>
+		 * getHolidays().add(newItem);
+		 * </pre>
+		 * 
+		 * 
+		 * <p>
+		 * Objects of the following type(s) are allowed in the list
+		 * {@link AnualHours.UserInput.Holidays }
+		 * 
+		 * 
+		 */
+		public List<AnualHours.UserInput.Holidays> getHolidays() {
+			if (holidays == null) {
+				holidays = new ArrayList<AnualHours.UserInput.Holidays>();
+			}
+			return this.holidays;
+		}
 
-        /**
-         * Gets the value of the holidays property.
-         * 
-         * <p>
-         * This accessor method returns a reference to the live list,
-         * not a snapshot. Therefore any modification you make to the
-         * returned list will be present inside the JAXB object.
-         * This is why there is not a <CODE>set</CODE> method for the holidays property.
-         * 
-         * <p>
-         * For example, to add a new item, do as follows:
-         * <pre>
-         *    getHolidays().add(newItem);
-         * </pre>
-         * 
-         * 
-         * <p>
-         * Objects of the following type(s) are allowed in the list
-         * {@link AnualHours.UserInput.Holidays }
-         * 
-         * 
-         */
-        public List<AnualHours.UserInput.Holidays> getHolidays() {
-            if (holidays == null) {
-                holidays = new ArrayList<AnualHours.UserInput.Holidays>();
-            }
-            return this.holidays;
-        }
+		/**
+		 * <p>
+		 * Java class for anonymous complex type.
+		 * 
+		 * <p>
+		 * The following schema fragment specifies the expected content
+		 * contained within this class.
+		 * 
+		 * <pre>
+		 * &lt;complexType>
+		 *   &lt;complexContent>
+		 *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+		 *       &lt;sequence>
+		 *         &lt;element name="date" type="{http://www.w3.org/2001/XMLSchema}date"/>
+		 *         &lt;element name="comment" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+		 *       &lt;/sequence>
+		 *     &lt;/restriction>
+		 *   &lt;/complexContent>
+		 * &lt;/complexType>
+		 * </pre>
+		 * 
+		 * 
+		 */
+		@XmlAccessorType(XmlAccessType.FIELD)
+		@XmlType(name = "", propOrder = { "date", "comment" })
+		public static class Holidays {
 
+			@XmlElement(required = true)
+			@XmlSchemaType(name = "date")
+			protected XMLGregorianCalendar date;
+			protected String comment;
 
-        /**
-         * <p>Java class for anonymous complex type.
-         * 
-         * <p>The following schema fragment specifies the expected content contained within this class.
-         * 
-         * <pre>
-         * &lt;complexType>
-         *   &lt;complexContent>
-         *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-         *       &lt;sequence>
-         *         &lt;element name="date" type="{http://www.w3.org/2001/XMLSchema}date"/>
-         *         &lt;element name="comment" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-         *       &lt;/sequence>
-         *     &lt;/restriction>
-         *   &lt;/complexContent>
-         * &lt;/complexType>
-         * </pre>
-         * 
-         * 
-         */
-        @XmlAccessorType(XmlAccessType.FIELD)
-        @XmlType(name = "", propOrder = {
-            "date",
-            "comment"
-        })
-        public static class Holidays {
+			/**
+			 * Gets the value of the date property.
+			 * 
+			 * @return possible object is {@link XMLGregorianCalendar }
+			 * 
+			 */
+			public XMLGregorianCalendar getDate() {
+				return date;
+			}
 
-            @XmlElement(required = true)
-            @XmlSchemaType(name = "date")
-            protected XMLGregorianCalendar date;
-            protected String comment;
+			/**
+			 * Sets the value of the date property.
+			 * 
+			 * @param value
+			 *            allowed object is {@link XMLGregorianCalendar }
+			 * 
+			 */
+			public void setDate(XMLGregorianCalendar value) {
+				this.date = value;
+			}
 
-            /**
-             * Gets the value of the date property.
-             * 
-             * @return
-             *     possible object is
-             *     {@link XMLGregorianCalendar }
-             *     
-             */
-            public XMLGregorianCalendar getDate() {
-                return date;
-            }
+			/**
+			 * Gets the value of the comment property.
+			 * 
+			 * @return possible object is {@link String }
+			 * 
+			 */
+			public String getComment() {
+				return comment;
+			}
 
-            /**
-             * Sets the value of the date property.
-             * 
-             * @param value
-             *     allowed object is
-             *     {@link XMLGregorianCalendar }
-             *     
-             */
-            public void setDate(XMLGregorianCalendar value) {
-                this.date = value;
-            }
+			/**
+			 * Sets the value of the comment property.
+			 * 
+			 * @param value
+			 *            allowed object is {@link String }
+			 * 
+			 */
+			public void setComment(String value) {
+				this.comment = value;
+			}
 
-            /**
-             * Gets the value of the comment property.
-             * 
-             * @return
-             *     possible object is
-             *     {@link String }
-             *     
-             */
-            public String getComment() {
-                return comment;
-            }
+		}
 
-            /**
-             * Sets the value of the comment property.
-             * 
-             * @param value
-             *     allowed object is
-             *     {@link String }
-             *     
-             */
-            public void setComment(String value) {
-                this.comment = value;
-            }
+		/**
+		 * <p>
+		 * Java class for anonymous complex type.
+		 * 
+		 * <p>
+		 * The following schema fragment specifies the expected content
+		 * contained within this class.
+		 * 
+		 * <pre>
+		 * &lt;complexType>
+		 *   &lt;complexContent>
+		 *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+		 *       &lt;sequence>
+		 *         &lt;element name="date" type="{http://www.w3.org/2001/XMLSchema}date"/>
+		 *         &lt;element name="hours" type="{http://www.w3.org/2001/XMLSchema}float"/>
+		 *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+		 *       &lt;/sequence>
+		 *     &lt;/restriction>
+		 *   &lt;/complexContent>
+		 * &lt;/complexType>
+		 * </pre>
+		 * 
+		 * 
+		 */
+		@XmlAccessorType(XmlAccessType.FIELD)
+		@XmlType(name = "", propOrder = { "date", "hours", "description" })
+		public static class WorkedHours {
 
-        }
+			@XmlElement(required = true)
+			@XmlSchemaType(name = "date")
+			protected XMLGregorianCalendar date;
+			protected float hours;
+			protected String description;
 
+			/**
+			 * Gets the value of the date property.
+			 * 
+			 * @return possible object is {@link XMLGregorianCalendar }
+			 * 
+			 */
+			public XMLGregorianCalendar getDate() {
+				return date;
+			}
 
-        /**
-         * <p>Java class for anonymous complex type.
-         * 
-         * <p>The following schema fragment specifies the expected content contained within this class.
-         * 
-         * <pre>
-         * &lt;complexType>
-         *   &lt;complexContent>
-         *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-         *       &lt;sequence>
-         *         &lt;element name="date" type="{http://www.w3.org/2001/XMLSchema}date"/>
-         *         &lt;element name="hours" type="{http://www.w3.org/2001/XMLSchema}float"/>
-         *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-         *       &lt;/sequence>
-         *     &lt;/restriction>
-         *   &lt;/complexContent>
-         * &lt;/complexType>
-         * </pre>
-         * 
-         * 
-         */
-        @XmlAccessorType(XmlAccessType.FIELD)
-        @XmlType(name = "", propOrder = {
-            "date",
-            "hours",
-            "description"
-        })
-        public static class WorkedHours {
+			/**
+			 * Sets the value of the date property.
+			 * 
+			 * @param value
+			 *            allowed object is {@link XMLGregorianCalendar }
+			 * 
+			 */
+			public void setDate(XMLGregorianCalendar value) {
+				this.date = value;
+			}
 
-            @XmlElement(required = true)
-            @XmlSchemaType(name = "date")
-            protected XMLGregorianCalendar date;
-            protected float hours;
-            protected String description;
+			/**
+			 * Gets the value of the hours property.
+			 * 
+			 */
+			public float getHours() {
+				return hours;
+			}
 
-            /**
-             * Gets the value of the date property.
-             * 
-             * @return
-             *     possible object is
-             *     {@link XMLGregorianCalendar }
-             *     
-             */
-            public XMLGregorianCalendar getDate() {
-                return date;
-            }
+			/**
+			 * Sets the value of the hours property.
+			 * 
+			 */
+			public void setHours(float value) {
+				this.hours = value;
+			}
 
-            /**
-             * Sets the value of the date property.
-             * 
-             * @param value
-             *     allowed object is
-             *     {@link XMLGregorianCalendar }
-             *     
-             */
-            public void setDate(XMLGregorianCalendar value) {
-                this.date = value;
-            }
+			/**
+			 * Gets the value of the description property.
+			 * 
+			 * @return possible object is {@link String }
+			 * 
+			 */
+			public String getDescription() {
+				return description;
+			}
 
-            /**
-             * Gets the value of the hours property.
-             * 
-             */
-            public float getHours() {
-                return hours;
-            }
+			/**
+			 * Sets the value of the description property.
+			 * 
+			 * @param value
+			 *            allowed object is {@link String }
+			 * 
+			 */
+			public void setDescription(String value) {
+				this.description = value;
+			}
 
-            /**
-             * Sets the value of the hours property.
-             * 
-             */
-            public void setHours(float value) {
-                this.hours = value;
-            }
+		}
 
-            /**
-             * Gets the value of the description property.
-             * 
-             * @return
-             *     possible object is
-             *     {@link String }
-             *     
-             */
-            public String getDescription() {
-                return description;
-            }
-
-            /**
-             * Sets the value of the description property.
-             * 
-             * @param value
-             *     allowed object is
-             *     {@link String }
-             *     
-             */
-            public void setDescription(String value) {
-                this.description = value;
-            }
-
-        }
-
-    }
+	}
 
 }

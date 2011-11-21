@@ -26,6 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 import javax.swing.border.Border;
 
 import com.hcalendar.data.DataServices;
@@ -35,7 +36,6 @@ import com.hcalendar.data.calculator.Calculator;
 import com.hcalendar.data.orm.IORMClient;
 import com.hcalendar.data.orm.exception.ORMException;
 import com.hcalendar.data.orm.impl.ORMHelper;
-import com.hcalendar.data.orm.impl.OrmManager;
 import com.hcalendar.data.xml.userconfiguration.UserConfiguration;
 import com.hcalendar.data.xml.workedhours.AnualHours;
 import com.hcalendar.ui.widgets.ICalendarActionProvider;
@@ -78,7 +78,7 @@ public class UserConfigurationWindow extends JFrame {
 		this.orm = orm;
 		this.setSize(1000, 600);
 		this.setMaximumSize(new Dimension(1500, 900));
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		this.setTitle("Creación de perfil");
 		Container content = this.getContentPane();
 		JPanel panel = new JPanel(new GridLayout(2, 2));
@@ -279,7 +279,21 @@ public class UserConfigurationWindow extends JFrame {
 
 		JLabel year = new JLabel("Año: ");
 		yearCombo = new JComboBox(years);
-		yearCombo.setSelectedIndex(0);
+		yearCombo.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (diasLibresTextField.getText() != null && diasLibresTextField.getText().length() > 0)
+					if (JWindowUtils
+							.showOptionPanel(
+									UserConfigurationWindow.this,
+									"Si cambias el año, se borraran los días libres que has definido hasta ahora. Quieres seguir?",
+									new String[] { "Continuar", "Cancelar" }) == 0) {
+						diasLibresTextField.setText(null);
+
+					}
+			}
+		});
 		year.setLabelFor(yearCombo);
 		namePanel.add(year, BorderLayout.WEST);
 		namePanel.add(yearCombo, BorderLayout.CENTER);
@@ -375,6 +389,12 @@ public class UserConfigurationWindow extends JFrame {
 	// Acciones ha realizar cuando cambia la fecha seleccionada
 	private void calendarOnDateChangedActions(Date date, Boolean selected,
 			ICalendarActionProvider actionProvider) {
+		// Verify if year isEqual
+		if (date.getYear() + 1900 != ((Integer) yearCombo.getSelectedItem()).intValue()) {
+			JWindowUtils.showErrorPanel(UserConfigurationWindow.this,
+					"Si quieres introducir días libres de otro año, primero debes cambiar el año del perfíl");
+			return;
+		}
 		// Add color to the date onCalendar
 		if (!selected)
 			jCalendarPanel.addDayToList(date, LIST_TYPE.USER_NOT_WORKINGDAY);

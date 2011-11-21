@@ -20,5 +20,5 @@ public interface IORMClient {
 	AnualHours getAnualHours() throws ORMException;
 
 	void reloadEntitys() throws ORMException;
-	
+
 }

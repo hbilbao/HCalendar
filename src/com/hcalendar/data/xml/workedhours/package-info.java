@@ -7,3 +7,4 @@
 
 @javax.xml.bind.annotation.XmlSchema(namespace = "http://www.data.hcalendar.com/workedhours", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package com.hcalendar.data.xml.workedhours;
+
