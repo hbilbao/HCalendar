@@ -3,16 +3,16 @@ package com.hcalendar.data.orm.impl;
 import com.hcalendar.data.orm.IORMClient;
 import com.hcalendar.data.orm.exception.ORMException;
 
-public class OrmManager {
+public class ORMManager {
 
-	private static OrmManager instance = null;
+	private static ORMManager instance = null;
 
-	private OrmManager() {
+	private ORMManager() {
 	}
 
-	public static OrmManager getInstance() {
+	public static ORMManager getInstance() {
 		if (instance == null)
-			instance = new OrmManager();
+			instance = new ORMManager();
 		return instance;
 	}
 

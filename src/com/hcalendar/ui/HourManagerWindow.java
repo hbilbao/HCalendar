@@ -38,6 +38,7 @@ import com.hcalendar.ui.widgets.ICalendarActionProvider.LIST_TYPE;
 import com.hcalendar.ui.widgets.impl.JUserCalendarPanel;
 import com.hcalendar.ui.widgets.impl.JWindowUtils;
 
+//	TODO Poner constantes en todas las ventanas
 public class HourManagerWindow extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -119,7 +120,7 @@ public class HourManagerWindow extends JFrame {
 	private void createUserAndCalendar(Container panel) throws ORMException {
 		// Poner en el calendar el año actual, y si no tiene configuración,
 		// el más cercano hacia arriba y luego para abajo.
-		int yearToShow = ORMHelper.calculateYearConfigForProfile(orm.getUserConfiguration(), this.username,
+		int yearToShow = Calculator.calculateYearConfigForProfile(orm.getUserConfiguration(), this.username,
 				Calendar.getInstance().get(Calendar.YEAR));
 
 		JPanel combPanel = new JPanel(new GridLayout(2, 1));

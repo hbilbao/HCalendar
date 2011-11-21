@@ -1,8 +1,5 @@
 package com.hcalendar.data.orm.impl;
 
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -10,11 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.bind.JAXBContext;
-
-import com.hcalendar.ConfigurationConstants;
 import com.hcalendar.data.exception.BusinessException;
-import com.hcalendar.data.orm.IORMClient;
 import com.hcalendar.data.orm.exception.ORMException;
 import com.hcalendar.data.utils.DateHelper;
 import com.hcalendar.data.utils.DateIterator;
@@ -37,16 +30,6 @@ public class ORMHelper {
 		List<Date> result = new ArrayList<Date>();
 		for (FreeDay day : freedays) {
 			result.add(DateHelper.xmlGregorianCalendar2Date(day.getDay()));
-		}
-		return result;
-	}
-
-	private static float getHoursOfDay(AnualHours anualHours, Date date, String profileName) {
-		float result = 0;
-		List<WorkedHours> hoursList = getUsersWorkedHourList(anualHours, profileName);
-		for (WorkedHours hDay : hoursList) {
-			if (DateHelper.compareDates(date, hDay.getDate()) == 0)
-				result += hDay.getHours();
 		}
 		return result;
 	}
@@ -201,30 +184,6 @@ public class ORMHelper {
 		throw new BusinessException("El usuario no existe");
 	}
 
-	public static int calculateYearConfigForProfile(UserConfiguration userConfiguration, String username,
-			Integer year) {
-		List<Integer> years = new ArrayList<Integer>();
-		List<User> usersList = userConfiguration.getUser();
-		for (User user : usersList) {
-			if (user.getName().equals(username)) {
-				for (YearConf yearCgf : user.getYearConf())
-					years.add(yearCgf.getYear());
-			}
-		}
-		// Calculate optimal year
-		if (years.contains(year))
-			return year;
-		for (int i = 1; i < 50; i++) {
-			if (years.contains(year + i))
-				return year + i;
-		}
-		for (int i = 1; i < 50; i++) {
-			if (years.contains(year - i))
-				return year - i;
-		}
-		return 0;
-	}
-
 	@SuppressWarnings("deprecation")
 	public static List<Date> getCalendarNotWorkingDays(UserConfiguration userConfig, String username,
 			int selectedYear) {
@@ -341,61 +300,5 @@ public class ORMHelper {
 		} catch (Exception e) {
 			throw new ORMException(e);
 		}
-	}
-
-	public static void persistUserConfiguration(UserConfiguration userConfig) throws ORMException {
-		JAXBContext jaxbContext;
-		try {
-			jaxbContext = JAXBContext.newInstance(UserConfiguration.class);
-			StringWriter writer = new StringWriter();
-			jaxbContext.createMarshaller().marshal(userConfig, writer);
-
-			// Write to a file
-			FileWriter fichero = new FileWriter(ConfigurationConstants.getAnualConfigurationFile());
-			PrintWriter pw = new PrintWriter(fichero);
-			pw.println(writer);
-			fichero.close();
-		} catch (Exception e) {
-			throw new ORMException(e);
-		}
-	}
-
-	public static void persistAnualHours(AnualHours anual) throws ORMException {
-		try {
-			// write it out as XML
-			final JAXBContext jaxbContext = JAXBContext.newInstance(AnualHours.class);
-			StringWriter writer = new StringWriter();
-			jaxbContext.createMarshaller().marshal(anual, writer);
-
-			// Write to a file
-			FileWriter fichero = new FileWriter(ConfigurationConstants.getInputHoursFile());
-			PrintWriter pw = new PrintWriter(fichero);
-			pw.println(writer);
-			fichero.close();
-		} catch (Exception e) {
-			throw new ORMException(e);
-		}
-
-	}
-
-	public static void deleteProfile(IORMClient orm, String profileName) throws ORMException {
-		UserConfiguration userConfiguration = orm.getUserConfiguration();
-		List<User> users = userConfiguration.getUser();
-		for (User us : users) {
-			if (us.getName().equals(profileName)) {
-				users.remove(us);
-				persistUserConfiguration(userConfiguration);
-				break;
-			}
-		}
-		// Borramos sus imputaciones de horas por si acaso
-		AnualHours anualHours = orm.getAnualHours();
-		for (UserInput user : anualHours.getUserInput()) {
-			if (user.getUserName().equals(profileName)) {
-				anualHours.getUserInput().remove(user);
-				break;
-			}
-		}
-		persistAnualHours(anualHours);
 	}
 }

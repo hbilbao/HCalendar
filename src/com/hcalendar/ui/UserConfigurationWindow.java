@@ -33,6 +33,7 @@ import com.hcalendar.data.DataServices;
 import com.hcalendar.data.IDateEntity;
 import com.hcalendar.data.IHCCallback;
 import com.hcalendar.data.calculator.Calculator;
+import com.hcalendar.data.crud.CRUDManager;
 import com.hcalendar.data.orm.IORMClient;
 import com.hcalendar.data.orm.exception.ORMException;
 import com.hcalendar.data.orm.impl.ORMHelper;
@@ -378,8 +379,8 @@ public class UserConfigurationWindow extends JFrame {
 					aHours, listaDiasLaborales, dLibresList, ovewriteProfile);
 			AnualHours anualHours = Calculator.calculatePlannedHoursOfYear(orm, name, year,
 					listaDiasLaborales, dLibresList, ovewriteProfile);
-			ORMHelper.persistAnualHours(anualHours);
-			ORMHelper.persistUserConfiguration(userConfig);
+			CRUDManager.saveAnualHours(anualHours);
+			CRUDManager.saveUserConfiguration(userConfig);
 			JWindowUtils.showSuccesPanel(this, "Configuración guardada correctamente");
 		} catch (Exception e) {
 			JWindowUtils.showErrorPanel(this, "Error al guardar la configuración");

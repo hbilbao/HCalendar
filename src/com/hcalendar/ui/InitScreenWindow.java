@@ -18,12 +18,14 @@ import javax.swing.border.Border;
 
 import com.hcalendar.HCalendarConstants;
 import com.hcalendar.data.IHCCallback;
+import com.hcalendar.data.crud.CRUDManager;
+import com.hcalendar.data.crud.exception.CRUDException;
 import com.hcalendar.data.orm.IORMClient;
 import com.hcalendar.data.orm.exception.ORMException;
 import com.hcalendar.data.orm.impl.ORMHelper;
-import com.hcalendar.data.orm.impl.OrmManager;
-import com.hcalendar.ui.actions.CreateUserProfile;
-import com.hcalendar.ui.actions.HourManager;
+import com.hcalendar.data.orm.impl.ORMManager;
+import com.hcalendar.ui.actions.CreateProfileLauncher;
+import com.hcalendar.ui.actions.HourManagerLauncher;
 import com.hcalendar.ui.widgets.impl.JWindowUtils;
 
 public class InitScreenWindow extends JFrame {
@@ -34,7 +36,7 @@ public class InitScreenWindow extends JFrame {
 
 	public InitScreenWindow() {
 		try {
-			final IORMClient orm = OrmManager.getInstance().getORMClient();
+			final IORMClient orm = ORMManager.getInstance().getORMClient();
 			this.setSize(400, 160);
 			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			this.setTitle("Calendario laboral");
@@ -50,11 +52,11 @@ public class InitScreenWindow extends JFrame {
 			profilesComboLabel.setLabelFor(profilesCombo);
 			panel.add(profilesComboLabel, BorderLayout.WEST);
 			panel.add(profilesCombo, BorderLayout.CENTER);
-			profilesCombo.addActionListener(new HourManager(orm));
+			profilesCombo.addActionListener(new HourManagerLauncher(orm));
 
 			AbstractButton newProfileButton = new JToggleButton("Crear nuevo perfil");
 			newProfileButton.setSize(new Dimension(100, 100));
-			newProfileButton.addActionListener(new CreateUserProfile(orm, new IHCCallback() {
+			newProfileButton.addActionListener(new CreateProfileLauncher(orm, new IHCCallback() {
 
 				@Override
 				public void itemChanged() {
@@ -88,7 +90,8 @@ public class InitScreenWindow extends JFrame {
 					if (profileName == null || profileName.equals(HCalendarConstants.NULL_COMBO_INPUT))
 						return;
 					try {
-						ORMHelper.deleteProfile(orm, profileName);
+						CRUDManager.deleteProfile(orm.getUserConfiguration(), orm.getAnualHours(),
+								profileName);
 						deleteProfilesCombo.removeAllItems();
 						profilesCombo.removeAllItems();
 						deleteProfilesCombo.addItem(HCalendarConstants.NULL_COMBO_INPUT);
@@ -98,7 +101,9 @@ public class InitScreenWindow extends JFrame {
 							profilesCombo.addItem(profile);
 						}
 						JWindowUtils.showSuccesPanel(InitScreenWindow.this, "Perfil borrado correctamente");
-					} catch (ORMException e1) {
+					} catch (CRUDException crude) {
+						JWindowUtils.showErrorPanel(InitScreenWindow.this, "Error al eliminar el perfil");
+					} catch (ORMException orme) {
 						JWindowUtils.showErrorPanel(InitScreenWindow.this, "Error al eliminar el perfil");
 					}
 

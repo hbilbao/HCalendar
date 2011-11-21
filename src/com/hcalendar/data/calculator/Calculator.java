@@ -17,11 +17,38 @@ import com.hcalendar.data.orm.exception.ORMException;
 import com.hcalendar.data.orm.impl.ORMHelper;
 import com.hcalendar.data.utils.DateHelper;
 import com.hcalendar.data.utils.DateIterator;
+import com.hcalendar.data.xml.userconfiguration.UserConfiguration;
+import com.hcalendar.data.xml.userconfiguration.UserConfiguration.User;
+import com.hcalendar.data.xml.userconfiguration.UserConfiguration.User.YearConf;
 import com.hcalendar.data.xml.workedhours.AnualHours;
 import com.hcalendar.data.xml.workedhours.AnualHours.UserInput;
 import com.hcalendar.data.xml.workedhours.AnualHours.UserInput.WorkedHours;
 
 public class Calculator {
+
+	public static int calculateYearConfigForProfile(UserConfiguration userConfiguration, String username,
+			Integer year) {
+		List<Integer> years = new ArrayList<Integer>();
+		List<User> usersList = userConfiguration.getUser();
+		for (User user : usersList) {
+			if (user.getName().equals(username)) {
+				for (YearConf yearCgf : user.getYearConf())
+					years.add(yearCgf.getYear());
+			}
+		}
+		// Calculate optimal year
+		if (years.contains(year))
+			return year;
+		for (int i = 1; i < 50; i++) {
+			if (years.contains(year + i))
+				return year + i;
+		}
+		for (int i = 1; i < 50; i++) {
+			if (years.contains(year - i))
+				return year - i;
+		}
+		return 0;
+	}
 
 	@SuppressWarnings("deprecation")
 	public static AnualHours calculatePlannedHoursOfYear(IORMClient orm, String name, Integer year,
@@ -91,8 +118,6 @@ public class Calculator {
 		List<WorkedHours> hoursList = ORMHelper.getUsersWorkedHourList(hours, username);
 		for (int i = 0; i < hoursList.size(); i++) {
 			WorkedHours hDay = hoursList.get(i);
-			// for (WorkedHours hDay : hoursList) {
-			// System.out.println("Checking " + hDay.getDate());
 			// Filtrar por año
 			if (date.getYear() + 1900 != hDay.getDate().getYear())
 				continue;
@@ -113,8 +138,6 @@ public class Calculator {
 		List<WorkedHours> hoursList = ORMHelper.getUsersWorkedHourList(hours, username);
 		for (int i = 0; i < hoursList.size(); i++) {
 			WorkedHours hDay = hoursList.get(i);
-			// for (WorkedHours hDay : hoursList) {
-			// System.out.println("Checking " + hDay.getDate());
 			// Filtrar por año
 			if (date.getYear() + 1900 != hDay.getDate().getYear())
 				continue;
