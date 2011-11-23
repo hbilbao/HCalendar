@@ -11,9 +11,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.hcalendar.ConfigurationConstants;
 import com.hcalendar.ConfigurationNotInitedException;
+import com.hcalendar.config.ConfigurationUtils;
 import com.hcalendar.data.calculator.Calculator;
+import com.hcalendar.data.calculator.exception.CalculatorException;
 import com.hcalendar.data.exception.BusinessException;
 import com.hcalendar.data.orm.IORMClient;
 import com.hcalendar.data.orm.exception.ORMException;
@@ -34,8 +35,8 @@ import com.hcalendar.ui.widgets.impl.JWindowUtils;
 public class DataServices {
 
 	@SuppressWarnings("deprecation")
-	private static void monthResumeCSV(Writer writer, int year, IORMClient orm, String profileName)
-			throws BusinessException {
+	private static void monthResumeCSV(Writer writer, int year, IORMClient orm,
+			String profileName) throws BusinessException {
 		try {
 			writer.append("Mes");
 			writer.append(',');
@@ -50,8 +51,9 @@ public class DataServices {
 					daysOnMonth = DateHelper.daysOnMonth[i] + 1;
 				else
 					daysOnMonth = DateHelper.daysOnMonth[i];
-				float hours = Calculator.calculateHoursUntilDate(orm.getAnualHours(), new Date(year - 1900,
-						i, daysOnMonth), profileName);
+				float hours = Calculator.calculateHoursUntilDate(orm
+						.getAnualHours(),
+						new Date(year - 1900, i, daysOnMonth), profileName);
 				writer.append(DateHelper.months[i]);
 				writer.append(',');
 				writer.append(String.valueOf(hours - lastCalculatedHours));
@@ -66,8 +68,8 @@ public class DataServices {
 	}
 
 	@SuppressWarnings("deprecation")
-	private static void dayliResumeCSV(Writer writer, int year, IORMClient orm, String profileName)
-			throws BusinessException {
+	private static void dayliResumeCSV(Writer writer, int year, IORMClient orm,
+			String profileName) throws BusinessException {
 		try {
 			writer.append("Dia");
 			writer.append(',');
@@ -86,14 +88,17 @@ public class DataServices {
 			float hoursOfMonth = 0;
 
 			AnualHours anualHours = orm.getAnualHours();
-			List<WorkedHours> workedHours = ORMHelper.getUsersWorkedHourList(anualHours, profileName);
+			List<WorkedHours> workedHours = ORMHelper.getUsersWorkedHourList(
+					anualHours, profileName);
 			for (WorkedHours days : workedHours) {
-				Date date = DateHelper.xmlGregorianCalendar2Date(days.getDate());
+				Date date = DateHelper
+						.xmlGregorianCalendar2Date(days.getDate());
 				writer.append(DateHelper.DATE_FORMAT.format(date));
 				writer.append(',');
 				writer.append(DateHelper.translateDayOfWeek(date.getDay()));
 				writer.append(',');
-				writer.append(days.getHours() > 0.0 ? String.valueOf(days.getHours()) : "");
+				writer.append(days.getHours() > 0.0 ? String.valueOf(days
+						.getHours()) : "");
 				writer.append(',');
 				writer.append(days.getDescription());
 				writer.append('\n');
@@ -104,13 +109,15 @@ public class DataServices {
 					daysOnMonth = DateHelper.daysOnMonth[i] + 1;
 				else
 					daysOnMonth = DateHelper.daysOnMonth[i];
-				hoursOfMonth = Calculator.calculateHoursUntilDate(orm.getAnualHours(), new Date(year - 1900,
-						i, daysOnMonth), profileName);
+				hoursOfMonth = Calculator.calculateHoursUntilDate(orm
+						.getAnualHours(),
+						new Date(year - 1900, i, daysOnMonth), profileName);
 				writer.append("Resumen del mes");
 				writer.append(',');
 				writer.append(DateHelper.months[i]);
 				writer.append(',');
-				writer.append(String.valueOf(hoursOfMonth - lastCalculatedHours) + " horas");
+				writer.append(String
+						.valueOf(hoursOfMonth - lastCalculatedHours) + " horas");
 				writer.append(',');
 				writer.append("");
 				writer.append('\n');
@@ -166,16 +173,38 @@ public class DataServices {
 		}
 	}
 
-	public static UserConfiguration createAnualConfigurationProfile(IORMClient orm, String name, int year,
-			String aHours, Map<Integer, String> listaDiasLaborales, List<String> dLibres,
+	/**
+	 * Calculates the planned hours of a given user and year
+	 * 
+	 * @param orm
+	 *            orm instance
+	 * @param name
+	 *            Username which get the hour input
+	 * @param year
+	 *            year
+	 * @param calendarHours
+	 *            hours of the (spanish:convenio)
+	 * @param listaDiasLaborales
+	 *            Labour days of week
+	 * @param dLibresList
+	 *            Calandar free days of a given year
+	 * @param ovewriteProfile
+	 *            ovewrite file?
+	 * 
+	 * @return AnualHours java bean
+	 * @throws CalculatorException
+	 * */
+	public static UserConfiguration createAnualConfigurationProfile(
+			IORMClient orm, String name, int year, String calendarHours,
+			Map<Integer, String> listaDiasLaborales, List<String> dLibres,
 			boolean ovewriteProfile) throws BusinessException {
 		try {
 			ObjectFactory of = new ObjectFactory();
-			final UserConfiguration userConfig = orm.getUserConfiguration();
+			final UserConfiguration anualConfig = orm.getAnualConfiguration();
 			if (ovewriteProfile) {
-				for (User userTemp : userConfig.getUser())
+				for (User userTemp : anualConfig.getUser())
 					if (userTemp.getName().equals(name)) {
-						userConfig.getUser().remove(userTemp);
+						anualConfig.getUser().remove(userTemp);
 						break;
 					}
 			}
@@ -183,7 +212,7 @@ public class DataServices {
 			user.setName(name);
 			List<YearConf> yearList = user.getYearConf();
 			YearConf yearConf = of.createUserConfigurationUserYearConf();
-			yearConf.setCalendarHours(Float.valueOf(aHours));
+			yearConf.setCalendarHours(Float.valueOf(calendarHours));
 			List<WorkingDays> calWorkinDays = yearConf.getWorkingDays();
 			WorkingDays wd;
 			for (Integer day : listaDiasLaborales.keySet()) {
@@ -196,7 +225,8 @@ public class DataServices {
 			FreeDays fDays = of.createUserConfigurationUserYearConfFreeDays();
 			List<FreeDay> freeDays = fDays.getFreeDay();
 			for (String day : dLibres) {
-				FreeDay freeDay = of.createUserConfigurationUserYearConfFreeDaysFreeDay();
+				FreeDay freeDay = of
+						.createUserConfigurationUserYearConfFreeDaysFreeDay();
 				freeDay.setDay(DateHelper.parse2XMLGregorianCalendar(day));
 				freeDay.setComment("Dias libres de configuracion de usuario");
 				freeDays.add(freeDay);
@@ -205,8 +235,8 @@ public class DataServices {
 			yearConf.setYear(year);
 			yearList.add(yearConf);
 
-			userConfig.getUser().add(user);
-			return userConfig;
+			anualConfig.getUser().add(user);
+			return anualConfig;
 		} catch (DateException e) {
 			throw new BusinessException(e);
 		} catch (ORMException e) {
@@ -214,13 +244,29 @@ public class DataServices {
 		}
 	}
 
-	public static int exportToCSV(IORMClient orm, int year, final Component component, String profileName)
-			throws BusinessException {
+	/**
+	 * Export data to CSV with two option: - By day: resume by day - By month:
+	 * resume by month
+	 * 
+	 * @param orm
+	 *            orm instance
+	 * @param year
+	 *            year
+	 * @param profileName
+	 *            Username which get the hour input
+	 * @param component
+	 *            canvas to show option panel on it
+	 * 
+	 * */
+	public static int exportToCSV(IORMClient orm, int year, String profileName,
+			final Component component) throws BusinessException {
 		try {
 			int selectedOption = JWindowUtils.showOptionPanel(component,
-					"Seleccione el tipo de informe que desea visualizar", new Object[] {
-							"Desglosado por meses", "Desglosado por días" });
-			FileWriter writer = new FileWriter(ConfigurationConstants.getExcelTempFile());
+					"Seleccione el tipo de informe que desea visualizar",
+					new Object[] { "Desglosado por meses",
+							"Desglosado por días" });
+			FileWriter writer = new FileWriter(
+					ConfigurationUtils.getCSVTempFile());
 			if (selectedOption == 0)
 				monthResumeCSV(writer, year, orm, profileName);
 			else if (selectedOption == 1)
@@ -233,7 +279,8 @@ public class DataServices {
 			// Open with excel
 			if (!Desktop.isDesktopSupported()) {
 				Process p = Runtime.getRuntime().exec(
-						"rundll32 url.dll,FileProtocolHandler " + ConfigurationConstants.getExcelTempFile());
+						"rundll32 url.dll,FileProtocolHandler "
+								+ ConfigurationUtils.getCSVTempFile());
 				// use alternative (Runtime.exec)
 				return -1;
 			}
@@ -245,7 +292,7 @@ public class DataServices {
 				return -1;
 			}
 
-			desktop.open(new File(ConfigurationConstants.getExcelTempFile()));
+			desktop.open(new File(ConfigurationUtils.getCSVTempFile()));
 
 		} catch (IOException e) {
 			throw new BusinessException(e);

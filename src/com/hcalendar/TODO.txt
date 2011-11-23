@@ -3,9 +3,11 @@
 - [ok] GitHub
 - [ok] Dejar borra los perfiles de usuario, con todas sus horas imputadas
 - [ok] No se visualizan bien los datos de horas, de años que no son 2011....com.hcalendar.ui.HourManagerWindow:95
-- Actualización de formularios, algo tipo calculados, cuando cambia algo, PUM. Por lo menos el initWindow
 - [ok] Bloquear el año del hour manager, que abre la conf para un año fijo
-- Javadoc, cambiar nombres
- - [ok] No dejar guardar dos perfiles con el mismo nombre
+- [ok] No dejar guardar dos perfiles con el mismo nombre
+ - javadoc falta en: JUserCalendarPanel, HourManagerWindow PARA DELANTE, vamos todas los window, que hay que cambiar los métodos... sacar constantes...
+ 	- Sacar constantes de las ventanas a constantes
+- Actualización de formularios, algo tipo calculados, cuando cambia algo, PUM. Por lo menos el initWindow
+ 
 NOTAS
 - En el Eclipse, se guardan los fichero en la carpeta bin. En el jar, se crea una carpeta en la misma altura que el jar.

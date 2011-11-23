@@ -9,6 +9,9 @@ import com.hcalendar.HCalendarConstants;
 import com.hcalendar.data.orm.IORMClient;
 import com.hcalendar.ui.HourManagerWindow;
 
+/**
+ * Create a new window of type input hours
+ */
 public class HourManagerLauncher implements ActionListener {
 
 	private IORMClient orm;

@@ -22,6 +22,9 @@ import com.hcalendar.data.IDateEntity.DateType;
 import com.hcalendar.data.orm.ORMEntity;
 import com.hcalendar.ui.widgets.IWindowResultListener;
 
+/**
+ * Window to input the diary hour changes
+ * */
 public class DiaryHourWindow extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -51,7 +54,8 @@ public class DiaryHourWindow extends JFrame {
 	private void createTextFields(Container panel) {
 		// Panel actualizable de horas diarias
 		JPanel diaryPanel = new JPanel(new GridLayout(4, 2));
-		diaryPanel.setBorder(BorderFactory.createTitledBorder("Información diaria"));
+		diaryPanel.setBorder(BorderFactory
+				.createTitledBorder("Información diaria"));
 		JLabel diaryHoursLabel = new JLabel("Horas trabajadas: ");
 		diaryHoursTextField = new JTextField();
 		diaryHoursLabel.setLabelFor(diaryHoursTextField);
@@ -79,8 +83,8 @@ public class DiaryHourWindow extends JFrame {
 				if (DiaryHourWindow.this.listener != null) {
 					Float hours = Float.valueOf(diaryHoursTextField.getText());
 					String description = descTextField.getText();
-					DiaryHourWindow.this.listener.windowResult(new ORMEntity(date, DateType.WORK_DAY, hours,
-							description));
+					DiaryHourWindow.this.listener.windowResult(new ORMEntity(
+							date, DateType.WORK_DAY, hours, description));
 					DiaryHourWindow.this.dispose();
 				}
 			}

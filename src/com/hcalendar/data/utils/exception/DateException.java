@@ -1,5 +1,8 @@
 package com.hcalendar.data.utils.exception;
 
+/**
+ * Exception thrown by the date operations
+ * */
 public class DateException extends Exception {
 
 	private static final long serialVersionUID = 2080737904025246864L;

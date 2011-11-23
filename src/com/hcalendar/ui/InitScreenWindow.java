@@ -45,7 +45,7 @@ public class InitScreenWindow extends JFrame {
 			panel.setBorder(border);
 
 			JLabel profilesComboLabel = new JLabel("Gestionar horas del perfil: ");
-			List<String> profilesList = ORMHelper.getCurrentProfiles(orm.getUserConfiguration());
+			List<String> profilesList = ORMHelper.getCurrentProfiles(orm.getAnualConfiguration());
 			profilesList.add(HCalendarConstants.NULL_COMBO_INPUT);
 			Collections.reverse(profilesList);
 			profilesCombo = new JComboBox(profilesList.toArray());
@@ -65,7 +65,7 @@ public class InitScreenWindow extends JFrame {
 						profilesCombo.removeAllItems();
 						deleteProfilesCombo.addItem(HCalendarConstants.NULL_COMBO_INPUT);
 						profilesCombo.addItem(HCalendarConstants.NULL_COMBO_INPUT);
-						for (String profile : ORMHelper.getCurrentProfiles(orm.getUserConfiguration())) {
+						for (String profile : ORMHelper.getCurrentProfiles(orm.getAnualConfiguration())) {
 							deleteProfilesCombo.addItem(profile);
 							profilesCombo.addItem(profile);
 						}
@@ -90,13 +90,13 @@ public class InitScreenWindow extends JFrame {
 					if (profileName == null || profileName.equals(HCalendarConstants.NULL_COMBO_INPUT))
 						return;
 					try {
-						CRUDManager.deleteProfile(orm.getUserConfiguration(), orm.getAnualHours(),
+						CRUDManager.deleteProfile(orm.getAnualConfiguration(), orm.getAnualHours(),
 								profileName);
 						deleteProfilesCombo.removeAllItems();
 						profilesCombo.removeAllItems();
 						deleteProfilesCombo.addItem(HCalendarConstants.NULL_COMBO_INPUT);
 						profilesCombo.addItem(HCalendarConstants.NULL_COMBO_INPUT);
-						for (String profile : ORMHelper.getCurrentProfiles(orm.getUserConfiguration())) {
+						for (String profile : ORMHelper.getCurrentProfiles(orm.getAnualConfiguration())) {
 							deleteProfilesCombo.addItem(profile);
 							profilesCombo.addItem(profile);
 						}

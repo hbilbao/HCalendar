@@ -4,6 +4,9 @@ import java.util.Date;
 
 import com.hcalendar.data.IDateEntity;
 
+/**
+ * Java Bean to track the changes maded by the user
+ * */
 public class ORMEntity implements IDateEntity {
 
 	private Date date;
@@ -15,7 +18,8 @@ public class ORMEntity implements IDateEntity {
 		super();
 	}
 
-	public ORMEntity(Date date, DateType dateType, Float hours, String description) {
+	public ORMEntity(Date date, DateType dateType, Float hours,
+			String description) {
 		this.date = date;
 		this.dateType = dateType;
 		this.hours = hours;

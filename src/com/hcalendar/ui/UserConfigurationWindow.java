@@ -367,7 +367,7 @@ public class UserConfigurationWindow extends JFrame {
 			}
 			// Verify if profile exists
 			boolean ovewriteProfile = false;
-			if (ORMHelper.getCurrentProfiles(orm.getUserConfiguration()).contains(name)) {
+			if (ORMHelper.getCurrentProfiles(orm.getAnualConfiguration()).contains(name)) {
 				int result = JWindowUtils.showOptionPanel(this,
 						"El perfil que intenta guardar la existe, quiere sobreescribirlo?", new String[] {
 								"Si", "No" });
@@ -380,7 +380,7 @@ public class UserConfigurationWindow extends JFrame {
 			AnualHours anualHours = Calculator.calculatePlannedHoursOfYear(orm, name, year,
 					listaDiasLaborales, dLibresList, ovewriteProfile);
 			CRUDManager.saveAnualHours(anualHours);
-			CRUDManager.saveUserConfiguration(userConfig);
+			CRUDManager.saveAnualConfiguration(userConfig);
 			JWindowUtils.showSuccesPanel(this, "Configuración guardada correctamente");
 		} catch (Exception e) {
 			JWindowUtils.showErrorPanel(this, "Error al guardar la configuración");

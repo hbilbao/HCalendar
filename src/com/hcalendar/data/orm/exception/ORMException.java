@@ -1,5 +1,8 @@
 package com.hcalendar.data.orm.exception;
 
+/**
+ * Exception thrown by the ORM operations
+ * */
 public class ORMException extends Exception {
 
 	private static final long serialVersionUID = -4263926609773591304L;

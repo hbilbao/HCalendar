@@ -1,5 +1,8 @@
 package com.hcalendar;
 
+/**
+ * Exception thrown by configuration file readers
+ * */
 public class ConfigurationNotInitedException extends Exception {
 
 	public ConfigurationNotInitedException() {

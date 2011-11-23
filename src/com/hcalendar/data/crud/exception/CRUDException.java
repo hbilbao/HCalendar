@@ -1,5 +1,7 @@
 package com.hcalendar.data.crud.exception;
-
+/**
+ * Exception thrown by the CRUD operations
+ * */
 public class CRUDException extends Exception {
 
 	private static final long serialVersionUID = 8528932183357356621L;

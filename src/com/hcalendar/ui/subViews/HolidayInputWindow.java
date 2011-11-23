@@ -22,6 +22,9 @@ import com.hcalendar.data.IDateEntity.DateType;
 import com.hcalendar.data.orm.ORMEntity;
 import com.hcalendar.ui.widgets.IWindowResultListener;
 
+/**
+ * Window to input holiday data
+ * */
 public class HolidayInputWindow extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -47,7 +50,8 @@ public class HolidayInputWindow extends JFrame {
 
 	private void createTextFields(Container panel) {
 		JPanel diaryPanel = new JPanel(new GridLayout(2, 2));
-		diaryPanel.setBorder(BorderFactory.createTitledBorder("Comentarios sobre las vacaciones"));
+		diaryPanel.setBorder(BorderFactory
+				.createTitledBorder("Comentarios sobre las vacaciones"));
 		JLabel diaryHoursLabel = new JLabel("Comentarios: ");
 		descTextField = new JTextField();
 		diaryHoursLabel.setLabelFor(descTextField);
@@ -69,8 +73,9 @@ public class HolidayInputWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (HolidayInputWindow.this.listener != null) {
 					String description = descTextField.getText();
-					HolidayInputWindow.this.listener.windowResult(new ORMEntity(date, DateType.HOLIDAYS,
-							null, description));
+					HolidayInputWindow.this.listener
+							.windowResult(new ORMEntity(date,
+									DateType.HOLIDAYS, null, description));
 					HolidayInputWindow.this.dispose();
 				}
 			}

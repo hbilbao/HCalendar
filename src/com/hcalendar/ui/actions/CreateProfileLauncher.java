@@ -7,6 +7,9 @@ import com.hcalendar.data.IHCCallback;
 import com.hcalendar.data.orm.IORMClient;
 import com.hcalendar.ui.UserConfigurationWindow;
 
+/**
+ * Create a new window of type anual configuration
+ */
 public class CreateProfileLauncher implements ActionListener {
 
 	private IHCCallback callback;

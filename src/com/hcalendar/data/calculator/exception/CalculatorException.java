@@ -1,5 +1,8 @@
 package com.hcalendar.data.calculator.exception;
 
+/**
+ * Exception thrown by the calculate operations
+ * */
 public class CalculatorException extends Exception {
 
 	private static final long serialVersionUID = 2579894733171297156L;

@@ -14,6 +14,13 @@ import com.hcalendar.ui.subViews.DiaryHourWindow;
 import com.hcalendar.ui.subViews.HolidayInputWindow;
 import com.hcalendar.ui.widgets.IWindowResultListener;
 
+/**
+ * Menu class with the following options
+ * - CHANGE TO LABORAL
+ * - CHANGE TOP NOT WORKING
+ * - CHANGE INPUTS OF DAY
+ * - CHANGE TO HOLIDAY
+ * */
 public class InputChangeOptionMenu extends JPopupMenu {
 	private static final long serialVersionUID = 1L;
 

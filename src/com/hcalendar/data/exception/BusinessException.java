@@ -1,5 +1,8 @@
 package com.hcalendar.data.exception;
 
+/**
+ * BusinessException thrown by the business operations
+ * */
 public class BusinessException extends Exception {
 
 	private static final long serialVersionUID = 5462229351020234861L;

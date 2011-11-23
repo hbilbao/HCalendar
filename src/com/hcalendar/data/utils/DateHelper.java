@@ -17,25 +17,32 @@ import com.hcalendar.data.utils.exception.DateException;
 @SuppressWarnings("deprecation")
 public class DateHelper {
 
-	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(
+			"yyyy-MM-dd");
 
-	public final static int daysOnMonth[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+	public final static int daysOnMonth[] = { 31, 28, 31, 30, 31, 30, 31, 31,
+			30, 31, 30, 31 };
 
-	public static final String[] months = { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio",
-			"Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
+	public static final String[] months = { "Enero", "Febrero", "Marzo",
+			"Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre",
+			"Octubre", "Noviembre", "Diciembre" };
 
-	public static final String[] daysOfWeek = { "Lunes", "Martes", "Miércoles", "Jueves", "Viernes",
-			"Sábado", "Domingo" };
+	public static final String[] daysOfWeek = { "Lunes", "Martes", "Miércoles",
+			"Jueves", "Viernes", "Sábado", "Domingo" };
 
-	public static Date xmlGregorianCalendar2Date(XMLGregorianCalendar xmlGregorianCalendar) {
-		return new Date(xmlGregorianCalendar.getYear() - 1900, xmlGregorianCalendar.getMonth() - 1,
+	public static Date xmlGregorianCalendar2Date(
+			XMLGregorianCalendar xmlGregorianCalendar) {
+		return new Date(xmlGregorianCalendar.getYear() - 1900,
+				xmlGregorianCalendar.getMonth() - 1,
 				xmlGregorianCalendar.getDay());
 	}
 
-	public static XMLGregorianCalendar date2XMLGregorianCalendar(Date date) throws DateException {
+	public static XMLGregorianCalendar date2XMLGregorianCalendar(Date date)
+			throws DateException {
 		try {
 			return DatatypeFactory.newInstance().newXMLGregorianCalendar(
-					new GregorianCalendar(date.getYear() + 1900, date.getMonth(), date.getDate()));
+					new GregorianCalendar(date.getYear() + 1900, date
+							.getMonth(), date.getDate()));
 		} catch (DatatypeConfigurationException e) {
 			throw new DateException(e);
 		}
@@ -49,11 +56,21 @@ public class DateHelper {
 		}
 	}
 
-	public static XMLGregorianCalendar parse2XMLGregorianCalendar(String strDate) throws DateException {
+	public static List<Date> parse2Date(List<String> dLibresList) throws DateException {
+		List<Date> result = new ArrayList<Date>();
+		for (String dateStr : dLibresList) {
+			result.add(parse2Date(dateStr));
+		}
+		return result;
+	}
+	
+	public static XMLGregorianCalendar parse2XMLGregorianCalendar(String strDate)
+			throws DateException {
 		try {
 			Date date = parse2Date(strDate);
 			return DatatypeFactory.newInstance().newXMLGregorianCalendar(
-					new GregorianCalendar(date.getYear() + 1900, date.getMonth(), date.getDate()));
+					new GregorianCalendar(date.getYear() + 1900, date
+							.getMonth(), date.getDate()));
 		} catch (DatatypeConfigurationException e) {
 			throw new DateException(e);
 		}
@@ -70,18 +87,13 @@ public class DateHelper {
 		}
 		return false;
 	}
-
-	public static List<Date> convertToDate(List<String> dLibresList) {
-		List<Date> result = new ArrayList<Date>();
-		for (String dateStr : dLibresList) {
-			String[] splDate = dateStr.split("-");
-			result.add(new Date(Integer.parseInt(splDate[0]) - 1900, Integer.parseInt(splDate[1]) - 1,
-					Integer.parseInt(splDate[2])));
-		}
-		return result;
-	}
-
 	/**
+	 * Compare dates
+	 * 
+	 * @param date
+	 *            date of type Date
+	 * @param date2
+	 *            date of type xmlgregorian calendar
 	 * @return 1 - date>date2 0 - date=date2 -1 - date<date2
 	 * 
 	 * */
@@ -122,6 +134,13 @@ public class DateHelper {
 		return false;
 	}
 
+	/**
+	 * Translate days of the week to spanish
+	 * 
+	 * @param day
+	 *            of the week
+	 * @return translated day of the week
+	 * */
 	public static String translateDayOfWeek(int day) {
 		day = day + 1;
 		if (day == Calendar.MONDAY)

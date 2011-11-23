@@ -24,7 +24,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
-import com.hcalendar.ConfigurationConstants;
+import com.hcalendar.config.ConfigurationUtils;
 import com.hcalendar.data.DataServices;
 import com.hcalendar.data.IDateEntity;
 import com.hcalendar.data.calculator.Calculator;
@@ -68,7 +68,7 @@ public class HourManagerWindow extends JFrame {
 		this.orm = orm;
 		this.username = username;
 		try {
-			if (!ConfigurationConstants.existAnualConfigurationFile()) {
+			if (!ConfigurationUtils.existAnualConfigurationFile()) {
 				JWindowUtils
 						.showOptionPanel(
 								this,
@@ -93,13 +93,13 @@ public class HourManagerWindow extends JFrame {
 			content.add(mainPanel);
 
 			// Paint with green the calendar free days
-			List<Date> freeDays = ORMHelper.getCalendarFreeDays(orm.getUserConfiguration(), this.username,
+			List<Date> freeDays = ORMHelper.getCalendarFreeDays(orm.getAnualConfiguration(), this.username,
 					jCalendarPanel.getSelectedYear());
 			for (Date date : freeDays)
 				jCalendarPanel.addDayToList(date, LIST_TYPE.CALENDAR_FREEDAY);
 			// Paint with red the anual not working days
 			List<Date> calendarNotWorkingDays = ORMHelper.getCalendarNotWorkingDays(
-					orm.getUserConfiguration(), this.username, jCalendarPanel.getSelectedYear());
+					orm.getAnualConfiguration(), this.username, jCalendarPanel.getSelectedYear());
 			for (Date date : calendarNotWorkingDays)
 				jCalendarPanel.addDayToList(date, LIST_TYPE.USER_NOT_WORKINGDAY);
 
@@ -120,7 +120,7 @@ public class HourManagerWindow extends JFrame {
 	private void createUserAndCalendar(Container panel) throws ORMException {
 		// Poner en el calendar el año actual, y si no tiene configuración,
 		// el más cercano hacia arriba y luego para abajo.
-		int yearToShow = Calculator.calculateYearConfigForProfile(orm.getUserConfiguration(), this.username,
+		int yearToShow = Calculator.calculateYearConfigForProfile(orm.getAnualConfiguration(), this.username,
 				Calendar.getInstance().get(Calendar.YEAR));
 
 		JPanel combPanel = new JPanel(new GridLayout(2, 1));
@@ -203,8 +203,8 @@ public class HourManagerWindow extends JFrame {
 		// Obtener horas anuales desde el xml
 		convTextField.setEditable(false);
 		int year = jCalendarPanel.getSelectedYear();
-		if (ORMHelper.getAnualHours(orm.getUserConfiguration(), this.username, year) != null) {
-			String yearStr = String.valueOf(ORMHelper.getAnualHours(orm.getUserConfiguration(),
+		if (ORMHelper.getCalendarHours(orm.getAnualConfiguration(), this.username, year) != null) {
+			String yearStr = String.valueOf(ORMHelper.getCalendarHours(orm.getAnualConfiguration(),
 					this.username, year));
 			convTextField.setText(yearStr);
 		}
@@ -223,7 +223,7 @@ public class HourManagerWindow extends JFrame {
 		JLabel plannedHours = new JLabel("Horas planificadas: ");
 		plannedHoursTextField = new JTextField();
 		plannedHoursTextField.setEditable(false);
-		String plannedH = String.valueOf(ORMHelper.getPlannedHours(orm.getAnualHours(), year, this.username));
+		String plannedH = String.valueOf(Calculator.calculateAnualPlannedHours(orm.getAnualHours(), year, this.username));
 		plannedHoursTextField.setText(plannedH);
 		plannedHours.setLabelFor(plannedHoursTextField);
 		genHoursPanel.add(plannedHours, BorderLayout.WEST);
@@ -268,7 +268,7 @@ public class HourManagerWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					if (DataServices.exportToCSV(orm, jCalendarPanel.getSelectedYear(),
-							HourManagerWindow.this, HourManagerWindow.this.username) == 0)
+							HourManagerWindow.this.username, HourManagerWindow.this) == 0)
 						JWindowUtils.showSuccesPanel(HourManagerWindow.this, "Exportación correcta");
 				} catch (BusinessException e1) {
 					JWindowUtils.showErrorPanel(HourManagerWindow.this, "Error al exportar");
@@ -318,7 +318,7 @@ public class HourManagerWindow extends JFrame {
 			ICalendarActionProvider actionProvider) throws ORMException {
 		String yearConvHoues;
 		try {
-			yearConvHoues = String.valueOf(ORMHelper.getAnualHours(orm.getUserConfiguration(), this.username,
+			yearConvHoues = String.valueOf(ORMHelper.getCalendarHours(orm.getAnualConfiguration(), this.username,
 					1900 + date.getYear()));
 			convTextField.setText(yearConvHoues);
 		} catch (Throwable e) {
@@ -328,7 +328,7 @@ public class HourManagerWindow extends JFrame {
 
 		String plannedH;
 		try {
-			plannedH = String.valueOf(ORMHelper.getPlannedHours(orm.getAnualHours(), date.getYear() + 1900,
+			plannedH = String.valueOf(Calculator.calculateAnualPlannedHours(orm.getAnualHours(), date.getYear() + 1900,
 					this.username));
 			plannedHoursTextField.setText(plannedH);
 			// Calcular horas imputadas hasta ahora
@@ -355,68 +355,5 @@ public class HourManagerWindow extends JFrame {
 			JWindowUtils.showErrorPanel(HourManagerWindow.this, "Error al calcular horas anules para el año "
 					+ date.getYear());
 		}
-		// paintDaysOnDateChange(actionProvider, selected, date);
 	}
-
-	// private void paintDaysOnDateChange(ICalendarActionProvider
-	// actionProvider, boolean selected, Date date) {
-	// if (!changeInputsCheck.isSelected())
-	// return;
-	// Color color = null;
-	// LIST_TYPE type = null;
-	// String action = (String) changeInputs.getSelectedItem();
-	// if (action.equals(CHANGE_VALUES_LABORAL)) {
-	// color = null;
-	// type = LIST_TYPE.USER_WORKINGDAY;
-	// } else if (action.equals(CHANGE_VALUES_NOT_WORKING)) {
-	// color = Color.red;
-	// type = LIST_TYPE.USER_NOT_WORKINGDAY;
-	// } else if (action.equals(CHANGE_VALUES_HOLIDAY)) {
-	// color = Color.blue;
-	// type = LIST_TYPE.USER_HOLIDAYS;
-	// } else if (action.equals(CHANGE_VALUES_CHANGE_INPUTS)) {
-	// return;
-	// }
-	//
-	// // Comunicate with the calendar
-	// if (selected) {
-	// color = null;
-	// actionProvider.removeDayFromList(date, type);
-	// } else
-	// actionProvider.addDayToList(date, type);
-	// actionProvider.paintDay(date, color);
-	// }
-	//
-	// protected void changeInputsCheckOnChangeActions() {
-	// changeInputs.setEnabled(changeInputsCheck.isSelected());
-	// if (!changeInputs.isEnabled())
-	// return;
-	// }
-	//
-	// protected void changeInputsOnChangeActions() {
-	// if (!changeInputs.isEnabled())
-	// return;
-	// if (changeInputs.getSelectedItem().equals(CHANGE_VALUES_CHANGE_INPUTS)) {
-	// diaryHoursTextField.setEditable(true);
-	// descTextField.setEditable(true);
-	// }
-	// if (changeInputs.getSelectedItem().equals(CHANGE_VALUES_HOLIDAY)) {
-	// diaryHoursTextField.setEditable(false);
-	// descTextField.setEditable(false);
-	// diaryHoursTextField.setText(null);
-	// descTextField.setText(null);
-	// unsavedChanges = true;
-	// }
-	// if (changeInputs.getSelectedItem().equals(CHANGE_VALUES_LABORAL)) {
-	// diaryHoursTextField.setEditable(true);
-	// descTextField.setEditable(true);
-	// }
-	// if (changeInputs.getSelectedItem().equals(CHANGE_VALUES_NOT_WORKING)) {
-	// diaryHoursTextField.setEditable(false);
-	// descTextField.setEditable(false);
-	// diaryHoursTextField.setText(null);
-	// descTextField.setText(null);
-	// unsavedChanges = true;
-	// }
-	// }
 }

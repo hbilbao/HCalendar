@@ -62,8 +62,12 @@ import com.hcalendar.ui.ICalendarEventListener;
 import com.hcalendar.ui.widgets.ICalendarActionProvider;
 import com.hcalendar.ui.widgets.IWindowResultListener;
 
+/**
+ * Calendar panel
+ * */
 @SuppressWarnings("deprecation")
-public class JUserCalendarPanel extends JPanel implements ICalendarActionProvider {
+public class JUserCalendarPanel extends JPanel implements
+		ICalendarActionProvider {
 
 	private static final long serialVersionUID = 1L;
 
@@ -116,8 +120,8 @@ public class JUserCalendarPanel extends JPanel implements ICalendarActionProvide
 	/**
 	 * Construct a Cal, starting with today.
 	 */
-	public JUserCalendarPanel(ICalendarEventListener eventListener, boolean enableRightClickActions,
-			boolean allowYearChange) {
+	public JUserCalendarPanel(ICalendarEventListener eventListener,
+			boolean enableRightClickActions, boolean allowYearChange) {
 		super();
 		this.allowYearChange = allowYearChange;
 		this.enableRightClickActions = enableRightClickActions;
@@ -134,7 +138,8 @@ public class JUserCalendarPanel extends JPanel implements ICalendarActionProvide
 	 * @exception IllegalArgumentException
 	 *                If year out of range
 	 */
-	public JUserCalendarPanel(int year, int month, int today, ICalendarEventListener eventListener,
+	public JUserCalendarPanel(int year, int month, int today,
+			ICalendarEventListener eventListener,
 			boolean enableRightClickActions, boolean allowYearChange) {
 		super();
 		this.allowYearChange = allowYearChange;
@@ -157,7 +162,8 @@ public class JUserCalendarPanel extends JPanel implements ICalendarActionProvide
 
 	/** Build the GUI. Assumes that setYYMMDD has been called. */
 	private void buildGUI() {
-		getAccessibleContext().setAccessibleDescription("Calendar not accessible yet. Sorry!");
+		getAccessibleContext().setAccessibleDescription(
+				"Calendar not accessible yet. Sorry!");
 		setBorder(BorderFactory.createEtchedBorder());
 
 		setLayout(new BorderLayout());
@@ -179,7 +185,8 @@ public class JUserCalendarPanel extends JPanel implements ICalendarActionProvide
 			}
 		});
 		monthChoice.getAccessibleContext().setAccessibleName("Months");
-		monthChoice.getAccessibleContext().setAccessibleDescription("Selecciona un mes");
+		monthChoice.getAccessibleContext().setAccessibleDescription(
+				"Selecciona un mes");
 
 		tp.add(yearChoice = new JComboBox());
 		// Allow to change year?
@@ -192,7 +199,8 @@ public class JUserCalendarPanel extends JPanel implements ICalendarActionProvide
 			public void actionPerformed(ActionEvent ae) {
 				int i = yearChoice.getSelectedIndex();
 				if (i >= 0) {
-					yy = Integer.parseInt(yearChoice.getSelectedItem().toString());
+					yy = Integer.parseInt(yearChoice.getSelectedItem()
+							.toString());
 					// System.out.println("Year=" + yy);
 					recompute();
 				}
@@ -221,8 +229,10 @@ public class JUserCalendarPanel extends JPanel implements ICalendarActionProvide
 					setDayActive(Integer.parseInt(num));
 					// Notify listeners
 					for (ICalendarEventListener l : registeredEventListeners) {
-						l.onDateChanged(new Date(JUserCalendarPanel.this.yy - 1900,
-								JUserCalendarPanel.this.mm, dd), isDaySelected(dd), JUserCalendarPanel.this);
+						l.onDateChanged(new Date(
+								JUserCalendarPanel.this.yy - 1900,
+								JUserCalendarPanel.this.mm, dd),
+								isDaySelected(dd), JUserCalendarPanel.this);
 					}
 				}
 			}
@@ -230,7 +240,8 @@ public class JUserCalendarPanel extends JPanel implements ICalendarActionProvide
 			private Boolean isDaySelected(int day) {
 				JButton b;
 				b = labs[(leadGap + day - 1) / 7][(leadGap + day - 1) % 7];
-				return b.getBackground().getRGB() != b0.getBackground().getRGB();
+				return b.getBackground().getRGB() != b0.getBackground()
+						.getRGB();
 			}
 		};
 
@@ -244,7 +255,8 @@ public class JUserCalendarPanel extends JPanel implements ICalendarActionProvide
 						@Override
 						public void mouseReleased(MouseEvent e) {
 							int buttonNumber = e.getButton();
-							if (e.isPopupTrigger() && MouseEvent.BUTTON3 == buttonNumber)
+							if (e.isPopupTrigger()
+									&& MouseEvent.BUTTON3 == buttonNumber)
 								doPop(e);
 						}
 
@@ -275,7 +287,8 @@ public class JUserCalendarPanel extends JPanel implements ICalendarActionProvide
 									new IWindowResultListener() {
 
 										@Override
-										public void windowResult(IDateEntity entity) {
+										public void windowResult(
+												IDateEntity entity) {
 											for (ICalendarEventListener l : registeredEventListeners)
 												l.onDataInput(entity);
 										}
@@ -296,7 +309,8 @@ public class JUserCalendarPanel extends JPanel implements ICalendarActionProvide
 	private void recompute() {
 		// System.out.println("Cal::recompute: " + yy + ":" + mm + ":" + dd);
 		if (mm < 0 || mm > 11)
-			throw new IllegalArgumentException("Month " + mm + " bad, must be 0-11");
+			throw new IllegalArgumentException("Month " + mm
+					+ " bad, must be 0-11");
 		// clearDayActive(dd);
 		clearAllDays();
 		calendar = new GregorianCalendar(yy, mm, dd);
@@ -368,7 +382,8 @@ public class JUserCalendarPanel extends JPanel implements ICalendarActionProvide
 			dd = newDay;
 		if (!clearDayActive(newDay)) {
 			// Now shade the correct square
-			Component square = labs[(leadGap + newDay - 1) / 7][(leadGap + newDay - 1) % 7];
+			Component square = labs[(leadGap + newDay - 1) / 7][(leadGap
+					+ newDay - 1) % 7];
 			square.setBackground(color);
 			square.repaint();
 			// Anyadir a la lista
@@ -492,7 +507,8 @@ public class JUserCalendarPanel extends JPanel implements ICalendarActionProvide
 		return calendarFreeDays.contains(date);
 	}
 
-	private boolean listContainstDay(int year, int month, int day, LIST_TYPE listType) {
+	private boolean listContainstDay(int year, int month, int day,
+			LIST_TYPE listType) {
 		Date date = new Date(year - 1900, month, day);
 		switch (listType) {
 		case CALENDAR_FREEDAY:

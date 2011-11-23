@@ -4,6 +4,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 
+/**
+ * Date iterator util class
+ * */
 public class DateIterator implements Iterator<Date>, Iterable<Date> {
 
 	private Calendar end = Calendar.getInstance();
