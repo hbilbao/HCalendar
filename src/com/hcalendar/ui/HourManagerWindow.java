@@ -38,10 +38,44 @@ import com.hcalendar.ui.widgets.ICalendarActionProvider.LIST_TYPE;
 import com.hcalendar.ui.widgets.impl.JUserCalendarPanel;
 import com.hcalendar.ui.widgets.impl.JWindowUtils;
 
-//	TODO Poner constantes en todas las ventanas
 public class HourManagerWindow extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static final String WINDOW_TITLE ="Gestión de horas";
+	
+	private static final String ERROR_ANUALCONFIGURATION_NOT_EXIST ="No se ha creado ninguno configuración anual. Creala antes de acceder a esta ventana, por favor.";
+	private static final String ERROR_WINDOW_CREATION ="Error en la creación de la ventana";
+	private static final String ERROR_OPERATION_DATECHANGE ="Error al completar operaciones de cambio de fecha";
+	private static final String ERROR_OPERATION_APPLY_CHANGES ="Error al añadir los cambios solicitados";
+	
+	private static final String SUCCES_EXPORT_DATA ="Exportación correcta";
+	private static final String ERROR_EXPORT_DATA ="Error al exportar";
+	
+	private static final String SUCCES_SAVE_DATA ="Guardado completado";
+	private static final String ERROR_SAVE_DATA ="Error al guardar los datos de las horas";
+	
+	private static final String ERROR_CALCULATE_DATA ="Error al calcular horas anules para el año ";
+	
+	private static final String WINDOW_ITEM_NAME_TITLE ="Nombre : ";
+	private static final String WINDOW_ITEM_YEAR_TITLE ="Año : ";
+	private static final String WINDOW_ITEM_NOT_WORKINGDAY_TITLE ="Días no laborales: ";
+	private static final String WINDOW_ITEM_FREEDAYS_TITLE ="Días libres del calendario: ";
+	private static final String WINDOW_ITEM_HOLIDAY_TITLE ="Vacaciones: ";
+	private static final String WINDOW_ITEM_YEAR_TOTAL_HOURS_TITLE ="Total horas convenio: ";
+	private static final String WINDOW_ITEM_ACTUAL_HOURS_TITLE ="Horas actuales: ";
+	private static final String WINDOW_ITEM_PLANNED_HOURS_TITLE ="Horas planificadas: ";
+	private static final String WINDOW_ITEM_DAY_HOURS_TITLE ="Horas diarias: ";
+	private static final String WINDOW_ITEM_DAY_HOURS_DESC_TITLE ="Descripción: ";
+	private static final String WINDOW_ITEM_EXPORT_DATA_TITLE="Exportar datos";
+	
+	private static final String WINDOW_PANEL_BORDER_PROFILE_TITLE ="Perfil";
+	private static final String WINDOW_PANEL_BORDER_HISTORY_TITLE ="Histórico";
+	private static final String WINDOW_PANEL_BORDER_ANUAL_INFO ="Información anual";
+	private static final String WINDOW_PANEL_BORDER_DIARY_INFO ="Información diaria";
+	
+	private static final String ACTION_BUTTON_SAVE_TITLE ="Guardar";
+	private static final String ACTION_BUTTON_CANCEL_TITLE ="Cancelar";
 
 	JTextArea diasLibresTextField;
 
@@ -72,7 +106,7 @@ public class HourManagerWindow extends JFrame {
 				JWindowUtils
 						.showOptionPanel(
 								this,
-								"No se ha creado ninguno configuración anual. Creala antes de acceder a esta ventana, por favor.",
+								ERROR_ANUALCONFIGURATION_NOT_EXIST,
 								new Object[] { "Aceptar" });
 				this.dispose();
 				return;
@@ -80,7 +114,7 @@ public class HourManagerWindow extends JFrame {
 			this.setSize(1000, 600);
 			this.setMaximumSize(new Dimension(1500, 900));
 			this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-			this.setTitle("Gestión de horas");
+			this.setTitle(WINDOW_TITLE);
 			Container content = this.getContentPane();
 			JPanel panel4 = new JPanel(new GridLayout(1, 2));
 			JPanel mainPanel = new JPanel(new GridLayout(1, 1));
@@ -88,7 +122,6 @@ public class HourManagerWindow extends JFrame {
 			createTextFields(panel4);
 
 			mainPanel.add(panel4);
-			// content.add(generalPanel);
 			createButtons(content);
 			content.add(mainPanel);
 
@@ -111,7 +144,7 @@ public class HourManagerWindow extends JFrame {
 			pack();
 		} catch (Exception e) {
 			e.printStackTrace();
-			JWindowUtils.showErrorPanel(this, "Error en la creación de la ventana");
+			JWindowUtils.showErrorPanel(this, ERROR_WINDOW_CREATION);
 		}
 	}
 
@@ -127,30 +160,30 @@ public class HourManagerWindow extends JFrame {
 		JPanel profileAndHist = new JPanel(new GridLayout(2, 1));
 		// Anyadimos botones para el histórico de colores utilizados
 		JPanel profilePanel = new JPanel(new GridLayout(2, 1));
-		JLabel shownProfile = new JLabel("Nombre : " + this.username);
-		JLabel shownYear = new JLabel("Año : " + yearToShow);
-		profilePanel.setBorder(BorderFactory.createTitledBorder("Perfil"));
+		JLabel shownProfile = new JLabel(WINDOW_ITEM_NAME_TITLE + this.username);
+		JLabel shownYear = new JLabel(WINDOW_ITEM_YEAR_TITLE + yearToShow);
+		profilePanel.setBorder(BorderFactory.createTitledBorder(WINDOW_PANEL_BORDER_PROFILE_TITLE));
 		profilePanel.add(shownProfile);
 		profilePanel.add(shownYear);
 
 		// Anyadimos botones para el histórico de colores utilizados
 		JPanel histPanel = new JPanel();
-		histPanel.setBorder(BorderFactory.createTitledBorder("Histórico"));
-		JLabel colorHist = new JLabel("Días no laborales: ");
+		histPanel.setBorder(BorderFactory.createTitledBorder(WINDOW_PANEL_BORDER_HISTORY_TITLE));
+		JLabel colorHist = new JLabel(WINDOW_ITEM_NOT_WORKINGDAY_TITLE);
 		JButton redButton = new JButton();
 		redButton.setEnabled(false);
 		redButton.setBackground(Color.red);
 		colorHist.setLabelFor(redButton);
 		histPanel.add(colorHist);
 		histPanel.add(redButton);
-		colorHist = new JLabel("Días libres del calendario: ");
+		colorHist = new JLabel(WINDOW_ITEM_FREEDAYS_TITLE);
 		JButton greenButton = new JButton();
 		greenButton.setEnabled(false);
 		greenButton.setBackground(Color.green);
 		colorHist.setLabelFor(greenButton);
 		histPanel.add(colorHist);
 		histPanel.add(greenButton);
-		colorHist = new JLabel("Vacaciones: ");
+		colorHist = new JLabel(WINDOW_ITEM_HOLIDAY_TITLE);
 		JButton blueButton = new JButton();
 		blueButton.setEnabled(false);
 		blueButton.setBackground(Color.blue);
@@ -168,8 +201,8 @@ public class HourManagerWindow extends JFrame {
 				try {
 					calendarOnDateChangedActions(date, selected, actionProvider);
 				} catch (ORMException e) {
-					JWindowUtils.showErrorPanel(HourManagerWindow.this,
-							"Error al completar operaciones de cambio de fecha");
+					JWindowUtils.showErrorPanel(HourManagerWindow.this,ERROR_OPERATION_DATECHANGE
+							);
 					e.printStackTrace();
 				}
 			}
@@ -180,8 +213,8 @@ public class HourManagerWindow extends JFrame {
 				try {
 					orm.addChange(HourManagerWindow.this.username, entity);
 				} catch (ORMException e) {
-					JWindowUtils.showErrorPanel(HourManagerWindow.this,
-							"Error al añadir los cambios solicitados");
+					JWindowUtils.showErrorPanel(HourManagerWindow.this,ERROR_OPERATION_APPLY_CHANGES
+							);
 					e.printStackTrace();
 				}
 			}
@@ -197,8 +230,8 @@ public class HourManagerWindow extends JFrame {
 		JPanel separatorPanel = new JPanel();
 		// Panel de horas generales
 		JPanel genHoursPanel = new JPanel(new GridLayout(3, 2));
-		genHoursPanel.setBorder(BorderFactory.createTitledBorder("Información anual"));
-		JLabel genLabel = new JLabel("Total horas convenio: ");
+		genHoursPanel.setBorder(BorderFactory.createTitledBorder(WINDOW_PANEL_BORDER_ANUAL_INFO));
+		JLabel genLabel = new JLabel(WINDOW_ITEM_YEAR_TOTAL_HOURS_TITLE);
 		convTextField = new JTextField();
 		// Obtener horas anuales desde el xml
 		convTextField.setEditable(false);
@@ -213,14 +246,14 @@ public class HourManagerWindow extends JFrame {
 		genHoursPanel.add(convTextField, BorderLayout.CENTER);
 
 		// Calcular las horas desde los datos del XML
-		JLabel actualHours = new JLabel("Horas actuales: ");
+		JLabel actualHours = new JLabel(WINDOW_ITEM_ACTUAL_HOURS_TITLE);
 		actualHoursTextField = new JTextField();
 		actualHoursTextField.setEditable(false);
 		actualHours.setLabelFor(actualHoursTextField);
 		genHoursPanel.add(actualHours, BorderLayout.WEST);
 		genHoursPanel.add(actualHoursTextField, BorderLayout.CENTER);
 
-		JLabel plannedHours = new JLabel("Horas planificadas: ");
+		JLabel plannedHours = new JLabel(WINDOW_ITEM_PLANNED_HOURS_TITLE);
 		plannedHoursTextField = new JTextField();
 		plannedHoursTextField.setEditable(false);
 		String plannedH = String.valueOf(Calculator.calculateAnualPlannedHours(orm.getAnualHours(), year, this.username));
@@ -231,15 +264,15 @@ public class HourManagerWindow extends JFrame {
 
 		// Panel actualizable de horas diarias
 		JPanel diaryPanel = new JPanel(new GridLayout(2, 2));
-		diaryPanel.setBorder(BorderFactory.createTitledBorder("Información diaria"));
-		JLabel diaryHoursLabel = new JLabel("Horas diarias: ");
+		diaryPanel.setBorder(BorderFactory.createTitledBorder(WINDOW_PANEL_BORDER_DIARY_INFO));
+		JLabel diaryHoursLabel = new JLabel(WINDOW_ITEM_DAY_HOURS_TITLE);
 		diaryHoursTextField = new JTextField();
 		diaryHoursTextField.setEditable(false);
 		diaryHoursLabel.setLabelFor(diaryHoursTextField);
 		diaryPanel.add(diaryHoursLabel, BorderLayout.WEST);
 		diaryPanel.add(diaryHoursTextField, BorderLayout.CENTER);
 
-		JLabel desc = new JLabel("Descripción: ");
+		JLabel desc = new JLabel(WINDOW_ITEM_DAY_HOURS_DESC_TITLE);
 		descTextField = new JTextField();
 		descTextField.setEditable(false);
 		desc.setLabelFor(descTextField);
@@ -261,7 +294,7 @@ public class HourManagerWindow extends JFrame {
 		buttonPane.add(Box.createHorizontalGlue());
 
 		// BOTON EXPORTAR
-		JButton exportButton = new JButton("Exportar datos");
+		JButton exportButton = new JButton(WINDOW_ITEM_EXPORT_DATA_TITLE);
 		exportButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -269,16 +302,16 @@ public class HourManagerWindow extends JFrame {
 				try {
 					if (DataServices.exportToCSV(orm, jCalendarPanel.getSelectedYear(),
 							HourManagerWindow.this.username, HourManagerWindow.this) == 0)
-						JWindowUtils.showSuccesPanel(HourManagerWindow.this, "Exportación correcta");
+						JWindowUtils.showSuccesPanel(HourManagerWindow.this, SUCCES_EXPORT_DATA);
 				} catch (BusinessException e1) {
-					JWindowUtils.showErrorPanel(HourManagerWindow.this, "Error al exportar");
+					JWindowUtils.showErrorPanel(HourManagerWindow.this, ERROR_EXPORT_DATA);
 				}
 			}
 		});
 		buttonPane.add(exportButton);
 		buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
 		// BOTON CANCELAR
-		JButton cancelButton = new JButton("Cancelar");
+		JButton cancelButton = new JButton(ACTION_BUTTON_CANCEL_TITLE);
 		cancelButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -291,7 +324,7 @@ public class HourManagerWindow extends JFrame {
 		buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
 
 		// BOTON GUARDAR
-		JButton saveButton = new JButton("Guardar");
+		JButton saveButton = new JButton(ACTION_BUTTON_SAVE_TITLE);
 		buttonPane.add(saveButton);
 		saveButton.addActionListener(new ActionListener() {
 
@@ -300,10 +333,10 @@ public class HourManagerWindow extends JFrame {
 				try {
 					orm.persist(ENTITY_TYPE.ANUALHOURS);
 					orm.persist(ENTITY_TYPE.USERCONFIGURATION);
-					JWindowUtils.showSuccesPanel(HourManagerWindow.this, "Guardado completado");
+					JWindowUtils.showSuccesPanel(HourManagerWindow.this, SUCCES_SAVE_DATA);
 				} catch (ORMException e1) {
 					JWindowUtils.showSuccesPanel(HourManagerWindow.this,
-							"Error al guardar los datos de las horas");
+							ERROR_SAVE_DATA);
 					e1.printStackTrace();
 				}
 			}
@@ -321,26 +354,17 @@ public class HourManagerWindow extends JFrame {
 			yearConvHoues = String.valueOf(ORMHelper.getCalendarHours(orm.getAnualConfiguration(), this.username,
 					1900 + date.getYear()));
 			convTextField.setText(yearConvHoues);
-		} catch (Throwable e) {
-			JWindowUtils.showErrorPanel(HourManagerWindow.this, "Error al calcular horas anules para el año "
-					+ date.getYear());
-		}
 
 		String plannedH;
-		try {
 			plannedH = String.valueOf(Calculator.calculateAnualPlannedHours(orm.getAnualHours(), date.getYear() + 1900,
 					this.username));
 			plannedHoursTextField.setText(plannedH);
 			// Calcular horas imputadas hasta ahora
 			actualHoursTextField.setText(String.valueOf(Calculator.calculateHoursUntilDate(
 					orm.getAnualHours(), date, this.username)));
-		} catch (Throwable e) {
-			JWindowUtils.showErrorPanel(HourManagerWindow.this, "Error al calcular horas anules para el año "
-					+ date.getYear());
-		}
+
 
 		Map<Float, String> inputHours;
-		try {
 			inputHours = ORMHelper.getInputHours(orm.getAnualHours(), date, this.username);
 			Set<Float> keys = inputHours.keySet();
 			Float tHours = new Float(0);
@@ -352,7 +376,7 @@ public class HourManagerWindow extends JFrame {
 			diaryHoursTextField.setText(String.valueOf(tHours));
 			descTextField.setText(desc);
 		} catch (Throwable e) {
-			JWindowUtils.showErrorPanel(HourManagerWindow.this, "Error al calcular horas anules para el año "
+			JWindowUtils.showErrorPanel(HourManagerWindow.this, ERROR_CALCULATE_DATA
 					+ date.getYear());
 		}
 	}

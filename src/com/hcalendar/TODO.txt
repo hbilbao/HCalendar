@@ -5,8 +5,7 @@
 - [ok] No se visualizan bien los datos de horas, de años que no son 2011....com.hcalendar.ui.HourManagerWindow:95
 - [ok] Bloquear el año del hour manager, que abre la conf para un año fijo
 - [ok] No dejar guardar dos perfiles con el mismo nombre
- - javadoc falta en: JUserCalendarPanel, HourManagerWindow PARA DELANTE, vamos todas los window, que hay que cambiar los métodos... sacar constantes...
- 	- Sacar constantes de las ventanas a constantes
+ - javadoc falta en: JUserCalendarPanel, HourManagerWindow PARA DELANTE, vamos todas los window, que hay que cambiar los métodos...
 - Actualización de formularios, algo tipo calculados, cuando cambia algo, PUM. Por lo menos el initWindow
  
 NOTAS

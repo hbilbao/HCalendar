@@ -31,6 +31,20 @@ import com.hcalendar.ui.widgets.impl.JWindowUtils;
 public class InitScreenWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 
+private static final String WINDOW_TITLE ="Calendario laboral";
+	
+	private static final String ERROR_RETURNTO_WINDOW ="Error al volver de la ventana de creación de perfil";
+	private static final String ERROR_CREATE_WINDOW ="Error al iniciar la ventana";
+	
+	private static final String SUCCES_DELETE_PROFILE ="Perfil borrado correctamente";
+	private static final String ERROR_DELETE_PROFILE ="Error al eliminar el perfil";
+	
+	private static final String WINDOW_PANEL_BORDER_SELECT_TITLE ="Seleccione operación";
+	
+	private static final String ACTION_BUTTON_MANAGE_PROFILE_TITLE ="Gestionar horas del perfil: ";
+	private static final String ACTION_BUTTON_CREATE_PROFILE_TITLE ="Crear nuevo perfil";
+	private static final String ACTION_BUTTON_DELETE_PROFILE_TITLE ="Borrar perfil: ";
+	
 	JComboBox profilesCombo;
 	JComboBox deleteProfilesCombo;
 
@@ -39,12 +53,12 @@ public class InitScreenWindow extends JFrame {
 			final IORMClient orm = ORMManager.getInstance().getORMClient();
 			this.setSize(400, 160);
 			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			this.setTitle("Calendario laboral");
+			this.setTitle(WINDOW_TITLE);
 			JPanel panel = new JPanel();
-			Border border = BorderFactory.createTitledBorder("Seleccione operación");
+			Border border = BorderFactory.createTitledBorder(WINDOW_PANEL_BORDER_SELECT_TITLE);
 			panel.setBorder(border);
 
-			JLabel profilesComboLabel = new JLabel("Gestionar horas del perfil: ");
+			JLabel profilesComboLabel = new JLabel(ACTION_BUTTON_MANAGE_PROFILE_TITLE);
 			List<String> profilesList = ORMHelper.getCurrentProfiles(orm.getAnualConfiguration());
 			profilesList.add(HCalendarConstants.NULL_COMBO_INPUT);
 			Collections.reverse(profilesList);
@@ -54,7 +68,7 @@ public class InitScreenWindow extends JFrame {
 			panel.add(profilesCombo, BorderLayout.CENTER);
 			profilesCombo.addActionListener(new HourManagerLauncher(orm));
 
-			AbstractButton newProfileButton = new JToggleButton("Crear nuevo perfil");
+			AbstractButton newProfileButton = new JToggleButton(ACTION_BUTTON_CREATE_PROFILE_TITLE);
 			newProfileButton.setSize(new Dimension(100, 100));
 			newProfileButton.addActionListener(new CreateProfileLauncher(orm, new IHCCallback() {
 
@@ -71,13 +85,13 @@ public class InitScreenWindow extends JFrame {
 						}
 					} catch (ORMException e) {
 						JWindowUtils.showErrorPanel(InitScreenWindow.this,
-								"Error al volver de la ventana de creación de perfil");
+								ERROR_RETURNTO_WINDOW);
 					}
 				}
 			}));
 			panel.add(newProfileButton);
 
-			JLabel deleteProfilesComboLabel = new JLabel("Borrar perfil: ");
+			JLabel deleteProfilesComboLabel = new JLabel(ACTION_BUTTON_DELETE_PROFILE_TITLE);
 			deleteProfilesCombo = new JComboBox(profilesList.toArray());
 			deleteProfilesComboLabel.setLabelFor(deleteProfilesCombo);
 			panel.add(deleteProfilesComboLabel, BorderLayout.WEST);
@@ -100,11 +114,11 @@ public class InitScreenWindow extends JFrame {
 							deleteProfilesCombo.addItem(profile);
 							profilesCombo.addItem(profile);
 						}
-						JWindowUtils.showSuccesPanel(InitScreenWindow.this, "Perfil borrado correctamente");
+						JWindowUtils.showSuccesPanel(InitScreenWindow.this, SUCCES_DELETE_PROFILE);
 					} catch (CRUDException crude) {
-						JWindowUtils.showErrorPanel(InitScreenWindow.this, "Error al eliminar el perfil");
+						JWindowUtils.showErrorPanel(InitScreenWindow.this, ERROR_DELETE_PROFILE);
 					} catch (ORMException orme) {
-						JWindowUtils.showErrorPanel(InitScreenWindow.this, "Error al eliminar el perfil");
+						JWindowUtils.showErrorPanel(InitScreenWindow.this, ERROR_DELETE_PROFILE);
 					}
 
 				}
@@ -114,7 +128,7 @@ public class InitScreenWindow extends JFrame {
 			// Show frame
 			this.setVisible(true);
 		} catch (ORMException e) {
-			JWindowUtils.showErrorPanel(this, "Error al iniciar la ventana");
+			JWindowUtils.showErrorPanel(this, ERROR_CREATE_WINDOW);
 		}
 	}
 
