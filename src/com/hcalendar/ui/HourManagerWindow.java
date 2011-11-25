@@ -24,6 +24,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
+import com.hcalendar.HCalendarConstants;
 import com.hcalendar.config.ConfigurationUtils;
 import com.hcalendar.data.DataServices;
 import com.hcalendar.data.IDateEntity;
@@ -33,10 +34,10 @@ import com.hcalendar.data.orm.IORMClient;
 import com.hcalendar.data.orm.IORMClient.ENTITY_TYPE;
 import com.hcalendar.data.orm.exception.ORMException;
 import com.hcalendar.data.orm.impl.ORMHelper;
+import com.hcalendar.ui.helper.ModalWindowUtils;
 import com.hcalendar.ui.widgets.ICalendarActionProvider;
 import com.hcalendar.ui.widgets.ICalendarActionProvider.LIST_TYPE;
 import com.hcalendar.ui.widgets.impl.JUserCalendarPanel;
-import com.hcalendar.ui.widgets.impl.JWindowUtils;
 
 public class HourManagerWindow extends JFrame {
 
@@ -45,15 +46,11 @@ public class HourManagerWindow extends JFrame {
 	private static final String WINDOW_TITLE ="Gestión de horas";
 	
 	private static final String ERROR_ANUALCONFIGURATION_NOT_EXIST ="No se ha creado ninguno configuración anual. Creala antes de acceder a esta ventana, por favor.";
-	private static final String ERROR_WINDOW_CREATION ="Error en la creación de la ventana";
 	private static final String ERROR_OPERATION_DATECHANGE ="Error al completar operaciones de cambio de fecha";
 	private static final String ERROR_OPERATION_APPLY_CHANGES ="Error al añadir los cambios solicitados";
 	
 	private static final String SUCCES_EXPORT_DATA ="Exportación correcta";
 	private static final String ERROR_EXPORT_DATA ="Error al exportar";
-	
-	private static final String SUCCES_SAVE_DATA ="Guardado completado";
-	private static final String ERROR_SAVE_DATA ="Error al guardar los datos de las horas";
 	
 	private static final String ERROR_CALCULATE_DATA ="Error al calcular horas anules para el año ";
 	
@@ -74,9 +71,6 @@ public class HourManagerWindow extends JFrame {
 	private static final String WINDOW_PANEL_BORDER_ANUAL_INFO ="Información anual";
 	private static final String WINDOW_PANEL_BORDER_DIARY_INFO ="Información diaria";
 	
-	private static final String ACTION_BUTTON_SAVE_TITLE ="Guardar";
-	private static final String ACTION_BUTTON_CANCEL_TITLE ="Cancelar";
-
 	JTextArea diasLibresTextField;
 
 	JUserCalendarPanel jCalendarPanel;
@@ -103,7 +97,7 @@ public class HourManagerWindow extends JFrame {
 		this.username = username;
 		try {
 			if (!ConfigurationUtils.existAnualConfigurationFile()) {
-				JWindowUtils
+				ModalWindowUtils
 						.showOptionPanel(
 								this,
 								ERROR_ANUALCONFIGURATION_NOT_EXIST,
@@ -144,7 +138,7 @@ public class HourManagerWindow extends JFrame {
 			pack();
 		} catch (Exception e) {
 			e.printStackTrace();
-			JWindowUtils.showErrorPanel(this, ERROR_WINDOW_CREATION);
+			ModalWindowUtils.showErrorPanel(this, HCalendarConstants.ERROR_WINDOW_CREATION);
 		}
 	}
 
@@ -201,7 +195,7 @@ public class HourManagerWindow extends JFrame {
 				try {
 					calendarOnDateChangedActions(date, selected, actionProvider);
 				} catch (ORMException e) {
-					JWindowUtils.showErrorPanel(HourManagerWindow.this,ERROR_OPERATION_DATECHANGE
+					ModalWindowUtils.showErrorPanel(HourManagerWindow.this,ERROR_OPERATION_DATECHANGE
 							);
 					e.printStackTrace();
 				}
@@ -213,7 +207,7 @@ public class HourManagerWindow extends JFrame {
 				try {
 					orm.addChange(HourManagerWindow.this.username, entity);
 				} catch (ORMException e) {
-					JWindowUtils.showErrorPanel(HourManagerWindow.this,ERROR_OPERATION_APPLY_CHANGES
+					ModalWindowUtils.showErrorPanel(HourManagerWindow.this,ERROR_OPERATION_APPLY_CHANGES
 							);
 					e.printStackTrace();
 				}
@@ -302,16 +296,16 @@ public class HourManagerWindow extends JFrame {
 				try {
 					if (DataServices.exportToCSV(orm, jCalendarPanel.getSelectedYear(),
 							HourManagerWindow.this.username, HourManagerWindow.this) == 0)
-						JWindowUtils.showSuccesPanel(HourManagerWindow.this, SUCCES_EXPORT_DATA);
+						ModalWindowUtils.showSuccesPanel(HourManagerWindow.this, SUCCES_EXPORT_DATA);
 				} catch (BusinessException e1) {
-					JWindowUtils.showErrorPanel(HourManagerWindow.this, ERROR_EXPORT_DATA);
+					ModalWindowUtils.showErrorPanel(HourManagerWindow.this, ERROR_EXPORT_DATA);
 				}
 			}
 		});
 		buttonPane.add(exportButton);
 		buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
 		// BOTON CANCELAR
-		JButton cancelButton = new JButton(ACTION_BUTTON_CANCEL_TITLE);
+		JButton cancelButton = new JButton(HCalendarConstants.ACTION_BUTTON_CANCEL_TITLE);
 		cancelButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -324,7 +318,7 @@ public class HourManagerWindow extends JFrame {
 		buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
 
 		// BOTON GUARDAR
-		JButton saveButton = new JButton(ACTION_BUTTON_SAVE_TITLE);
+		JButton saveButton = new JButton(HCalendarConstants.ACTION_BUTTON_SAVE_TITLE);
 		buttonPane.add(saveButton);
 		saveButton.addActionListener(new ActionListener() {
 
@@ -333,10 +327,10 @@ public class HourManagerWindow extends JFrame {
 				try {
 					orm.persist(ENTITY_TYPE.ANUALHOURS);
 					orm.persist(ENTITY_TYPE.USERCONFIGURATION);
-					JWindowUtils.showSuccesPanel(HourManagerWindow.this, SUCCES_SAVE_DATA);
+					ModalWindowUtils.showSuccesPanel(HourManagerWindow.this, HCalendarConstants.SUCCES_SAVE_DATA);
 				} catch (ORMException e1) {
-					JWindowUtils.showSuccesPanel(HourManagerWindow.this,
-							ERROR_SAVE_DATA);
+					ModalWindowUtils.showSuccesPanel(HourManagerWindow.this,
+							HCalendarConstants.ERROR_SAVE_DATA);
 					e1.printStackTrace();
 				}
 			}
@@ -376,7 +370,7 @@ public class HourManagerWindow extends JFrame {
 			diaryHoursTextField.setText(String.valueOf(tHours));
 			descTextField.setText(desc);
 		} catch (Throwable e) {
-			JWindowUtils.showErrorPanel(HourManagerWindow.this, ERROR_CALCULATE_DATA
+			ModalWindowUtils.showErrorPanel(HourManagerWindow.this, ERROR_CALCULATE_DATA
 					+ date.getYear());
 		}
 	}

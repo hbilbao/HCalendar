@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import com.hcalendar.ConfigurationNotInitedException;
 import com.hcalendar.HCalendarConstants;
 
 /**

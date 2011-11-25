@@ -26,19 +26,15 @@ import com.hcalendar.data.orm.impl.ORMHelper;
 import com.hcalendar.data.orm.impl.ORMManager;
 import com.hcalendar.ui.actions.CreateProfileLauncher;
 import com.hcalendar.ui.actions.HourManagerLauncher;
-import com.hcalendar.ui.widgets.impl.JWindowUtils;
+import com.hcalendar.ui.helper.ModalWindowUtils;
 
 public class InitScreenWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 
-private static final String WINDOW_TITLE ="Calendario laboral";
+	private static final String WINDOW_TITLE ="Calendario laboral";
 	
 	private static final String ERROR_RETURNTO_WINDOW ="Error al volver de la ventana de creación de perfil";
-	private static final String ERROR_CREATE_WINDOW ="Error al iniciar la ventana";
-	
-	private static final String SUCCES_DELETE_PROFILE ="Perfil borrado correctamente";
-	private static final String ERROR_DELETE_PROFILE ="Error al eliminar el perfil";
-	
+		
 	private static final String WINDOW_PANEL_BORDER_SELECT_TITLE ="Seleccione operación";
 	
 	private static final String ACTION_BUTTON_MANAGE_PROFILE_TITLE ="Gestionar horas del perfil: ";
@@ -84,7 +80,7 @@ private static final String WINDOW_TITLE ="Calendario laboral";
 							profilesCombo.addItem(profile);
 						}
 					} catch (ORMException e) {
-						JWindowUtils.showErrorPanel(InitScreenWindow.this,
+						ModalWindowUtils.showErrorPanel(InitScreenWindow.this,
 								ERROR_RETURNTO_WINDOW);
 					}
 				}
@@ -114,11 +110,11 @@ private static final String WINDOW_TITLE ="Calendario laboral";
 							deleteProfilesCombo.addItem(profile);
 							profilesCombo.addItem(profile);
 						}
-						JWindowUtils.showSuccesPanel(InitScreenWindow.this, SUCCES_DELETE_PROFILE);
+						ModalWindowUtils.showSuccesPanel(InitScreenWindow.this, HCalendarConstants.SUCCES_DELETE);
 					} catch (CRUDException crude) {
-						JWindowUtils.showErrorPanel(InitScreenWindow.this, ERROR_DELETE_PROFILE);
+						ModalWindowUtils.showErrorPanel(InitScreenWindow.this, HCalendarConstants.ERROR_DELETE);
 					} catch (ORMException orme) {
-						JWindowUtils.showErrorPanel(InitScreenWindow.this, ERROR_DELETE_PROFILE);
+						ModalWindowUtils.showErrorPanel(InitScreenWindow.this, HCalendarConstants.ERROR_DELETE);
 					}
 
 				}
@@ -128,7 +124,7 @@ private static final String WINDOW_TITLE ="Calendario laboral";
 			// Show frame
 			this.setVisible(true);
 		} catch (ORMException e) {
-			JWindowUtils.showErrorPanel(this, ERROR_CREATE_WINDOW);
+			ModalWindowUtils.showErrorPanel(this, HCalendarConstants.ERROR_WINDOW_CREATION);
 		}
 	}
 

@@ -28,6 +28,7 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.border.Border;
 
+import com.hcalendar.HCalendarConstants;
 import com.hcalendar.data.DataServices;
 import com.hcalendar.data.IDateEntity;
 import com.hcalendar.data.IHCCallback;
@@ -39,16 +40,31 @@ import com.hcalendar.data.orm.impl.ORMHelper;
 import com.hcalendar.data.utils.DateHelper;
 import com.hcalendar.data.xml.userconfiguration.UserConfiguration;
 import com.hcalendar.data.xml.workedhours.AnualHours;
+import com.hcalendar.ui.helper.ModalWindowUtils;
 import com.hcalendar.ui.widgets.ICalendarActionProvider;
 import com.hcalendar.ui.widgets.ICalendarActionProvider.LIST_TYPE;
 import com.hcalendar.ui.widgets.impl.JUserCalendarPanel;
-import com.hcalendar.ui.widgets.impl.JWindowUtils;
 
 public class UserConfigurationWindow extends JFrame {
 
-	
 	private static final long serialVersionUID = 1L;
 
+	private static final String WINDOW_TITLE ="Creación de perfil";
+	
+	private static final String ERROR_APPLY_CHANGE ="Error al añadir el cambio solicitado";
+	
+	private static final String ASK_SAVEORLOSE_DATA ="Si cambias el año, se borraran los días libres que has definido hasta ahora. Quieres seguir?";
+	private static final String ASK_OVEWRITE_PROFILE_DATA ="El perfil que intenta guardar la existe, quiere sobreescribirlo?";
+	private static final String WARNING_CANNOT_CHANGE_YEAR ="Si quieres introducir días libres de otro año, primero debes cambiar el año del perfíl";
+	
+	private static final String WINDOW_ITEM_NAME_TITLE ="Nombre : ";
+	private static final String WINDOW_ITEM_YEAR_TITLE ="Año : ";
+	private static final String WINDOW_ITEM_YEAR_TOTAL_HOURS_TITLE ="Total horas convenio: ";
+	
+	private static final String WINDOW_PANEL_BORDER_FREEDAYS_TITLE ="Lista de dias libres";
+	private static final String WINDOW_PANEL_BORDER_SELECT_WORKINGDAYS_TITLE ="Seleccione dias laborales";
+	private static final String WINDOW_PANEL_DAY_HOURS_TITLE ="Horas por día";
+	
 	JTextArea diasLibresTextField;
 	JTextField nameTextField;
 	JTextField anualHours;
@@ -76,29 +92,6 @@ public class UserConfigurationWindow extends JFrame {
 	
 	private final String DATE_SEPARATOR = "\n";
 
-private static final String WINDOW_TITLE ="Creación de perfil";
-	
-	private static final String ERROR_APPLY_CHANGE ="Error al añadir el cambio solicitado";
-	
-	private static final String SUCCES_SAVE_DATA ="Perfil guardado correctamente";
-	private static final String ERROR_SAVE_DATA ="Error al guardar la configuración";
-	
-	private static final String ASK_SAVEORLOSE_DATA ="Si cambias el año, se borraran los días libres que has definido hasta ahora. Quieres seguir?";
-	private static final String ASK_OVEWRITE_PROFILE_DATA ="El perfil que intenta guardar la existe, quiere sobreescribirlo?";
-	private static final String WARNING_CANNOT_CHANGE_YEAR ="Si quieres introducir días libres de otro año, primero debes cambiar el año del perfíl";
-	
-	private static final String WINDOW_ITEM_NAME_TITLE ="Nombre : ";
-	private static final String WINDOW_ITEM_YEAR_TITLE ="Año : ";
-	private static final String WINDOW_ITEM_YEAR_TOTAL_HOURS_TITLE ="Total horas convenio: ";
-	
-	private static final String WINDOW_PANEL_BORDER_FREEDAYS_TITLE ="Lista de dias libres";
-	private static final String WINDOW_PANEL_BORDER_SELECT_WORKINGDAYS_TITLE ="Seleccione dias laborales";
-	private static final String WINDOW_PANEL_DAY_HOURS_TITLE ="Horas por día";
-	
-	private static final String ACTION_BUTTON_SAVE_TITLE ="Guardar";
-	private static final String ACTION_BUTTON_CANCEL_TITLE ="Cancelar";
-	private static final String ACTION_BUTTON_CONTINUE_TITLE ="Continuar";
-	
 	public UserConfigurationWindow(IORMClient orm, IHCCallback callback) {
 		this.callback = callback;
 		this.orm = orm;
@@ -131,7 +124,7 @@ private static final String WINDOW_TITLE ="Creación de perfil";
 				try {
 					orm.addChange(null, entity);
 				} catch (ORMException e) {
-					JWindowUtils.showErrorPanel(UserConfigurationWindow.this,ERROR_APPLY_CHANGE
+					ModalWindowUtils.showErrorPanel(UserConfigurationWindow.this,ERROR_APPLY_CHANGE
 							);
 				}
 			}
@@ -310,11 +303,11 @@ private static final String WINDOW_TITLE ="Creación de perfil";
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (diasLibresTextField.getText() != null && diasLibresTextField.getText().length() > 0)
-					if (JWindowUtils
+					if (ModalWindowUtils
 							.showOptionPanel(
 									UserConfigurationWindow.this,ASK_SAVEORLOSE_DATA
 									,
-									new String[] { ACTION_BUTTON_CONTINUE_TITLE, ACTION_BUTTON_CANCEL_TITLE }) == 0) {
+									new String[] { HCalendarConstants.ACTION_BUTTON_CONTINUE_TITLE, HCalendarConstants.ACTION_BUTTON_CANCEL_TITLE }) == 0) {
 						diasLibresTextField.setText(null);
 
 					}
@@ -333,7 +326,7 @@ private static final String WINDOW_TITLE ="Creación de perfil";
 		buttonPane.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
 		buttonPane.add(Box.createHorizontalGlue());
 		// BOTON GUARDAR
-		JButton saveButton = new JButton(ACTION_BUTTON_SAVE_TITLE);
+		JButton saveButton = new JButton(HCalendarConstants.ACTION_BUTTON_SAVE_TITLE);
 		saveButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -345,7 +338,7 @@ private static final String WINDOW_TITLE ="Creación de perfil";
 		buttonPane.add(saveButton);
 		buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
 		// BOTON CANCELAR
-		JButton cancelButton = new JButton(ACTION_BUTTON_CANCEL_TITLE);
+		JButton cancelButton = new JButton(HCalendarConstants.ACTION_BUTTON_CANCEL_TITLE);
 		cancelButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -393,9 +386,9 @@ private static final String WINDOW_TITLE ="Creación de perfil";
 			// Verify if profile exists
 			boolean ovewriteProfile = false;
 			if (ORMHelper.getCurrentProfiles(orm.getAnualConfiguration()).contains(name)) {
-				int result = JWindowUtils.showOptionPanel(this,ASK_OVEWRITE_PROFILE_DATA
+				int result = ModalWindowUtils.showOptionPanel(this,ASK_OVEWRITE_PROFILE_DATA
 						, new String[] {
-								ACTION_BUTTON_CONTINUE_TITLE, ACTION_BUTTON_CANCEL_TITLE });
+						HCalendarConstants.ACTION_BUTTON_CONTINUE_TITLE, HCalendarConstants.ACTION_BUTTON_CANCEL_TITLE });
 				if (result == 1)
 					return;
 				ovewriteProfile = true;
@@ -406,18 +399,19 @@ private static final String WINDOW_TITLE ="Creación de perfil";
 					listaDiasLaborales, dLibresList, ovewriteProfile);
 			CRUDManager.saveAnualHours(anualHours);
 			CRUDManager.saveAnualConfiguration(userConfig);
-			JWindowUtils.showSuccesPanel(this, SUCCES_SAVE_DATA);
+			ModalWindowUtils.showSuccesPanel(this, HCalendarConstants.SUCCES_SAVE_DATA);
 		} catch (Exception e) {
-			JWindowUtils.showErrorPanel(this, ERROR_SAVE_DATA);
+			ModalWindowUtils.showErrorPanel(this, HCalendarConstants.ERROR_SAVE_DATA);
 		}
 	}
 
 	// Acciones ha realizar cuando cambia la fecha seleccionada
+	@SuppressWarnings("deprecation")
 	private void calendarOnDateChangedActions(Date date, Boolean selected,
 			ICalendarActionProvider actionProvider) {
 		// Verify if year isEqual
 		if (date.getYear() + 1900 != ((Integer) yearCombo.getSelectedItem()).intValue()) {
-			JWindowUtils.showErrorPanel(UserConfigurationWindow.this,WARNING_CANNOT_CHANGE_YEAR);
+			ModalWindowUtils.showErrorPanel(UserConfigurationWindow.this,WARNING_CANNOT_CHANGE_YEAR);
 			return;
 		}
 		// Add color to the date onCalendar

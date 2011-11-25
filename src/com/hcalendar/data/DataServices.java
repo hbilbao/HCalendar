@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.hcalendar.ConfigurationNotInitedException;
+import com.hcalendar.config.ConfigurationNotInitedException;
 import com.hcalendar.config.ConfigurationUtils;
 import com.hcalendar.data.calculator.Calculator;
 import com.hcalendar.data.calculator.exception.CalculatorException;
@@ -30,7 +30,7 @@ import com.hcalendar.data.xml.userconfiguration.UserConfiguration.User.YearConf.
 import com.hcalendar.data.xml.userconfiguration.UserConfiguration.User.YearConf.WorkingDays;
 import com.hcalendar.data.xml.workedhours.AnualHours;
 import com.hcalendar.data.xml.workedhours.AnualHours.UserInput.WorkedHours;
-import com.hcalendar.ui.widgets.impl.JWindowUtils;
+import com.hcalendar.ui.helper.ModalWindowUtils;
 
 public class DataServices {
 
@@ -261,7 +261,7 @@ public class DataServices {
 	public static int exportToCSV(IORMClient orm, int year, String profileName,
 			final Component component) throws BusinessException {
 		try {
-			int selectedOption = JWindowUtils.showOptionPanel(component,
+			int selectedOption = ModalWindowUtils.showOptionPanel(component,
 					"Seleccione el tipo de informe que desea visualizar",
 					new Object[] { "Desglosado por meses",
 							"Desglosado por días" });
