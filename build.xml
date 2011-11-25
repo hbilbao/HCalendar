@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="CreateJAR" name="Create Calendar jar file">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <target name="CreateJAR">
+        <jar destfile="GestorCalendario.jar">
+            <manifest>
+                <attribute name="Main-Class" value="com.hcalendar.ui.InitScreenWindow"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="bin"/>
+        </jar>
+    </target>
+</project>
