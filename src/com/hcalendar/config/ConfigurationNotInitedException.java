@@ -1,4 +1,4 @@
-package com.hcalendar;
+package com.hcalendar.config;
 
 /**
  * Exception thrown by configuration file readers

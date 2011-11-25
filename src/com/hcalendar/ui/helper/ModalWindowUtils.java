@@ -1,4 +1,4 @@
-package com.hcalendar.ui.widgets.impl;
+package com.hcalendar.ui.helper;
 
 import java.awt.Component;
 
@@ -7,8 +7,9 @@ import javax.swing.JOptionPane;
 /**
  * Window utils. Show various modal windows
  * */
-public class JWindowUtils {
+public class ModalWindowUtils {
 
+	//	Modal dialog constants
 	private static final String INFO_MESSAGE = "Información";
 	private static final String ERROR_MESSAGE = "Error";
 	private static final String SELECT_OPTION_MESSAGE = "Seleccione una opción";
