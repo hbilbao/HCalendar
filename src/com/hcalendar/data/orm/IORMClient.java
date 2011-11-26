@@ -15,6 +15,8 @@ public interface IORMClient {
 
 	void persist(ENTITY_TYPE entityType) throws ORMException;
 
+	void rollback() throws ORMException;
+	
 	UserConfiguration getAnualConfiguration() throws ORMException;
 
 	AnualHours getAnualHours() throws ORMException;

@@ -18,7 +18,7 @@ import com.hcalendar.data.xml.workedhours.AnualHours;
  * */
 class ORMClient implements IORMClient {
 
-	private static List<IDateEntity> changesList = new ArrayList<IDateEntity>();
+	private List<IDateEntity> changesList = new ArrayList<IDateEntity>();
 
 	private UserConfiguration user;
 	private AnualHours anualHours;
@@ -127,6 +127,17 @@ class ORMClient implements IORMClient {
 	}
 
 	/**
+	 * Do rollback of current changes 
+	 * 
+	 * @throws ORMException
+	 * @throws CRUDException 
+	 * */
+	@Override
+	public void rollback() throws ORMException {
+		reloadEntitys();
+	}
+	
+	/**
 	 * Get the anual configuration from the xml, or from cache 
 	 * 
 	 * @return Anual configuration 
@@ -162,7 +173,7 @@ class ORMClient implements IORMClient {
 	}
 
 	/**
-	 * Reload entities from the xml 
+	 * Discard any unsaved change and reload entities from the xml 
 	 * 
 	 * @return Anual hours 
 	 * @throws ORMException
@@ -170,6 +181,7 @@ class ORMClient implements IORMClient {
 	@Override
 	public void reloadEntitys() throws ORMException {
 		try {
+			this.changesList.clear();
 			try {
 				setUserConfiguration(CRUDManager
 						.loadAnualConfigurationFromXML());
