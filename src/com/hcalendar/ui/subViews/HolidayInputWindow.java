@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
+import com.hcalendar.HCalendarConstants;
 import com.hcalendar.data.IDateEntity.DateType;
 import com.hcalendar.data.orm.ORMEntity;
 import com.hcalendar.ui.widgets.IWindowResultListener;
@@ -27,6 +28,10 @@ import com.hcalendar.ui.widgets.IWindowResultListener;
  * */
 public class HolidayInputWindow extends JFrame {
 
+	private static final String WINDOW_TITLE ="Vacaciones";
+	private static final String WINDOW_PANEL_BORDER_COMMENTS ="Comentarios sobre las vacaciones";
+	private static final String WINDOW_LABEL_COMMENTS ="Comentarios: ";
+	
 	private static final long serialVersionUID = 1L;
 
 	JTextField descTextField;
@@ -38,7 +43,7 @@ public class HolidayInputWindow extends JFrame {
 		this.listener = listener;
 		this.date = date;
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		this.setTitle("Vacaciones");
+		this.setTitle(WINDOW_TITLE);
 		Container content = this.getContentPane();
 		JPanel panel = new JPanel(new GridLayout(1, 1));
 		createTextFields(panel);
@@ -51,8 +56,8 @@ public class HolidayInputWindow extends JFrame {
 	private void createTextFields(Container panel) {
 		JPanel diaryPanel = new JPanel(new GridLayout(2, 2));
 		diaryPanel.setBorder(BorderFactory
-				.createTitledBorder("Comentarios sobre las vacaciones"));
-		JLabel diaryHoursLabel = new JLabel("Comentarios: ");
+				.createTitledBorder(WINDOW_PANEL_BORDER_COMMENTS));
+		JLabel diaryHoursLabel = new JLabel(WINDOW_LABEL_COMMENTS);
 		descTextField = new JTextField();
 		diaryHoursLabel.setLabelFor(descTextField);
 		diaryPanel.add(diaryHoursLabel, BorderLayout.WEST);
@@ -66,7 +71,7 @@ public class HolidayInputWindow extends JFrame {
 		buttonPane.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
 		buttonPane.add(Box.createHorizontalGlue());
 		// BOTON GUARDAR
-		JButton saveButton = new JButton("Guardar");
+		JButton saveButton = new JButton(HCalendarConstants.ACTION_BUTTON_SAVE_TITLE);
 		saveButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -83,7 +88,7 @@ public class HolidayInputWindow extends JFrame {
 		buttonPane.add(saveButton);
 		buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
 		// BOTON CANCELAR
-		JButton cancelButton = new JButton("Cancelar");
+		JButton cancelButton = new JButton(HCalendarConstants.ACTION_BUTTON_CANCEL_TITLE);
 		cancelButton.addActionListener(new ActionListener() {
 
 			@Override

@@ -101,7 +101,7 @@ public class HourManagerWindow extends JFrame {
 						.showOptionPanel(
 								this,
 								ERROR_ANUALCONFIGURATION_NOT_EXIST,
-								new Object[] { "Aceptar" });
+								new Object[] { HCalendarConstants.ACTION_BUTTON_ACCEPT_TITLE });
 				this.dispose();
 				return;
 			}
@@ -235,6 +235,7 @@ public class HourManagerWindow extends JFrame {
 					this.username, year));
 			convTextField.setText(yearStr);
 		}
+		
 		genLabel.setLabelFor(convTextField);
 		genHoursPanel.add(genLabel, BorderLayout.WEST);
 		genHoursPanel.add(convTextField, BorderLayout.CENTER);

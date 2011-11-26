@@ -7,7 +7,10 @@
 - [ok] No dejar guardar dos perfiles con el mismo nombre
  - javadoc falta en: JUserCalendarPanel, HourManagerWindow PARA DELANTE, vamos todas los window, que hay que cambiar los métodos...
 - Actualización de formularios, algo tipo calculados, cuando cambia algo, PUM. Por lo menos el initWindow
-- Validacion de datos en las ventanas
+- [ok]Validacion de datos en las ventanas
+- Filtrado de fechas al exportar datos
+- PDF's
+- Poner nombre apellido en la conf de usuario y el nombre del perfil calcularlo
  
 NOTAS
 - En el Eclipse, se guardan los fichero en la carpeta bin. En el jar, se crea una carpeta en la misma altura que el jar.

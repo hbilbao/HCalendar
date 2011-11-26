@@ -41,6 +41,7 @@ import com.hcalendar.data.utils.DateHelper;
 import com.hcalendar.data.xml.userconfiguration.UserConfiguration;
 import com.hcalendar.data.xml.workedhours.AnualHours;
 import com.hcalendar.ui.helper.ModalWindowUtils;
+import com.hcalendar.ui.validator.NumericValidator;
 import com.hcalendar.ui.widgets.ICalendarActionProvider;
 import com.hcalendar.ui.widgets.ICalendarActionProvider.LIST_TYPE;
 import com.hcalendar.ui.widgets.impl.JUserCalendarPanel;
@@ -66,27 +67,27 @@ public class UserConfigurationWindow extends JFrame {
 	private static final String WINDOW_PANEL_BORDER_SELECT_WORKINGDAYS_TITLE ="Seleccione dias laborales";
 	private static final String WINDOW_PANEL_DAY_HOURS_TITLE ="Horas por día";
 	
-	JTextArea diasLibresTextField;
-	JTextField nameTextField;
-	JTextField anualHours;
-	JComboBox yearCombo;
+	private JTextArea diasLibresTextField;
+	private JTextField nameTextField;
+	private JTextField anualHours;
+	private JComboBox yearCombo;
 
-	JCheckBox lunes;
-	JCheckBox martes;
-	JCheckBox miercoles;
-	JCheckBox jueves;
-	JCheckBox viernes;
-	JCheckBox sabado;
-	JCheckBox domingo;
+	private JCheckBox lunes;
+	private JCheckBox martes;
+	private JCheckBox miercoles;
+	private JCheckBox jueves;
+	private JCheckBox viernes;
+	private JCheckBox sabado;
+	private JCheckBox domingo;
 
-	JTextField horasLunes;
-	JTextField horasMartes;
-	JTextField horasMiercoles;
-	JTextField horasJueves;
-	JTextField horasViernes;
-	JTextField horasSabado;
-	JTextField horasDomingo;
-
+	private JTextField horasLunes;
+	private JTextField horasMartes;
+	private JTextField horasMiercoles;
+	private JTextField horasJueves;
+	private JTextField horasViernes;
+	private JTextField horasSabado;
+	private JTextField horasDomingo;
+	
 	JUserCalendarPanel jCalendarPanel;
 	private IORMClient orm;
 	private IHCCallback callback;
@@ -250,18 +251,25 @@ public class UserConfigurationWindow extends JFrame {
 		Border hoursBorder = BorderFactory.createTitledBorder(WINDOW_PANEL_DAY_HOURS_TITLE);
 		hoursPanel.setBorder(hoursBorder);
 		horasLunes = new JTextField();
+		horasLunes.setInputVerifier(new NumericValidator(this));
 		horasLunes.setEditable(false);
 		horasMartes = new JTextField();
+		horasMartes.setInputVerifier(new NumericValidator(this));
 		horasMartes.setEditable(false);
 		horasMiercoles = new JTextField();
+		horasMiercoles.setInputVerifier(new NumericValidator(this));
 		horasMiercoles.setEditable(false);
 		horasJueves = new JTextField();
+		horasJueves.setInputVerifier(new NumericValidator(this));
 		horasJueves.setEditable(false);
 		horasViernes = new JTextField();
+		horasViernes.setInputVerifier(new NumericValidator(this));
 		horasViernes.setEditable(false);
 		horasSabado = new JTextField();
+		horasSabado.setInputVerifier(new NumericValidator(this));
 		horasSabado.setEditable(false);
 		horasDomingo = new JTextField();
+		horasDomingo.setInputVerifier(new NumericValidator(this));
 		horasDomingo.setEditable(false);
 		hoursPanel.add(horasLunes);
 		hoursPanel.add(horasMartes);
@@ -286,6 +294,8 @@ public class UserConfigurationWindow extends JFrame {
 
 		JLabel convHours = new JLabel(WINDOW_ITEM_YEAR_TOTAL_HOURS_TITLE);
 		anualHours = new JTextField();
+		//	Validate
+		anualHours.setInputVerifier(new NumericValidator(this));
 		convHours.setLabelFor(anualHours);
 		namePanel.add(convHours, BorderLayout.WEST);
 		namePanel.add(anualHours, BorderLayout.CENTER);

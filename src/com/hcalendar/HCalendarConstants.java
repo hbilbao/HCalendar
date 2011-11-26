@@ -23,4 +23,5 @@ public class HCalendarConstants {
 	
 	public static final String SUCCES_DELETE ="Borrado completado";
 	public static final String ERROR_DELETE ="Error al borrar";
+	public static final String ACTION_BUTTON_ACCEPT_TITLE = "Aceptar";
 }
