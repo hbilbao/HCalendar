@@ -52,6 +52,7 @@ public class UserConfigurationWindow extends JFrame {
 	private static final String WINDOW_TITLE ="Creación de perfil";
 	
 	private static final String ERROR_APPLY_CHANGE ="Error al añadir el cambio solicitado";
+	private static final String ERROR_DATE_CHANGE ="Error al cambiar el año selecionado";
 	
 	private static final String ASK_SAVEORLOSE_DATA ="Si cambias el año, se borraran los días libres que has definido hasta ahora. Quieres seguir?";
 	private static final String ASK_OVEWRITE_PROFILE_DATA ="El perfil que intenta guardar la existe, quiere sobreescribirlo?";
@@ -308,8 +309,14 @@ public class UserConfigurationWindow extends JFrame {
 									UserConfigurationWindow.this,ASK_SAVEORLOSE_DATA
 									,
 									new String[] { HCalendarConstants.ACTION_BUTTON_CONTINUE_TITLE, HCalendarConstants.ACTION_BUTTON_CANCEL_TITLE }) == 0) {
+						jCalendarPanel.clearAllUserSelections();
+						jCalendarPanel.setDate((Integer) yearCombo.getSelectedItem(), Calendar.JANUARY, 1);
 						diasLibresTextField.setText(null);
-
+						try {
+							orm.rollback();
+						} catch (ORMException e1) {
+							ModalWindowUtils.showErrorPanel(UserConfigurationWindow.this, ERROR_DATE_CHANGE);
+						}
 					}
 			}
 		});
