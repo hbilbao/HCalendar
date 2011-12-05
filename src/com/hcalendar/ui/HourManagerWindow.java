@@ -40,7 +40,7 @@ import com.hcalendar.ui.widgets.ICalendarActionProvider;
 import com.hcalendar.ui.widgets.ICalendarActionProvider.LIST_TYPE;
 import com.hcalendar.ui.widgets.impl.JUserCalendarPanel;
 
-public class HourManagerWindow extends JFrame {
+public class HourManagerWindow extends JFrame implements IWindow {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -72,27 +72,17 @@ public class HourManagerWindow extends JFrame {
 	private static final String WINDOW_PANEL_BORDER_ANUAL_INFO ="Información anual";
 	private static final String WINDOW_PANEL_BORDER_DIARY_INFO ="Información diaria";
 	
-	JTextArea diasLibresTextField;
+	private JUserCalendarPanel jCalendarPanel;
 
-	JUserCalendarPanel jCalendarPanel;
-
-	JTextField horasLunes;
-	JTextField horasMartes;
-	JTextField horasMiercoles;
-	JTextField horasJueves;
-	JTextField horasViernes;
-	JTextField horasSabado;
-	JTextField horasDomingo;
-
-	JTextField convTextField;
-	JTextField actualHoursTextField;
-	JTextField plannedHoursTextField;
-	JTextArea descTextArea;
-	JTextField diaryHoursTextField;
+	private JTextField convTextField;
+	private JTextField actualHoursTextField;
+	private JTextField plannedHoursTextField;
+	private JTextArea descTextArea;
+	private JTextField diaryHoursTextField;
 
 	private IORMClient orm;
 	private String username;
-
+	
 	public HourManagerWindow(IORMClient orm, String username) {
 		this.orm = orm;
 		this.username = username;
@@ -384,6 +374,23 @@ public class HourManagerWindow extends JFrame {
 		} catch (Throwable e) {
 			ModalWindowUtils.showErrorPanel(HourManagerWindow.this, ERROR_CALCULATE_DATA
 					+ date.getYear());
+		}
+	}
+
+	@Override
+	public void addParentWindow(IWindowDataHanlder window) {
+		childWindows.add(window);
+	}
+
+	@Override
+	public void setData() {
+		//	TODO De momento no hace falta rellenarlo. Nadie escucha cambios
+	}
+
+	@Override
+	public void notifyDataChange() {
+		for (IWindowDataHanlder w: childWindows){
+			w.setData();
 		}
 	}
 }

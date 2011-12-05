@@ -17,7 +17,6 @@ import javax.swing.JToggleButton;
 import javax.swing.border.Border;
 
 import com.hcalendar.HCalendarConstants;
-import com.hcalendar.data.IHCCallback;
 import com.hcalendar.data.crud.CRUDManager;
 import com.hcalendar.data.crud.exception.CRUDException;
 import com.hcalendar.data.orm.IORMClient;
@@ -28,7 +27,7 @@ import com.hcalendar.ui.actions.CreateProfileLauncher;
 import com.hcalendar.ui.actions.HourManagerLauncher;
 import com.hcalendar.ui.helper.ModalWindowUtils;
 
-public class InitScreenWindow extends JFrame {
+public class InitScreenWindow extends JFrame  implements IWindow{
 	private static final long serialVersionUID = 1L;
 
 	private static final String WINDOW_TITLE ="Calendario laboral";
@@ -43,10 +42,11 @@ public class InitScreenWindow extends JFrame {
 	
 	JComboBox profilesCombo;
 	JComboBox deleteProfilesCombo;
-
+	IORMClient orm;
+	
 	public InitScreenWindow() {
 		try {
-			final IORMClient orm = ORMManager.getInstance().getORMClient();
+			orm = ORMManager.getInstance().getORMClient();
 			this.setSize(400, 160);
 			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			this.setTitle(WINDOW_TITLE);
@@ -66,25 +66,7 @@ public class InitScreenWindow extends JFrame {
 
 			AbstractButton newProfileButton = new JToggleButton(ACTION_BUTTON_CREATE_PROFILE_TITLE);
 			newProfileButton.setSize(new Dimension(100, 100));
-			newProfileButton.addActionListener(new CreateProfileLauncher(orm, new IHCCallback() {
-
-				@Override
-				public void itemChanged() {
-					try {
-						deleteProfilesCombo.removeAllItems();
-						profilesCombo.removeAllItems();
-						deleteProfilesCombo.addItem(HCalendarConstants.NULL_COMBO_INPUT);
-						profilesCombo.addItem(HCalendarConstants.NULL_COMBO_INPUT);
-						for (String profile : ORMHelper.getCurrentProfiles(orm.getAnualConfiguration())) {
-							deleteProfilesCombo.addItem(profile);
-							profilesCombo.addItem(profile);
-						}
-					} catch (ORMException e) {
-						ModalWindowUtils.showErrorPanel(InitScreenWindow.this,
-								ERROR_RETURNTO_WINDOW);
-					}
-				}
-			}));
+			newProfileButton.addActionListener(new CreateProfileLauncher(orm, this));
 			panel.add(newProfileButton);
 
 			JLabel deleteProfilesComboLabel = new JLabel(ACTION_BUTTON_DELETE_PROFILE_TITLE);
@@ -102,14 +84,7 @@ public class InitScreenWindow extends JFrame {
 					try {
 						CRUDManager.deleteProfile(orm.getAnualConfiguration(), orm.getAnualHours(),
 								profileName);
-						deleteProfilesCombo.removeAllItems();
-						profilesCombo.removeAllItems();
-						deleteProfilesCombo.addItem(HCalendarConstants.NULL_COMBO_INPUT);
-						profilesCombo.addItem(HCalendarConstants.NULL_COMBO_INPUT);
-						for (String profile : ORMHelper.getCurrentProfiles(orm.getAnualConfiguration())) {
-							deleteProfilesCombo.addItem(profile);
-							profilesCombo.addItem(profile);
-						}
+						setData();
 						ModalWindowUtils.showSuccesPanel(InitScreenWindow.this, HCalendarConstants.SUCCES_DELETE);
 					} catch (CRUDException crude) {
 						ModalWindowUtils.showErrorPanel(InitScreenWindow.this, HCalendarConstants.ERROR_DELETE);
@@ -128,7 +103,37 @@ public class InitScreenWindow extends JFrame {
 		}
 	}
 
+	@Override
+	public void setData() {
+		try {
+			deleteProfilesCombo.removeAllItems();
+			profilesCombo.removeAllItems();
+			deleteProfilesCombo.addItem(HCalendarConstants.NULL_COMBO_INPUT);
+			profilesCombo.addItem(HCalendarConstants.NULL_COMBO_INPUT);
+			for (String profile : ORMHelper.getCurrentProfiles(orm.getAnualConfiguration())) {
+				deleteProfilesCombo.addItem(profile);
+				profilesCombo.addItem(profile);
+			}
+		} catch (ORMException e) {
+			ModalWindowUtils.showErrorPanel(InitScreenWindow.this,
+					ERROR_RETURNTO_WINDOW);
+		}
+	}
+	
+	@Override
+	public void addParentWindow(IWindowDataHanlder window) {
+		childWindows.add(window);
+	}
+
+	@Override
+	public void notifyDataChange() {
+		for (IWindowDataHanlder w: childWindows){
+			w.setData();
+		}
+	}
+	
 	public static void main(String[] args) {
 		new InitScreenWindow();
 	}
+
 }

@@ -31,7 +31,6 @@ import javax.swing.border.Border;
 import com.hcalendar.HCalendarConstants;
 import com.hcalendar.data.DataServices;
 import com.hcalendar.data.IDateEntity;
-import com.hcalendar.data.IHCCallback;
 import com.hcalendar.data.calculator.Calculator;
 import com.hcalendar.data.crud.CRUDManager;
 import com.hcalendar.data.orm.IORMClient;
@@ -46,7 +45,7 @@ import com.hcalendar.ui.widgets.ICalendarActionProvider;
 import com.hcalendar.ui.widgets.ICalendarActionProvider.LIST_TYPE;
 import com.hcalendar.ui.widgets.impl.JUserCalendarPanel;
 
-public class UserConfigurationWindow extends JFrame {
+public class UserConfigurationWindow extends JFrame  implements IWindow{
 
 	private static final long serialVersionUID = 1L;
 
@@ -90,12 +89,11 @@ public class UserConfigurationWindow extends JFrame {
 	
 	JUserCalendarPanel jCalendarPanel;
 	private IORMClient orm;
-	private IHCCallback callback;
 	
 	private final String DATE_SEPARATOR = "\n";
 
-	public UserConfigurationWindow(IORMClient orm, IHCCallback callback) {
-		this.callback = callback;
+	public UserConfigurationWindow(IORMClient orm, IWindowDataHanlder callback) {
+		this.addParentWindow(callback);
 		this.orm = orm;
 		this.setSize(1000, 600);
 		this.setMaximumSize(new Dimension(1500, 900));
@@ -299,16 +297,9 @@ public class UserConfigurationWindow extends JFrame {
 		convHours.setLabelFor(anualHours);
 		namePanel.add(convHours, BorderLayout.WEST);
 		namePanel.add(anualHours, BorderLayout.CENTER);
-
-		Integer[] years = new Integer[50];
-		int k = 0;
-		for (int i = 2011; i < 2061; i++) {
-			years[k] = i;
-			k++;
-		}
-
+		
 		JLabel year = new JLabel(WINDOW_ITEM_YEAR_TITLE);
-		yearCombo = new JComboBox(years);
+		yearCombo = new JComboBox(HCalendarConstants.ANUAL_CONFIGURATION_YEAR_OPTIONS);
 		yearCombo.addActionListener(new ActionListener() {
 
 			@Override
@@ -349,7 +340,7 @@ public class UserConfigurationWindow extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				saveUserConfiguration();
-				UserConfigurationWindow.this.callback.itemChanged();
+				UserConfigurationWindow.this.notifyDataChange();
 			}
 		});
 		buttonPane.add(saveButton);
@@ -450,13 +441,27 @@ public class UserConfigurationWindow extends JFrame {
 				if ((dateStr != null && dateStr.length() > 0) && (!dateStr.equals(formattedDate)))
 					strBuff.append(dateStr).append(DATE_SEPARATOR);
 			}
-			// int startIndex = text.indexOf(formattedDate);
-			// String finalStr =
-			// text.substring(0,startIndex).concat(text.substring(startIndex+formattedDate.length()));
 			diasLibresTextField.setText(strBuff.toString());
 			// El dia no existe en la lista
 		} else if (!diasLibresTextField.getText().contains(formattedDate))
 			diasLibresTextField.setText(diasLibresTextField.getText() + DATE_SEPARATOR + formattedDate);
 
+	}
+
+	@Override
+	public void addParentWindow(IWindowDataHanlder window) {
+		childWindows.add(window);
+	}
+
+	@Override
+	public void setData() {
+		//	TODO De momento no hace falta rellenarlo. Nadie escucha cambios
+	}
+
+	@Override
+	public void notifyDataChange() {
+		for (IWindowDataHanlder w: childWindows){
+			w.setData();
+		}
 	}
 }

@@ -3,8 +3,8 @@ package com.hcalendar.ui.actions;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import com.hcalendar.data.IHCCallback;
 import com.hcalendar.data.orm.IORMClient;
+import com.hcalendar.ui.IWindowDataHanlder;
 import com.hcalendar.ui.UserConfigurationWindow;
 
 /**
@@ -12,10 +12,10 @@ import com.hcalendar.ui.UserConfigurationWindow;
  */
 public class CreateProfileLauncher implements ActionListener {
 
-	private IHCCallback callback;
+	private IWindowDataHanlder callback;
 	private IORMClient orm;
 
-	public CreateProfileLauncher(IORMClient orm, IHCCallback callback) {
+	public CreateProfileLauncher(IORMClient orm, IWindowDataHanlder callback) {
 		this.callback = callback;
 		this.orm = orm;
 	}

@@ -184,11 +184,7 @@ public class ExportDataWindow extends JFrame {
 				result.add(fromDateTextField.getText());
 				result.add(toDateTextField.getText());
 				ExportDataWindow.this.observer.update(null, result);
-				ExportDataWindow.this.dispose();// TODO BATIBURRILLO DE
-												// ASINCRONO Y SINCRONO, NO SERÁ
-												// MEJOR HACERLO TODO EN LA
-												// VENTNA? O PASARA CALLBACK A
-												// LA OTRA VENTANA }
+				ExportDataWindow.this.dispose();
 			}
 		});
 		buttonPane.add(dayOption);
