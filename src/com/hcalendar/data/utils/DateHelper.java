@@ -159,4 +159,12 @@ public class DateHelper {
 			return daysOfWeek[6];
 		return null;
 	}
+
+	public static boolean isBetween(Date date, Date fromDate, Date toDate) throws DateException {
+		if (date.compareTo(fromDate)<0)
+			return false;
+		if (date.compareTo(toDate)>0)
+			return false;
+		return true;
+	}
 }

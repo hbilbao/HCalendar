@@ -37,18 +37,6 @@ public class ORMHelper {
 		return result;
 	}
 
-	private static FreeDays getCalendarFreeDays(UserConfiguration anualConfig,
-			String profileName, int year) {
-		for (User user : anualConfig.getUser()) {
-			if (!user.getName().equals(profileName))
-				continue;
-			for (YearConf yearconf : user.getYearConf()) {
-				if (year == yearconf.getYear())
-					return yearconf.getFreeDays();
-			}
-		}
-		return null;
-	}
 
 	private static void removeFromWorkedDays(AnualHours anualHours, Date date,
 			String profileName) {
@@ -100,6 +88,31 @@ public class ORMHelper {
 	}
 
 	/**
+	 * get calendar free days
+	 * 
+	 * @param anualConfig
+	 *            anual configuration java bean
+	 * @param date
+	 *            date
+	 * @param profileName
+	 *            profile name which get the hour input
+	 * 
+	 * @return calendar free days
+	 * */
+	public static FreeDays getCalendarFreeDays(UserConfiguration anualConfig,
+			String profileName, int year) {
+		for (User user : anualConfig.getUser()) {
+			if (!user.getName().equals(profileName))
+				continue;
+			for (YearConf yearconf : user.getYearConf()) {
+				if (year == yearconf.getYear())
+					return yearconf.getFreeDays();
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * get users worked days list for a given profile
 	 * 
 	 * @param aHours
@@ -116,6 +129,40 @@ public class ORMHelper {
 				return user.getWorkedHours();
 		}
 		return null;
+	}
+
+	/**
+	 * get users worked days list for a given profile filtered by the given
+	 * dates
+	 * 
+	 * @param aHours
+	 *            input hours java bean
+	 * @param profileName
+	 *            profile name which get the hour input
+	 * 
+	 * @return worked days list
+	 * @throws DateException
+	 * */
+	public static List<WorkedHours> getUsersWorkedHourList(AnualHours hours,
+			String profileName, Date fromDate, Date toDate) throws ORMException {
+		List<WorkedHours> result = new ArrayList<WorkedHours>();
+		try {
+			for (UserInput user : hours.getUserInput()) {
+				if (user.getUserName().equals(profileName))
+					for (WorkedHours worked : user.getWorkedHours()) {
+						if (fromDate != null) {
+							if (DateHelper.isBetween(
+									DateHelper.xmlGregorianCalendar2Date(worked
+											.getDate()), fromDate, toDate))
+								result.add(worked);
+						} else
+							result.add(worked);
+					}
+			}
+		} catch (DateException e) {
+			throw new ORMException(e);
+		}
+		return result;
 	}
 
 	/**
@@ -187,9 +234,80 @@ public class ORMHelper {
 	 * 
 	 * @return calendar free days list
 	 * */
-	public static List<Date> getCalendarFreeDays(UserConfiguration anualConfig,
-			String profileName, Integer year) throws BusinessException {
-		return freeDay2DateList(getCalendarFreeDays(anualConfig, profileName, year.intValue()).getFreeDay());
+	public static List<Date> getCalendarFreeDaysDate(
+			UserConfiguration anualConfig, String profileName, Integer year)
+			throws BusinessException {
+		return freeDay2DateList(getCalendarFreeDays(anualConfig, profileName,
+				year.intValue()).getFreeDay());
+	}
+
+
+	/**
+	 * get users filtered holiday list for a given profile
+	 * 
+	 * @param aHours
+	 *            input hours java bean
+	 * @param profileName
+	 *            profile name which get the hour input
+	 * @param fromDate
+	 *            from 
+	 * @param toDate
+	 *            to                        
+	 * 
+	 * @return holidays list
+	 * */
+	public static List<Holidays> getUserHolidaysList(AnualHours anualHours,
+			String profileName, Date fromDate, Date toDate) throws ORMException {
+		try {
+			List<Holidays> result = new ArrayList<AnualHours.UserInput.Holidays>();
+			List<Holidays> list = getUserHolidaysList(anualHours, profileName);
+			for (Holidays hol : list) {
+				if (DateHelper.isBetween(
+						DateHelper.xmlGregorianCalendar2Date(hol.getDate()),
+						fromDate, toDate))
+					result.add(hol);
+			}
+			return result;
+		} catch (Exception e) {
+			throw new ORMException(e);
+		}
+	}
+
+
+	/**
+	 * get calendar free days
+	 * 
+	 * @param aHours
+	 *            input hours java bean
+	 * @param profileName
+	 *            profile name which get the hour input
+	 * @param fromDate
+	 *            from 
+	 * @param toDate
+	 *            to                        
+	 * 
+	 * @return calendar free days
+	 * */
+	public static List<FreeDay> getCalendarFreeDays(
+			UserConfiguration anualConfiguration, String profileName, int year,
+			Date fromDate, Date toDate) throws ORMException {
+		try {
+			List<FreeDay> result = new ArrayList<FreeDay>();
+			FreeDays list = getCalendarFreeDays(anualConfiguration, profileName, year);
+			for (FreeDay day : list.getFreeDay()) {
+				if (fromDate==null){
+					result.add(day);	
+					continue;
+				}
+				if (DateHelper.isBetween(
+						DateHelper.xmlGregorianCalendar2Date(day.getDay()),
+						fromDate, toDate))
+				result.add(day);
+			}
+			return result;
+		} catch (Exception e) {
+			throw new ORMException(e);
+		}
 	}
 	
 	/**
@@ -233,7 +351,8 @@ public class ORMHelper {
 			Date date, String profileName) {
 		Map<Float, String> result = new HashMap<Float, String>();
 		// Worked hours
-		for (WorkedHours wHours : getUsersWorkedHourList(anualConfig, profileName)) {
+		for (WorkedHours wHours : getUsersWorkedHourList(anualConfig,
+				profileName)) {
 			if (DateHelper.compareDates(date, wHours.getDate()) == 0)
 				result.put(wHours.getHours(), wHours.getDescription());
 		}
@@ -309,7 +428,7 @@ public class ORMHelper {
 	 * @param date
 	 *            date
 	 * @param comment
-	 *            Comment of the freeday      
+	 *            Comment of the freeday
 	 * @param profileName
 	 *            profile name to get the hour input
 	 * @throws ORMException
@@ -350,7 +469,7 @@ public class ORMHelper {
 	 * @param date
 	 *            date
 	 * @param comment
-	 *            Comment of the holiday      
+	 *            Comment of the holiday
 	 * @param profileName
 	 *            profile name to get the hour input
 	 * @throws ORMException
@@ -381,7 +500,6 @@ public class ORMHelper {
 
 	}
 
-
 	/**
 	 * Add holiday to the anual configuration java bean
 	 * 
@@ -394,7 +512,7 @@ public class ORMHelper {
 	 * @param hours
 	 *            input hours for the day
 	 * @param comment
-	 *            Comment of the worked day      
+	 *            Comment of the worked day
 	 * @param profileName
 	 *            profile name to get the hour input
 	 * @throws ORMException

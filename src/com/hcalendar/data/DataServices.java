@@ -1,20 +1,25 @@
 package com.hcalendar.data;
 
-import java.awt.Component;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 
+import com.hcalendar.HCalendarConstants;
 import com.hcalendar.config.ConfigurationNotInitedException;
 import com.hcalendar.config.ConfigurationUtils;
 import com.hcalendar.data.calculator.Calculator;
 import com.hcalendar.data.calculator.exception.CalculatorException;
+import com.hcalendar.data.dto.WorkInputsDTO;
+import com.hcalendar.data.dto.WorkInputsDTO.Holiday;
+import com.hcalendar.data.dto.WorkInputsDTO.WorkInput;
 import com.hcalendar.data.exception.BusinessException;
 import com.hcalendar.data.orm.IORMClient;
 import com.hcalendar.data.orm.exception.ORMException;
@@ -29,147 +34,209 @@ import com.hcalendar.data.xml.userconfiguration.UserConfiguration.User.YearConf.
 import com.hcalendar.data.xml.userconfiguration.UserConfiguration.User.YearConf.FreeDays.FreeDay;
 import com.hcalendar.data.xml.userconfiguration.UserConfiguration.User.YearConf.WorkingDays;
 import com.hcalendar.data.xml.workedhours.AnualHours;
+import com.hcalendar.data.xml.workedhours.AnualHours.UserInput.Holidays;
 import com.hcalendar.data.xml.workedhours.AnualHours.UserInput.WorkedHours;
-import com.hcalendar.ui.helper.ModalWindowUtils;
+import com.hcalendar.fop.PDFCreator;
+import com.hcalendar.ui.subViews.ExportDataWindow;
 
 public class DataServices {
 
 	@SuppressWarnings("deprecation")
-	private static void monthResumeCSV(Writer writer, int year, IORMClient orm,
-			String profileName) throws BusinessException {
+	private static Map<String, Float> getHoursMonthResume(String fromDateStr, String toDateStr, int year, String profileName, IORMClient orm) throws ORMException, DateException{
+		Map<String, Float> resultMap = new LinkedHashMap<String, Float>();
+		Date fromDate = null;
+		Date toDate = null;
+		Boolean haveToFilter = false;
+		if (!(fromDateStr == null || fromDateStr.equals(""))) {
+			fromDate = DateHelper.parse2Date(fromDateStr);
+			toDate = DateHelper.parse2Date(toDateStr);
+			haveToFilter = true;
+		} else
+			haveToFilter = false;
+		int daysOnMonth;
+		float lastCalculatedHours = 0;
+		for (int i = 0; i < DateHelper.months.length; i++) {
+			if (haveToFilter)
+				// Is month is filter?
+				if (!(fromDate.getMonth() <= i && toDate.getMonth() >= i))
+					continue;
+			if (DateHelper.isLeap(year) && i == Calendar.FEBRUARY)
+				daysOnMonth = DateHelper.daysOnMonth[i] + 1;
+			else
+				daysOnMonth = DateHelper.daysOnMonth[i];
+			float hours = Calculator.calculateHoursUntilDate(orm
+					.getAnualHours(),
+					new Date(year - 1900, i, daysOnMonth), profileName);
+			lastCalculatedHours = i == 0 ? 0 : Calculator
+					.calculateHoursUntilDate(orm.getAnualHours(), new Date(
+							year - 1900, i - 1, daysOnMonth), profileName);
+			resultMap.put(DateHelper.months[i], hours - lastCalculatedHours);
+		}
+		return resultMap;
+	}
+	
+	private static void dayliResumePDF(int year, String profileName,
+			String fromDateStr, String toDateStr, IORMClient orm)
+			throws BusinessException {
 		try {
-			writer.append("Mes");
-			writer.append(',');
-			writer.append("Horas");
-			writer.append('\n');
-
-			// Write columns
-			int daysOnMonth;
-			float lastCalculatedHours = 0;
-			for (int i = 0; i < DateHelper.months.length; i++) {
-				if (DateHelper.isLeap(year) && i == Calendar.FEBRUARY)
-					daysOnMonth = DateHelper.daysOnMonth[i] + 1;
-				else
-					daysOnMonth = DateHelper.daysOnMonth[i];
-				float hours = Calculator.calculateHoursUntilDate(orm
-						.getAnualHours(),
-						new Date(year - 1900, i, daysOnMonth), profileName);
-				writer.append(DateHelper.months[i]);
-				writer.append(',');
-				writer.append(String.valueOf(hours - lastCalculatedHours));
-				writer.append('\n');
-				lastCalculatedHours = hours;
+			AnualHours anualHours = orm.getAnualHours();
+			Date fromDate = null;
+			Date toDate = null;
+			if (!(fromDateStr == null || fromDateStr.equals(""))) {
+				fromDate = DateHelper.parse2Date(fromDateStr);
+				toDate = DateHelper.parse2Date(toDateStr);
 			}
-		} catch (IOException e) {
-			throw new BusinessException(e);
-		} catch (ORMException e) {
+			// get worked hours list
+			List<WorkedHours> workedHours = ORMHelper.getUsersWorkedHourList(
+					anualHours, profileName, fromDate, toDate);
+			List<Holidays> holidays = ORMHelper.getUserHolidaysList(anualHours, profileName, fromDate, toDate);
+			List<FreeDay> freeDays = ORMHelper.getCalendarFreeDays(orm.getAnualConfiguration(), profileName, year, fromDate, toDate);
+			
+			// create DTO for xsl file
+			WorkInputsDTO dto = new WorkInputsDTO();
+			dto.setFromFilter(fromDate);
+			dto.setToFilter(toDate);	
+			dto.setProfileName(profileName);
+			dto.setYear(year);
+			for (WorkedHours work : workedHours) {
+				WorkInput subDto = new WorkInput(work);
+				dto.addWorkInput(subDto);
+			}
+			for (Holidays hol : holidays) {
+				Holiday subDto = new Holiday(hol);
+				dto.addHoliday(subDto);
+			}
+			for (FreeDay day : freeDays) {
+				com.hcalendar.data.dto.WorkInputsDTO.FreeDay subDto = new com.hcalendar.data.dto.WorkInputsDTO.FreeDay(day);
+				dto.addFreeDay(subDto);
+			}
+			dto.setMonthHoursResume(getHoursMonthResume(fromDateStr, toDateStr, year, profileName, orm));
+			// Create PDF
+			new PDFCreator().createPDF(dto);
+
+		} catch (Exception e) {
 			throw new BusinessException(e);
 		}
 	}
 
-	@SuppressWarnings("deprecation")
-	private static void dayliResumeCSV(Writer writer, int year, IORMClient orm,
-			String profileName) throws BusinessException {
+	private static void monthResumeCSV(int year, String profileName,
+			String fromDateStr, String toDateStr, IORMClient orm)
+			throws BusinessException {
+		FileWriter writer = null;
 		try {
-			writer.append("Dia");
-			writer.append(',');
-			writer.append("Tipo");
-
-			writer.append(',');
-
+			writer = new FileWriter(ConfigurationUtils.getCSVTempFile());
+			writer.append("Mes");
+			writer.append(HCalendarConstants.EXPORT_CSV_COLUMN_SEPARATOR);
 			writer.append("Horas");
-			writer.append(',');
-			writer.append("Comentarios");
-			writer.append('\n');
+			writer.append(HCalendarConstants.EXPORT_CSV_ROW_SEPARATOR);
 
+			Map<String, Float> monthResume = getHoursMonthResume(fromDateStr, toDateStr, year, profileName, orm);
 			// Write columns
-			int daysOnMonth;
-			float lastCalculatedHours = 0;
-			float hoursOfMonth = 0;
-
-			AnualHours anualHours = orm.getAnualHours();
-			List<WorkedHours> workedHours = ORMHelper.getUsersWorkedHourList(
-					anualHours, profileName);
-			for (WorkedHours days : workedHours) {
-				Date date = DateHelper
-						.xmlGregorianCalendar2Date(days.getDate());
-				writer.append(DateHelper.DATE_FORMAT.format(date));
-				writer.append(',');
-				writer.append(DateHelper.translateDayOfWeek(date.getDay()));
-				writer.append(',');
-				writer.append(days.getHours() > 0.0 ? String.valueOf(days
-						.getHours()) : "");
-				writer.append(',');
-				writer.append(days.getDescription());
-				writer.append('\n');
+			for (String monthName :monthResume.keySet()){
+				writer.append(monthName);
+				writer.append(HCalendarConstants.EXPORT_CSV_COLUMN_SEPARATOR);
+				writer.append(String.valueOf(monthResume.get(monthName)));
+				writer.append(HCalendarConstants.EXPORT_CSV_ROW_SEPARATOR);				
 			}
-			// Month resume
-			for (int i = 0; i < DateHelper.months.length; i++) {
-				if (DateHelper.isLeap(year) && i == Calendar.FEBRUARY)
-					daysOnMonth = DateHelper.daysOnMonth[i] + 1;
-				else
-					daysOnMonth = DateHelper.daysOnMonth[i];
-				hoursOfMonth = Calculator.calculateHoursUntilDate(orm
-						.getAnualHours(),
-						new Date(year - 1900, i, daysOnMonth), profileName);
-				writer.append("Resumen del mes");
-				writer.append(',');
-				writer.append(DateHelper.months[i]);
-				writer.append(',');
-				writer.append(String
-						.valueOf(hoursOfMonth - lastCalculatedHours) + " horas");
-				writer.append(',');
-				writer.append("");
-				writer.append('\n');
-				lastCalculatedHours = hoursOfMonth;
-			}
-			// Year resume
-			writer.append("Resumen del año");
-			writer.append(',');
-			writer.append(String.valueOf(year));
-			writer.append(',');
-			writer.append(hoursOfMonth + " horas");
-			writer.append('\n');
-
-			// for (int i = 0; i < DateHelper.months.length; i++) {
-			// if (DateHelper.isLeap(year) && i == Calendar.FEBRUARY)
-			// daysOnMonth = DateHelper.daysOnMonth[i] + 1;
-			// else
-			// daysOnMonth = DateHelper.daysOnMonth[i];
-			// float hoursOfMonth =
-			// Calculator.calculateHoursUntilDate(orm.getAnualHours(), new Date(
-			// year - 1900, i, daysOnMonth));
-			// // Calculate each day hours
-			// for (int k = 0; k < daysOnMonth; k++) {
-			// Date date = new Date(year - 1900, i, k + 1);
-			// float hoursOfDay =
-			// Calculator.calculateHoursOfDate(orm.getAnualHours(), date);
-			// writer.append(DateHelper.DATE_FORMAT.format(date));
-			// writer.append(',');
-			// writer.append(DateHelper.translateDayOfWeek(date.getDay()));
-			// writer.append(',');
-			// writer.append(hoursOfDay > 0.0 ? String.valueOf(hoursOfDay) :
-			// "");
-			// writer.append(',');
-			// writer.append("desc");
-			// writer.append('\n');
-			// }
-			// // Month resume
-			// writer.append("Resumen del mes");
-			// writer.append(',');
-			// writer.append(DateHelper.months[i]);
-			// writer.append(',');
-			// writer.append(String.valueOf(hoursOfMonth - lastCalculatedHours)
-			// + " horas");
-			// writer.append(',');
-			// writer.append("");
-			// writer.append('\n');
-			// lastCalculatedHours = hoursOfMonth;
-			// }
 		} catch (IOException e) {
 			throw new BusinessException(e);
 		} catch (ORMException e) {
 			throw new BusinessException(e);
+		} catch (DateException e) {
+			throw new BusinessException(e);
+		} catch (ConfigurationNotInitedException e) {
+			throw new BusinessException(e);
+		} finally {
+			try {
+				if (writer == null)
+					return;
+				writer.flush();
+				writer.close();
+			} catch (IOException e) {
+				throw new BusinessException(e);
+			}
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	private static void dayliResumeCSV(int year, String profileName,
+			String fromDateStr, String toDateStr, IORMClient orm)
+			throws BusinessException {
+		FileWriter writer = null;
+		try {
+			writer = new FileWriter(ConfigurationUtils.getCSVTempFile());
+
+			Date fromDate = null;
+			Date toDate = null;
+			if (!(fromDateStr == null || fromDateStr.equals(""))) {
+				fromDate = DateHelper.parse2Date(fromDateStr);
+				toDate = DateHelper.parse2Date(toDateStr);
+			}
+			writer.append("Fecha");
+			writer.append(HCalendarConstants.EXPORT_CSV_COLUMN_SEPARATOR);
+			writer.append("Dia");
+			writer.append(HCalendarConstants.EXPORT_CSV_COLUMN_SEPARATOR);
+			writer.append("Horas");
+			writer.append(HCalendarConstants.EXPORT_CSV_COLUMN_SEPARATOR);
+			writer.append("Comentarios");
+			writer.append(HCalendarConstants.EXPORT_CSV_ROW_SEPARATOR);
+
+			// Write columns
+			AnualHours anualHours = orm.getAnualHours();
+			List<WorkedHours> workedHours = ORMHelper.getUsersWorkedHourList(
+					anualHours, profileName, fromDate, toDate);
+			for (WorkedHours days : workedHours) {
+				Date date = DateHelper
+						.xmlGregorianCalendar2Date(days.getDate());
+				writer.append(DateHelper.DATE_FORMAT.format(date));
+				writer.append(HCalendarConstants.EXPORT_CSV_COLUMN_SEPARATOR);
+				writer.append(DateHelper.translateDayOfWeek(date.getDay()));
+				writer.append(HCalendarConstants.EXPORT_CSV_COLUMN_SEPARATOR);
+				writer.append(days.getHours() > 0.0 ? String.valueOf(days
+						.getHours()) : "");
+				writer.append(HCalendarConstants.EXPORT_CSV_COLUMN_SEPARATOR);
+				writer.append(days.getDescription());
+				writer.append(HCalendarConstants.EXPORT_CSV_ROW_SEPARATOR);
+			}
+			// Month resume
+			Map<String, Float> monthResume = getHoursMonthResume(fromDateStr, toDateStr, year, profileName, orm);
+			float totHours = 0;
+			for (String monthName :monthResume.keySet()){
+				totHours = totHours + monthResume.get(monthName);
+				writer.append("Resumen del mes");
+				writer.append(HCalendarConstants.EXPORT_CSV_COLUMN_SEPARATOR);
+				writer.append(monthName);
+				writer.append(HCalendarConstants.EXPORT_CSV_COLUMN_SEPARATOR);
+				writer.append(String
+						.valueOf(monthResume.get(monthName)) + " horas");
+				writer.append(HCalendarConstants.EXPORT_CSV_COLUMN_SEPARATOR);
+				writer.append("");
+				writer.append(HCalendarConstants.EXPORT_CSV_ROW_SEPARATOR);		
+			}
+			// Year resume
+			writer.append("Resumen del año");
+			writer.append(HCalendarConstants.EXPORT_CSV_COLUMN_SEPARATOR);
+			writer.append(String.valueOf(year));
+			writer.append(HCalendarConstants.EXPORT_CSV_COLUMN_SEPARATOR);
+			writer.append(totHours + " horas");
+			writer.append(HCalendarConstants.EXPORT_CSV_ROW_SEPARATOR);
+		} catch (IOException e) {
+			throw new BusinessException(e);
+		} catch (ORMException e) {
+			throw new BusinessException(e);
+		} catch (DateException e) {
+			throw new BusinessException(e);
+		} catch (ConfigurationNotInitedException e) {
+			throw new BusinessException(e);
+		} finally {
+			try {
+				if (writer == null)
+					return;
+				writer.flush();
+				writer.close();
+			} catch (IOException e) {
+				throw new BusinessException(e);
+			}
 		}
 	}
 
@@ -245,7 +312,7 @@ public class DataServices {
 	}
 
 	/**
-	 * Export data to CSV with two option: - By day: resume by day - By month:
+	 * Export data to CSV or PDF with two options: - By day: resume by day - By month:
 	 * resume by month
 	 * 
 	 * @param orm
@@ -258,47 +325,67 @@ public class DataServices {
 	 *            canvas to show option panel on it
 	 * 
 	 * */
-	public static int exportToCSV(IORMClient orm, int year, String profileName,
-			final Component component) throws BusinessException {
-		try {
-			int selectedOption = ModalWindowUtils.showOptionPanel(component,
-					"Seleccione el tipo de informe que desea visualizar",
-					new Object[] { "Desglosado por meses",
-							"Desglosado por días" });
-			FileWriter writer = new FileWriter(
-					ConfigurationUtils.getCSVTempFile());
-			if (selectedOption == 0)
-				monthResumeCSV(writer, year, orm, profileName);
-			else if (selectedOption == 1)
-				dayliResumeCSV(writer, year, orm, profileName);
-			else
-				return -1;
-			writer.flush();
-			writer.close();
+	public static void exportInfo(final IORMClient orm, final int year,
+			final String profileName, final Observer callback) {
+		new ExportDataWindow(new Observer() {
 
-			// Open with excel
-			if (!Desktop.isDesktopSupported()) {
-				Process p = Runtime.getRuntime().exec(
-						"rundll32 url.dll,FileProtocolHandler "
-								+ ConfigurationUtils.getCSVTempFile());
-				// use alternative (Runtime.exec)
-				return -1;
+			@Override
+			public void update(Observable o, Object arg) {
+				List<Object> list = ((List<Object>) arg);
+				Integer selectedOption = (Integer) list.get(0);
+				String fromDate = (String) list.get(1);
+				String toDate = (String) list.get(2);
+
+				try {
+					String fileToOpen = null;
+					if (selectedOption
+							.equals(ExportDataWindow.EXPORT_CSV_OPTION_MONTH)) {
+						fileToOpen = ConfigurationUtils.getCSVTempFile();
+						monthResumeCSV(year, profileName, fromDate, toDate, orm);
+					} else if (selectedOption
+							.equals(ExportDataWindow.EXPORT_CSV_OPTION_DAY)) {
+						dayliResumeCSV(year, profileName, fromDate, toDate, orm);
+						fileToOpen = ConfigurationUtils.getCSVTempFile();
+					} else if (selectedOption
+							.equals(ExportDataWindow.EXPORT_PDF_OPTION_DAY)){
+						dayliResumePDF(year, profileName, fromDate, toDate, orm);
+					fileToOpen = ConfigurationUtils.getPDFTempFile();
+					}else if (selectedOption
+							.equals(ExportDataWindow.EXPORT_PDF_OPTION_MONTH)){
+						dayliResumePDF(year, profileName, fromDate, toDate, orm);
+						fileToOpen = ConfigurationUtils.getPDFTempFile();
+					}else
+						callback.update(null, -1);
+
+					// Open with excel
+					if (!Desktop.isDesktopSupported()) {
+						Process p = Runtime.getRuntime().exec(
+								"rundll32 url.dll,FileProtocolHandler "
+										+ fileToOpen);
+						// use alternative (Runtime.exec)
+						callback.update(null, -1);
+					}
+
+					Desktop desktop = Desktop.getDesktop();
+					if (!desktop.isSupported(Desktop.Action.OPEN)) {
+						System.err.println("OPEN not supported");
+						// use alternative (Runtime.exec)
+						callback.update(null, -1);
+					}
+
+					desktop.open(new File(fileToOpen));
+					callback.update(null, 0);
+				} catch (IOException e) {
+					e.printStackTrace();
+					callback.update(null, -1);
+				} catch (ConfigurationNotInitedException e) {
+					e.printStackTrace();
+					callback.update(null, -1);
+				} catch (BusinessException e) {
+					e.printStackTrace();
+					callback.update(null, -1);
+				}
 			}
-
-			Desktop desktop = Desktop.getDesktop();
-			if (!desktop.isSupported(Desktop.Action.OPEN)) {
-				System.err.println("OPEN not supported");
-				// use alternative (Runtime.exec)
-				return -1;
-			}
-
-			desktop.open(new File(ConfigurationUtils.getCSVTempFile()));
-
-		} catch (IOException e) {
-			throw new BusinessException(e);
-		} catch (ConfigurationNotInitedException e) {
-			throw new BusinessException(e);
-		}
-		return 0;
+		});
 	}
 }

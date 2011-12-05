@@ -1,5 +1,6 @@
 package com.hcalendar;
 
+
 /**
  * Repository for app constants
  * */
@@ -8,9 +9,17 @@ public class HCalendarConstants {
 	// CONFIGURATION
 	public static final String ANUALCONFIGURATION_FILE = "anualConfiguration.xml";
 	public static final String HOUR_INPUT_FILE = "hours_input.xml";
-	public static final String EXPORT_CSV_TEMP_FILE = "export_temp.csv";
 
 	public static final String NULL_COMBO_INPUT = "";
+	
+	//	EXPORT DATA
+	public static final String EXPORT_CSV_TEMP_FILE = "export_temp.csv";
+	public static final String EXPORT_PDF_STYLESHEET_FILE = "workInputs2fo.xsl";
+	public static final String EXPORT_PDF_TEMP_FILE = "ResultObj2PDF.pdf";
+	
+	public static final char EXPORT_CSV_COLUMN_SEPARATOR =',';
+	public static final char EXPORT_CSV_ROW_SEPARATOR ='\n';
+	
 	
 	//	UI
 	public static final String SUCCES_SAVE_DATA ="Guardado completado";

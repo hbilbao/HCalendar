@@ -2,6 +2,7 @@ package com.hcalendar.config;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 
 import com.hcalendar.HCalendarConstants;
@@ -83,6 +84,33 @@ public class ConfigurationUtils {
 				+ HCalendarConstants.EXPORT_CSV_TEMP_FILE;
 	}
 
+	/**
+	 * Get the path to the pdf temp file
+	 * 
+	 * @return full real path to the csv temp file
+	 * @throws ConfigurationNotInitedException
+	 * */
+	public static String getPDFTempFile()
+			throws ConfigurationNotInitedException {
+		String folder = getConfigFolder();
+		return folder + File.separatorChar
+				+ HCalendarConstants.EXPORT_PDF_TEMP_FILE;
+	}
+
+	/**
+	 * Get the input stream to the pdf xsl stylesheet file. Is inside the jar,
+	 * so we can't get the actual file with the path.
+	 * 
+	 * @return Input stream to the file 
+	 * */
+	public static InputStream getPDFStyleSheet(){
+		return Thread
+				.currentThread()
+				.getContextClassLoader()
+				.getResourceAsStream(
+						HCalendarConstants.EXPORT_PDF_STYLESHEET_FILE);
+	}
+
 	// File exist check
 
 	/**
@@ -108,5 +136,4 @@ public class ConfigurationUtils {
 		File file = new File(getInputHoursFile());
 		return file.exists();
 	}
-
 }
