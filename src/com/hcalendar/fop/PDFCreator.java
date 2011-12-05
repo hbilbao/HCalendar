@@ -49,7 +49,7 @@ public class PDFCreator {
 	 *             In case of a XSL transformation problem
 	 * @throws URISyntaxException
 	 *             No stylesheet found
-	 * @throws ConfigurationNotInitedException 
+	 * @throws ConfigurationNotInitedException
 	 */
 	public void createPDF(WorkInputsDTO workInput) throws IOException,
 			FOPException, TransformerException, ConfigurationNotInitedException {
@@ -65,7 +65,7 @@ public class PDFCreator {
 		out = new java.io.BufferedOutputStream(out);
 		try {
 			// Construct fop with desired output format
-			Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, foUserAgent,
+			Fop fop = fopFactory.newFop(org.apache.xmlgraphics.util.MimeConstants.MIME_PDF, foUserAgent,
 					out);
 
 			// Setup XSLT

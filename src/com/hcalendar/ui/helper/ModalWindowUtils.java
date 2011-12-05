@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
  * */
 public class ModalWindowUtils {
 
-	//	Modal dialog constants
+	// Modal dialog constants
 	private static final String INFO_MESSAGE = "Información";
 	private static final String ERROR_MESSAGE = "Error";
 	private static final String SELECT_OPTION_MESSAGE = "Seleccione una opción";

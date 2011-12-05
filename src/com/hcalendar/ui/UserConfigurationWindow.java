@@ -45,27 +45,27 @@ import com.hcalendar.ui.widgets.ICalendarActionProvider;
 import com.hcalendar.ui.widgets.ICalendarActionProvider.LIST_TYPE;
 import com.hcalendar.ui.widgets.impl.JUserCalendarPanel;
 
-public class UserConfigurationWindow extends JFrame  implements IWindow{
+public class UserConfigurationWindow extends JFrame implements IWindow {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final String WINDOW_TITLE ="Creación de perfil";
-	
-	private static final String ERROR_APPLY_CHANGE ="Error al añadir el cambio solicitado";
-	private static final String ERROR_DATE_CHANGE ="Error al cambiar el año selecionado";
-	
-	private static final String ASK_SAVEORLOSE_DATA ="Si cambias el año, se borraran los días libres que has definido hasta ahora. Quieres seguir?";
-	private static final String ASK_OVEWRITE_PROFILE_DATA ="El perfil que intenta guardar la existe, quiere sobreescribirlo?";
-	private static final String WARNING_CANNOT_CHANGE_YEAR ="Si quieres introducir días libres de otro año, primero debes cambiar el año del perfíl";
-	
-	private static final String WINDOW_ITEM_NAME_TITLE ="Nombre : ";
-	private static final String WINDOW_ITEM_YEAR_TITLE ="Año : ";
-	private static final String WINDOW_ITEM_YEAR_TOTAL_HOURS_TITLE ="Total horas convenio: ";
-	
-	private static final String WINDOW_PANEL_BORDER_FREEDAYS_TITLE ="Lista de dias libres";
-	private static final String WINDOW_PANEL_BORDER_SELECT_WORKINGDAYS_TITLE ="Seleccione dias laborales";
-	private static final String WINDOW_PANEL_DAY_HOURS_TITLE ="Horas por día";
-	
+	private static final String WINDOW_TITLE = "Creación de perfil";
+
+	private static final String ERROR_APPLY_CHANGE = "Error al añadir el cambio solicitado";
+	private static final String ERROR_DATE_CHANGE = "Error al cambiar el año selecionado";
+
+	private static final String ASK_SAVEORLOSE_DATA = "Si cambias el año, se borraran los días libres que has definido hasta ahora. Quieres seguir?";
+	private static final String ASK_OVEWRITE_PROFILE_DATA = "El perfil que intenta guardar la existe, quiere sobreescribirlo?";
+	private static final String WARNING_CANNOT_CHANGE_YEAR = "Si quieres introducir días libres de otro año, primero debes cambiar el año del perfíl";
+
+	private static final String WINDOW_ITEM_NAME_TITLE = "Nombre : ";
+	private static final String WINDOW_ITEM_YEAR_TITLE = "Año : ";
+	private static final String WINDOW_ITEM_YEAR_TOTAL_HOURS_TITLE = "Total horas convenio: ";
+
+	private static final String WINDOW_PANEL_BORDER_FREEDAYS_TITLE = "Lista de dias libres";
+	private static final String WINDOW_PANEL_BORDER_SELECT_WORKINGDAYS_TITLE = "Seleccione dias laborales";
+	private static final String WINDOW_PANEL_DAY_HOURS_TITLE = "Horas por día";
+
 	private JTextArea diasLibresTextField;
 	private JTextField nameTextField;
 	private JTextField anualHours;
@@ -86,10 +86,10 @@ public class UserConfigurationWindow extends JFrame  implements IWindow{
 	private JTextField horasViernes;
 	private JTextField horasSabado;
 	private JTextField horasDomingo;
-	
+
 	JUserCalendarPanel jCalendarPanel;
 	private IORMClient orm;
-	
+
 	private final String DATE_SEPARATOR = "\n";
 
 	public UserConfigurationWindow(IORMClient orm, IWindowDataHanlder callback) {
@@ -115,7 +115,8 @@ public class UserConfigurationWindow extends JFrame  implements IWindow{
 		jCalendarPanel = new JUserCalendarPanel(new ICalendarEventListener() {
 
 			@Override
-			public void onDateChanged(Date date, Boolean selected, ICalendarActionProvider actionProvider) {
+			public void onDateChanged(Date date, Boolean selected,
+					ICalendarActionProvider actionProvider) {
 				calendarOnDateChangedActions(date, selected, actionProvider);
 			}
 
@@ -124,15 +125,16 @@ public class UserConfigurationWindow extends JFrame  implements IWindow{
 				try {
 					orm.addChange(null, entity);
 				} catch (ORMException e) {
-					ModalWindowUtils.showErrorPanel(UserConfigurationWindow.this,ERROR_APPLY_CHANGE
-							);
+					ModalWindowUtils.showErrorPanel(
+							UserConfigurationWindow.this, ERROR_APPLY_CHANGE);
 				}
 			}
 		}, false, true);
 		panel.add(jCalendarPanel);
 
 		JPanel diasLibresPanel = new JPanel(new GridLayout(1, 2));
-		Border hoursBorder = BorderFactory.createTitledBorder(WINDOW_PANEL_BORDER_FREEDAYS_TITLE);
+		Border hoursBorder = BorderFactory
+				.createTitledBorder(WINDOW_PANEL_BORDER_FREEDAYS_TITLE);
 		diasLibresPanel.setBorder(hoursBorder);
 		diasLibresTextField = new JTextArea();
 		diasLibresTextField.setEditable(false);
@@ -145,7 +147,8 @@ public class UserConfigurationWindow extends JFrame  implements IWindow{
 		JPanel genPanel = new JPanel(new GridLayout(1, 2));
 		// Dias laborales
 		JPanel daysPanel = new JPanel(new GridLayout(7, 1));
-		Border daysBorder = BorderFactory.createTitledBorder(WINDOW_PANEL_BORDER_SELECT_WORKINGDAYS_TITLE);
+		Border daysBorder = BorderFactory
+				.createTitledBorder(WINDOW_PANEL_BORDER_SELECT_WORKINGDAYS_TITLE);
 		daysPanel.setBorder(daysBorder);
 		lunes = new JCheckBox(DateHelper.daysOfWeek[0]);
 		lunes.addActionListener(new ActionListener() {
@@ -246,7 +249,8 @@ public class UserConfigurationWindow extends JFrame  implements IWindow{
 		daysPanel.add(domingo);
 
 		JPanel hoursPanel = new JPanel(new GridLayout(7, 1));
-		Border hoursBorder = BorderFactory.createTitledBorder(WINDOW_PANEL_DAY_HOURS_TITLE);
+		Border hoursBorder = BorderFactory
+				.createTitledBorder(WINDOW_PANEL_DAY_HOURS_TITLE);
 		hoursPanel.setBorder(hoursBorder);
 		horasLunes = new JTextField();
 		horasLunes.setInputVerifier(new NumericValidator(this));
@@ -292,31 +296,39 @@ public class UserConfigurationWindow extends JFrame  implements IWindow{
 
 		JLabel convHours = new JLabel(WINDOW_ITEM_YEAR_TOTAL_HOURS_TITLE);
 		anualHours = new JTextField();
-		//	Validate
+		// Validate
 		anualHours.setInputVerifier(new NumericValidator(this));
 		convHours.setLabelFor(anualHours);
 		namePanel.add(convHours, BorderLayout.WEST);
 		namePanel.add(anualHours, BorderLayout.CENTER);
-		
+
 		JLabel year = new JLabel(WINDOW_ITEM_YEAR_TITLE);
-		yearCombo = new JComboBox(HCalendarConstants.ANUAL_CONFIGURATION_YEAR_OPTIONS);
+		yearCombo = new JComboBox(
+				HCalendarConstants.ANUAL_CONFIGURATION_YEAR_OPTIONS);
 		yearCombo.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (diasLibresTextField.getText() != null && diasLibresTextField.getText().length() > 0)
+				if (diasLibresTextField.getText() != null
+						&& diasLibresTextField.getText().length() > 0)
 					if (ModalWindowUtils
 							.showOptionPanel(
-									UserConfigurationWindow.this,ASK_SAVEORLOSE_DATA
-									,
-									new String[] { HCalendarConstants.ACTION_BUTTON_CONTINUE_TITLE, HCalendarConstants.ACTION_BUTTON_CANCEL_TITLE }) == 0) {
+									UserConfigurationWindow.this,
+									ASK_SAVEORLOSE_DATA,
+									new String[] {
+											HCalendarConstants.ACTION_BUTTON_CONTINUE_TITLE,
+											HCalendarConstants.ACTION_BUTTON_CANCEL_TITLE }) == 0) {
 						jCalendarPanel.clearAllUserSelections();
-						jCalendarPanel.setDate((Integer) yearCombo.getSelectedItem(), Calendar.JANUARY, 1);
+						jCalendarPanel.setDate(
+								(Integer) yearCombo.getSelectedItem(),
+								Calendar.JANUARY, 1);
 						diasLibresTextField.setText(null);
 						try {
 							orm.rollback();
 						} catch (ORMException e1) {
-							ModalWindowUtils.showErrorPanel(UserConfigurationWindow.this, ERROR_DATE_CHANGE);
+							ModalWindowUtils.showErrorPanel(
+									UserConfigurationWindow.this,
+									ERROR_DATE_CHANGE);
 						}
 					}
 			}
@@ -334,7 +346,8 @@ public class UserConfigurationWindow extends JFrame  implements IWindow{
 		buttonPane.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
 		buttonPane.add(Box.createHorizontalGlue());
 		// BOTON GUARDAR
-		JButton saveButton = new JButton(HCalendarConstants.ACTION_BUTTON_SAVE_TITLE);
+		JButton saveButton = new JButton(
+				HCalendarConstants.ACTION_BUTTON_SAVE_TITLE);
 		saveButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -346,7 +359,8 @@ public class UserConfigurationWindow extends JFrame  implements IWindow{
 		buttonPane.add(saveButton);
 		buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
 		// BOTON CANCELAR
-		JButton cancelButton = new JButton(HCalendarConstants.ACTION_BUTTON_CANCEL_TITLE);
+		JButton cancelButton = new JButton(
+				HCalendarConstants.ACTION_BUTTON_CANCEL_TITLE);
 		cancelButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -369,19 +383,29 @@ public class UserConfigurationWindow extends JFrame  implements IWindow{
 			Integer year = (Integer) yearCombo.getSelectedItem();
 			// workingsdays
 			Map<Integer, String> listaDiasLaborales = new HashMap<Integer, String>();
-			if (horasLunes.getText() != null && horasLunes.getText().length() > 0)
+			if (horasLunes.getText() != null
+					&& horasLunes.getText().length() > 0)
 				listaDiasLaborales.put(Calendar.MONDAY, horasLunes.getText());
-			if (horasMartes.getText() != null && horasMartes.getText().length() > 0)
+			if (horasMartes.getText() != null
+					&& horasMartes.getText().length() > 0)
 				listaDiasLaborales.put(Calendar.TUESDAY, horasMartes.getText());
-			if (horasMiercoles.getText() != null && horasMiercoles.getText().length() > 0)
-				listaDiasLaborales.put(Calendar.WEDNESDAY, horasMiercoles.getText());
-			if (horasJueves.getText() != null && horasJueves.getText().length() > 0)
-				listaDiasLaborales.put(Calendar.THURSDAY, horasJueves.getText());
-			if (horasViernes.getText() != null && horasViernes.getText().length() > 0)
+			if (horasMiercoles.getText() != null
+					&& horasMiercoles.getText().length() > 0)
+				listaDiasLaborales.put(Calendar.WEDNESDAY,
+						horasMiercoles.getText());
+			if (horasJueves.getText() != null
+					&& horasJueves.getText().length() > 0)
+				listaDiasLaborales
+						.put(Calendar.THURSDAY, horasJueves.getText());
+			if (horasViernes.getText() != null
+					&& horasViernes.getText().length() > 0)
 				listaDiasLaborales.put(Calendar.FRIDAY, horasViernes.getText());
-			if (horasSabado.getText() != null && horasSabado.getText().length() > 0)
-				listaDiasLaborales.put(Calendar.SATURDAY, horasSabado.getText());
-			if (horasDomingo.getText() != null && horasDomingo.getText().length() > 0)
+			if (horasSabado.getText() != null
+					&& horasSabado.getText().length() > 0)
+				listaDiasLaborales
+						.put(Calendar.SATURDAY, horasSabado.getText());
+			if (horasDomingo.getText() != null
+					&& horasDomingo.getText().length() > 0)
 				listaDiasLaborales.put(Calendar.SUNDAY, horasDomingo.getText());
 			// freedays
 			List<String> dLibresList = new ArrayList<String>();
@@ -393,23 +417,32 @@ public class UserConfigurationWindow extends JFrame  implements IWindow{
 			}
 			// Verify if profile exists
 			boolean ovewriteProfile = false;
-			if (ORMHelper.getCurrentProfiles(orm.getAnualConfiguration()).contains(name)) {
-				int result = ModalWindowUtils.showOptionPanel(this,ASK_OVEWRITE_PROFILE_DATA
-						, new String[] {
-						HCalendarConstants.ACTION_BUTTON_CONTINUE_TITLE, HCalendarConstants.ACTION_BUTTON_CANCEL_TITLE });
+			if (ORMHelper.getCurrentProfiles(orm.getAnualConfiguration())
+					.contains(name)) {
+				int result = ModalWindowUtils
+						.showOptionPanel(
+								this,
+								ASK_OVEWRITE_PROFILE_DATA,
+								new String[] {
+										HCalendarConstants.ACTION_BUTTON_CONTINUE_TITLE,
+										HCalendarConstants.ACTION_BUTTON_CANCEL_TITLE });
 				if (result == 1)
 					return;
 				ovewriteProfile = true;
 			}
-			UserConfiguration userConfig = DataServices.createAnualConfigurationProfile(orm, name, year,
-					aHours, listaDiasLaborales, dLibresList, ovewriteProfile);
-			AnualHours anualHours = Calculator.calculatePlannedHoursOfYear(orm, name, year,
-					listaDiasLaborales, dLibresList, ovewriteProfile);
+			UserConfiguration userConfig = DataServices
+					.createAnualConfigurationProfile(orm, name, year, aHours,
+							listaDiasLaborales, dLibresList, ovewriteProfile);
+			AnualHours anualHours = Calculator.calculatePlannedHoursOfYear(orm,
+					name, year, listaDiasLaborales, dLibresList,
+					ovewriteProfile);
 			CRUDManager.saveAnualHours(anualHours);
 			CRUDManager.saveAnualConfiguration(userConfig);
-			ModalWindowUtils.showSuccesPanel(this, HCalendarConstants.SUCCES_SAVE_DATA);
+			ModalWindowUtils.showSuccesPanel(this,
+					HCalendarConstants.SUCCES_SAVE_DATA);
 		} catch (Exception e) {
-			ModalWindowUtils.showErrorPanel(this, HCalendarConstants.ERROR_SAVE_DATA);
+			ModalWindowUtils.showErrorPanel(this,
+					HCalendarConstants.ERROR_SAVE_DATA);
 		}
 	}
 
@@ -418,33 +451,40 @@ public class UserConfigurationWindow extends JFrame  implements IWindow{
 	private void calendarOnDateChangedActions(Date date, Boolean selected,
 			ICalendarActionProvider actionProvider) {
 		// Verify if year isEqual
-		if (date.getYear() + 1900 != ((Integer) yearCombo.getSelectedItem()).intValue()) {
-			ModalWindowUtils.showErrorPanel(UserConfigurationWindow.this,WARNING_CANNOT_CHANGE_YEAR);
+		if (date.getYear() + 1900 != ((Integer) yearCombo.getSelectedItem())
+				.intValue()) {
+			ModalWindowUtils.showErrorPanel(UserConfigurationWindow.this,
+					WARNING_CANNOT_CHANGE_YEAR);
 			return;
 		}
 		// Add color to the date onCalendar
 		if (!selected)
 			jCalendarPanel.addDayToList(date, LIST_TYPE.USER_NOT_WORKINGDAY);
 		else
-			jCalendarPanel.removeDayFromList(date, LIST_TYPE.USER_NOT_WORKINGDAY);
+			jCalendarPanel.removeDayFromList(date,
+					LIST_TYPE.USER_NOT_WORKINGDAY);
 
 		String formattedDate = DateHelper.DATE_FORMAT.format(date);
 		// Lista vacia
-		if (diasLibresTextField.getText() == null || diasLibresTextField.getText().length() == 0)
+		if (diasLibresTextField.getText() == null
+				|| diasLibresTextField.getText().length() == 0)
 			diasLibresTextField.setText(formattedDate);
 		// El dia existe en la lista
-		else if (diasLibresTextField.getText().contains(formattedDate) && selected) {
+		else if (diasLibresTextField.getText().contains(formattedDate)
+				&& selected) {
 			StringBuffer strBuff = new StringBuffer();
 			String text = diasLibresTextField.getText();
 			String[] splitted = text.split(DATE_SEPARATOR);
 			for (String dateStr : splitted) {
-				if ((dateStr != null && dateStr.length() > 0) && (!dateStr.equals(formattedDate)))
+				if ((dateStr != null && dateStr.length() > 0)
+						&& (!dateStr.equals(formattedDate)))
 					strBuff.append(dateStr).append(DATE_SEPARATOR);
 			}
 			diasLibresTextField.setText(strBuff.toString());
 			// El dia no existe en la lista
 		} else if (!diasLibresTextField.getText().contains(formattedDate))
-			diasLibresTextField.setText(diasLibresTextField.getText() + DATE_SEPARATOR + formattedDate);
+			diasLibresTextField.setText(diasLibresTextField.getText()
+					+ DATE_SEPARATOR + formattedDate);
 
 	}
 
@@ -455,12 +495,12 @@ public class UserConfigurationWindow extends JFrame  implements IWindow{
 
 	@Override
 	public void setData() {
-		//	TODO De momento no hace falta rellenarlo. Nadie escucha cambios
+		// TODO De momento no hace falta rellenarlo. Nadie escucha cambios
 	}
 
 	@Override
 	public void notifyDataChange() {
-		for (IWindowDataHanlder w: childWindows){
+		for (IWindowDataHanlder w : childWindows) {
 			w.setData();
 		}
 	}

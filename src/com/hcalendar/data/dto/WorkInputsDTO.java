@@ -23,11 +23,11 @@ public class WorkInputsDTO {
 	private String profileName;
 	private Integer year;
 	private List<WorkInput> workInput = new ArrayList<WorkInput>();
-	private Map<String,Float> monthHoursResume = new LinkedHashMap<String, Float>();
+	private Map<String, Float> monthHoursResume = new LinkedHashMap<String, Float>();
 	private List<Holiday> holidays = new ArrayList<Holiday>();
 	private List<FreeDay> freeDays = new ArrayList<FreeDay>();
-	
-	//	Adittional data
+
+	// Adittional data
 	private Date fromFilter;
 	private Date toFilter;
 
@@ -92,7 +92,6 @@ public class WorkInputsDTO {
 	public void setToFilter(Date toFilter) {
 		this.toFilter = toFilter;
 	}
-	
 
 	public List<FreeDay> getFreeDays() {
 		return freeDays;
@@ -106,15 +105,14 @@ public class WorkInputsDTO {
 		this.freeDays.add(freeDay);
 	}
 
-	public Map<String,Float> getMonthHoursResume() {
+	public Map<String, Float> getMonthHoursResume() {
 		return monthHoursResume;
 	}
 
-	public void setMonthHoursResume(Map<String,Float> monthHoursResume) {
+	public void setMonthHoursResume(Map<String, Float> monthHoursResume) {
 		this.monthHoursResume = monthHoursResume;
 	}
 
-	
 	/**
 	 * Resturns a Source object for this object so it can be used as input for a
 	 * JAXP transformation.
@@ -253,13 +251,14 @@ public class WorkInputsDTO {
 			this.description = value;
 		}
 	}
-	
+
 	public static class FreeDay {
 
 		protected XMLGregorianCalendar day;
 		protected String comment;
 
-		public FreeDay(com.hcalendar.data.xml.userconfiguration.UserConfiguration.User.YearConf.FreeDays.FreeDay day2) {
+		public FreeDay(
+				com.hcalendar.data.xml.userconfiguration.UserConfiguration.User.YearConf.FreeDays.FreeDay day2) {
 			this.setDay(day2.getDay());
 			this.setComment(day2.getComment());
 		}

@@ -223,7 +223,7 @@ public class Calculator {
 		System.out.println("Calculated hours=" + result);
 		return result;
 	}
-	
+
 	/**
 	 * calculate planned hours for a given year and a profile
 	 * 
@@ -236,10 +236,11 @@ public class Calculator {
 	 * 
 	 * @return Calendar hours from the data layer
 	 * */
-	public static float calculateAnualPlannedHours(AnualHours anualConfig, int year,
-			String profileName) {
+	public static float calculateAnualPlannedHours(AnualHours anualConfig,
+			int year, String profileName) {
 		float sumOfHours = 0;
-		for (WorkedHours wHours : ORMHelper.getUsersWorkedHourList(anualConfig, profileName)) {
+		for (WorkedHours wHours : ORMHelper.getUsersWorkedHourList(anualConfig,
+				profileName)) {
 			if (wHours.getDate().getYear() == year)
 				sumOfHours = sumOfHours + wHours.getHours();
 		}

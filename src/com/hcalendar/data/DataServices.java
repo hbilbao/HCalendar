@@ -42,7 +42,9 @@ import com.hcalendar.ui.subViews.ExportDataWindow;
 public class DataServices {
 
 	@SuppressWarnings("deprecation")
-	private static Map<String, Float> getHoursMonthResume(String fromDateStr, String toDateStr, int year, String profileName, IORMClient orm) throws ORMException, DateException{
+	private static Map<String, Float> getHoursMonthResume(String fromDateStr,
+			String toDateStr, int year, String profileName, IORMClient orm)
+			throws ORMException, DateException {
 		Map<String, Float> resultMap = new LinkedHashMap<String, Float>();
 		Date fromDate = null;
 		Date toDate = null;
@@ -64,9 +66,9 @@ public class DataServices {
 				daysOnMonth = DateHelper.daysOnMonth[i] + 1;
 			else
 				daysOnMonth = DateHelper.daysOnMonth[i];
-			float hours = Calculator.calculateHoursUntilDate(orm
-					.getAnualHours(),
-					new Date(year - 1900, i, daysOnMonth), profileName);
+			float hours = Calculator.calculateHoursUntilDate(
+					orm.getAnualHours(), new Date(year - 1900, i, daysOnMonth),
+					profileName);
 			lastCalculatedHours = i == 0 ? 0 : Calculator
 					.calculateHoursUntilDate(orm.getAnualHours(), new Date(
 							year - 1900, i - 1, daysOnMonth), profileName);
@@ -74,7 +76,7 @@ public class DataServices {
 		}
 		return resultMap;
 	}
-	
+
 	private static void dayliResumePDF(int year, String profileName,
 			String fromDateStr, String toDateStr, IORMClient orm)
 			throws BusinessException {
@@ -89,13 +91,16 @@ public class DataServices {
 			// get worked hours list
 			List<WorkedHours> workedHours = ORMHelper.getUsersWorkedHourList(
 					anualHours, profileName, fromDate, toDate);
-			List<Holidays> holidays = ORMHelper.getUserHolidaysList(anualHours, profileName, fromDate, toDate);
-			List<FreeDay> freeDays = ORMHelper.getCalendarFreeDays(orm.getAnualConfiguration(), profileName, year, fromDate, toDate);
-			
+			List<Holidays> holidays = ORMHelper.getUserHolidaysList(anualHours,
+					profileName, fromDate, toDate);
+			List<FreeDay> freeDays = ORMHelper.getCalendarFreeDays(
+					orm.getAnualConfiguration(), profileName, year, fromDate,
+					toDate);
+
 			// create DTO for xsl file
 			WorkInputsDTO dto = new WorkInputsDTO();
 			dto.setFromFilter(fromDate);
-			dto.setToFilter(toDate);	
+			dto.setToFilter(toDate);
 			dto.setProfileName(profileName);
 			dto.setYear(year);
 			for (WorkedHours work : workedHours) {
@@ -107,10 +112,12 @@ public class DataServices {
 				dto.addHoliday(subDto);
 			}
 			for (FreeDay day : freeDays) {
-				com.hcalendar.data.dto.WorkInputsDTO.FreeDay subDto = new com.hcalendar.data.dto.WorkInputsDTO.FreeDay(day);
+				com.hcalendar.data.dto.WorkInputsDTO.FreeDay subDto = new com.hcalendar.data.dto.WorkInputsDTO.FreeDay(
+						day);
 				dto.addFreeDay(subDto);
 			}
-			dto.setMonthHoursResume(getHoursMonthResume(fromDateStr, toDateStr, year, profileName, orm));
+			dto.setMonthHoursResume(getHoursMonthResume(fromDateStr, toDateStr,
+					year, profileName, orm));
 			// Create PDF
 			new PDFCreator().createPDF(dto);
 
@@ -130,13 +137,14 @@ public class DataServices {
 			writer.append("Horas");
 			writer.append(HCalendarConstants.EXPORT_CSV_ROW_SEPARATOR);
 
-			Map<String, Float> monthResume = getHoursMonthResume(fromDateStr, toDateStr, year, profileName, orm);
+			Map<String, Float> monthResume = getHoursMonthResume(fromDateStr,
+					toDateStr, year, profileName, orm);
 			// Write columns
-			for (String monthName :monthResume.keySet()){
+			for (String monthName : monthResume.keySet()) {
 				writer.append(monthName);
 				writer.append(HCalendarConstants.EXPORT_CSV_COLUMN_SEPARATOR);
 				writer.append(String.valueOf(monthResume.get(monthName)));
-				writer.append(HCalendarConstants.EXPORT_CSV_ROW_SEPARATOR);				
+				writer.append(HCalendarConstants.EXPORT_CSV_ROW_SEPARATOR);
 			}
 		} catch (IOException e) {
 			throw new BusinessException(e);
@@ -199,19 +207,20 @@ public class DataServices {
 				writer.append(HCalendarConstants.EXPORT_CSV_ROW_SEPARATOR);
 			}
 			// Month resume
-			Map<String, Float> monthResume = getHoursMonthResume(fromDateStr, toDateStr, year, profileName, orm);
+			Map<String, Float> monthResume = getHoursMonthResume(fromDateStr,
+					toDateStr, year, profileName, orm);
 			float totHours = 0;
-			for (String monthName :monthResume.keySet()){
+			for (String monthName : monthResume.keySet()) {
 				totHours = totHours + monthResume.get(monthName);
 				writer.append("Resumen del mes");
 				writer.append(HCalendarConstants.EXPORT_CSV_COLUMN_SEPARATOR);
 				writer.append(monthName);
 				writer.append(HCalendarConstants.EXPORT_CSV_COLUMN_SEPARATOR);
-				writer.append(String
-						.valueOf(monthResume.get(monthName)) + " horas");
+				writer.append(String.valueOf(monthResume.get(monthName))
+						+ " horas");
 				writer.append(HCalendarConstants.EXPORT_CSV_COLUMN_SEPARATOR);
 				writer.append("");
-				writer.append(HCalendarConstants.EXPORT_CSV_ROW_SEPARATOR);		
+				writer.append(HCalendarConstants.EXPORT_CSV_ROW_SEPARATOR);
 			}
 			// Year resume
 			writer.append("Resumen del año");
@@ -312,8 +321,8 @@ public class DataServices {
 	}
 
 	/**
-	 * Export data to CSV or PDF with two options: - By day: resume by day - By month:
-	 * resume by month
+	 * Export data to CSV or PDF with two options: - By day: resume by day - By
+	 * month: resume by month
 	 * 
 	 * @param orm
 	 *            orm instance
@@ -347,14 +356,14 @@ public class DataServices {
 						dayliResumeCSV(year, profileName, fromDate, toDate, orm);
 						fileToOpen = ConfigurationUtils.getCSVTempFile();
 					} else if (selectedOption
-							.equals(ExportDataWindow.EXPORT_PDF_OPTION_DAY)){
+							.equals(ExportDataWindow.EXPORT_PDF_OPTION_DAY)) {
 						dayliResumePDF(year, profileName, fromDate, toDate, orm);
 						fileToOpen = ConfigurationUtils.getPDFTempFile();
-					}else if (selectedOption
-							.equals(ExportDataWindow.EXPORT_PDF_OPTION_MONTH)){
+					} else if (selectedOption
+							.equals(ExportDataWindow.EXPORT_PDF_OPTION_MONTH)) {
 						dayliResumePDF(year, profileName, fromDate, toDate, orm);
 						fileToOpen = ConfigurationUtils.getPDFTempFile();
-					}else
+					} else
 						callback.update(null, -1);
 
 					// Open with excel

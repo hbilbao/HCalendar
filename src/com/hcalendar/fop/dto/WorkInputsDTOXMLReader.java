@@ -56,6 +56,7 @@ public class WorkInputsDTOXMLReader extends AbstractObjectReader {
 	/**
 	 * @see org.xml.sax.XMLReader#parse(InputSource)
 	 */
+	@Override
 	public void parse(InputSource input) throws IOException, SAXException {
 		if (input instanceof WorkInputsInputSource) {
 			parse(((WorkInputsInputSource) input).getWorkInputs());
@@ -146,7 +147,7 @@ public class WorkInputsDTOXMLReader extends AbstractObjectReader {
 			handler.endElement(XSL_TEMPLATE_WORKING_DAYS);
 		}
 		while (i.hasNext()) {
-			WorkInput workInput = (WorkInput) i.next();
+			WorkInput workInput = i.next();
 			if (workInput == null) {
 				throw new NullPointerException(
 						"Parameter workInputs must not be null");
@@ -175,7 +176,7 @@ public class WorkInputsDTOXMLReader extends AbstractObjectReader {
 			handler.endElement(XSL_TEMPLATE_HOLIDAY);
 		}
 		while (i.hasNext()) {
-			Holiday holiday = (Holiday) i.next();
+			Holiday holiday = i.next();
 			if (holiday == null) {
 				throw new NullPointerException(
 						"Parameter holidays must not be null");
@@ -203,7 +204,7 @@ public class WorkInputsDTOXMLReader extends AbstractObjectReader {
 			handler.endElement(XSL_TEMPLATE_FREEDAY);
 		}
 		while (i.hasNext()) {
-			FreeDay day = (FreeDay) i.next();
+			FreeDay day = i.next();
 			if (day == null) {
 				throw new NullPointerException(
 						"Parameter freeDaysList must not be null");

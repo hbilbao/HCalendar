@@ -1,5 +1,5 @@
 package com.hcalendar.ui;
 
-public interface IWindow  extends IWindowContainer, IWindowDataHanlder{
+public interface IWindow extends IWindowContainer, IWindowDataHanlder {
 
 }

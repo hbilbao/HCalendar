@@ -103,7 +103,7 @@ class ORMClient implements IORMClient {
 	 * Persist the entity type
 	 * 
 	 * @param entityType
-	 *           entity type to persist
+	 *            entity type to persist
 	 * @throws ORMException
 	 * */
 	@Override
@@ -127,20 +127,20 @@ class ORMClient implements IORMClient {
 	}
 
 	/**
-	 * Do rollback of current changes 
+	 * Do rollback of current changes
 	 * 
 	 * @throws ORMException
-	 * @throws CRUDException 
+	 * @throws CRUDException
 	 * */
 	@Override
 	public void rollback() throws ORMException {
 		reloadEntitys();
 	}
-	
+
 	/**
-	 * Get the anual configuration from the xml, or from cache 
+	 * Get the anual configuration from the xml, or from cache
 	 * 
-	 * @return Anual configuration 
+	 * @return Anual configuration
 	 * @throws ORMException
 	 * */
 	@Override
@@ -156,9 +156,9 @@ class ORMClient implements IORMClient {
 	}
 
 	/**
-	 * Get the anual hours from the xml, or from cache 
+	 * Get the anual hours from the xml, or from cache
 	 * 
-	 * @return Anual hours 
+	 * @return Anual hours
 	 * @throws ORMException
 	 * */
 	@Override
@@ -173,9 +173,9 @@ class ORMClient implements IORMClient {
 	}
 
 	/**
-	 * Discard any unsaved change and reload entities from the xml 
+	 * Discard any unsaved change and reload entities from the xml
 	 * 
-	 * @return Anual hours 
+	 * @return Anual hours
 	 * @throws ORMException
 	 * */
 	@Override

@@ -356,7 +356,8 @@ public class UserConfiguration {
 		 * 
 		 */
 		@XmlAccessorType(XmlAccessType.FIELD)
-		@XmlType(name = "", propOrder = { "year", "calendarHours", "workingDays", "freeDays" })
+		@XmlType(name = "", propOrder = { "year", "calendarHours",
+				"workingDays", "freeDays" })
 		public static class YearConf {
 
 			protected int year;
@@ -445,7 +446,8 @@ public class UserConfiguration {
 			 *            {@link UserConfiguration.User.YearConf.FreeDays }
 			 * 
 			 */
-			public void setFreeDays(UserConfiguration.User.YearConf.FreeDays value) {
+			public void setFreeDays(
+					UserConfiguration.User.YearConf.FreeDays value) {
 				this.freeDays = value;
 			}
 

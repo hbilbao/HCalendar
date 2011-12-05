@@ -56,14 +56,15 @@ public class DateHelper {
 		}
 	}
 
-	public static List<Date> parse2Date(List<String> dLibresList) throws DateException {
+	public static List<Date> parse2Date(List<String> dLibresList)
+			throws DateException {
 		List<Date> result = new ArrayList<Date>();
 		for (String dateStr : dLibresList) {
 			result.add(parse2Date(dateStr));
 		}
 		return result;
 	}
-	
+
 	public static XMLGregorianCalendar parse2XMLGregorianCalendar(String strDate)
 			throws DateException {
 		try {
@@ -87,6 +88,7 @@ public class DateHelper {
 		}
 		return false;
 	}
+
 	/**
 	 * Compare dates
 	 * 
@@ -160,10 +162,11 @@ public class DateHelper {
 		return null;
 	}
 
-	public static boolean isBetween(Date date, Date fromDate, Date toDate) throws DateException {
-		if (date.compareTo(fromDate)<0)
+	public static boolean isBetween(Date date, Date fromDate, Date toDate)
+			throws DateException {
+		if (date.compareTo(fromDate) < 0)
 			return false;
-		if (date.compareTo(toDate)>0)
+		if (date.compareTo(toDate) > 0)
 			return false;
 		return true;
 	}

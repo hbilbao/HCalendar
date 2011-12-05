@@ -37,7 +37,6 @@ public class ORMHelper {
 		return result;
 	}
 
-
 	private static void removeFromWorkedDays(AnualHours anualHours, Date date,
 			String profileName) {
 		List<WorkedHours> workedDays = getUsersWorkedHourList(anualHours,
@@ -111,7 +110,7 @@ public class ORMHelper {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * get users worked days list for a given profile
 	 * 
@@ -241,7 +240,6 @@ public class ORMHelper {
 				year.intValue()).getFreeDay());
 	}
 
-
 	/**
 	 * get users filtered holiday list for a given profile
 	 * 
@@ -250,9 +248,9 @@ public class ORMHelper {
 	 * @param profileName
 	 *            profile name which get the hour input
 	 * @param fromDate
-	 *            from 
+	 *            from
 	 * @param toDate
-	 *            to                        
+	 *            to
 	 * 
 	 * @return holidays list
 	 * */
@@ -273,7 +271,6 @@ public class ORMHelper {
 		}
 	}
 
-
 	/**
 	 * get calendar free days
 	 * 
@@ -282,9 +279,9 @@ public class ORMHelper {
 	 * @param profileName
 	 *            profile name which get the hour input
 	 * @param fromDate
-	 *            from 
+	 *            from
 	 * @param toDate
-	 *            to                        
+	 *            to
 	 * 
 	 * @return calendar free days
 	 * */
@@ -293,23 +290,24 @@ public class ORMHelper {
 			Date fromDate, Date toDate) throws ORMException {
 		try {
 			List<FreeDay> result = new ArrayList<FreeDay>();
-			FreeDays list = getCalendarFreeDays(anualConfiguration, profileName, year);
+			FreeDays list = getCalendarFreeDays(anualConfiguration,
+					profileName, year);
 			for (FreeDay day : list.getFreeDay()) {
-				if (fromDate==null){
-					result.add(day);	
+				if (fromDate == null) {
+					result.add(day);
 					continue;
 				}
 				if (DateHelper.isBetween(
 						DateHelper.xmlGregorianCalendar2Date(day.getDay()),
 						fromDate, toDate))
-				result.add(day);
+					result.add(day);
 			}
 			return result;
 		} catch (Exception e) {
 			throw new ORMException(e);
 		}
 	}
-	
+
 	/**
 	 * get calendar hours for a given profile
 	 * 

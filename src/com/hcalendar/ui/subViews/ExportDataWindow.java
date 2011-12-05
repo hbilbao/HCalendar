@@ -43,7 +43,7 @@ public class ExportDataWindow extends JFrame {
 	public static final Integer EXPORT_PDF_OPTION_MONTH = 1;
 	public static final Integer EXPORT_CSV_OPTION_DAY = 3;
 	public static final Integer EXPORT_CSV_OPTION_MONTH = 4;
-	
+
 	private static final long serialVersionUID = 1L;
 
 	private JTextField fromDateTextField;
@@ -75,7 +75,7 @@ public class ExportDataWindow extends JFrame {
 		JPanel checkPanel = new JPanel(new GridLayout(1, 1));
 		final JCheckBox enableFilter = new JCheckBox(WINDOW_ITEM_ENABLE_FILTER);
 		checkPanel.add(enableFilter, BorderLayout.WEST);
-		
+
 		pdfOption = new JRadioButton("pdf");
 		csvOption = new JRadioButton("excel");
 		ButtonGroup pdfOrCsvOptionGroup = new ButtonGroup();
@@ -84,7 +84,7 @@ public class ExportDataWindow extends JFrame {
 		pdfOrCsvOptionGroup.add(pdfOption);
 		checkPanel.add(csvOption);
 		checkPanel.add(pdfOption);
-		
+
 		JPanel datePanel = new JPanel(new GridLayout(1, 4));
 		JLabel diaryHoursLabel = new JLabel("Desde: ");
 		fromDateTextField = new JTextField();
@@ -180,7 +180,8 @@ public class ExportDataWindow extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ArrayList<Object> result = new ArrayList<Object>();
-				result.add(pdfOption.isSelected()?EXPORT_PDF_OPTION_DAY:EXPORT_CSV_OPTION_DAY);
+				result.add(pdfOption.isSelected() ? EXPORT_PDF_OPTION_DAY
+						: EXPORT_CSV_OPTION_DAY);
 				result.add(fromDateTextField.getText());
 				result.add(toDateTextField.getText());
 				ExportDataWindow.this.observer.update(null, result);
@@ -196,7 +197,8 @@ public class ExportDataWindow extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ArrayList<Object> result = new ArrayList<Object>();
-				result.add(pdfOption.isSelected()?EXPORT_PDF_OPTION_MONTH:EXPORT_CSV_OPTION_MONTH);
+				result.add(pdfOption.isSelected() ? EXPORT_PDF_OPTION_MONTH
+						: EXPORT_CSV_OPTION_MONTH);
 				result.add(fromDateTextField.getText());
 				result.add(toDateTextField.getText());
 				ExportDataWindow.this.observer.update(null, result);

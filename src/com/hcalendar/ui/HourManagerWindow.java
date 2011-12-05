@@ -43,35 +43,35 @@ import com.hcalendar.ui.widgets.impl.JUserCalendarPanel;
 public class HourManagerWindow extends JFrame implements IWindow {
 
 	private static final long serialVersionUID = 1L;
-	
-	private static final String WINDOW_TITLE ="Gestión de horas";
-	
-	private static final String ERROR_ANUALCONFIGURATION_NOT_EXIST ="No se ha creado ninguno configuración anual. Creala antes de acceder a esta ventana, por favor.";
-	private static final String ERROR_OPERATION_DATECHANGE ="Error al completar operaciones de cambio de fecha";
-	private static final String ERROR_OPERATION_APPLY_CHANGES ="Error al añadir los cambios solicitados";
-	
-	private static final String SUCCES_EXPORT_DATA ="Exportación correcta";
-	private static final String ERROR_EXPORT_DATA ="Error al exportar";
-	
-	private static final String ERROR_CALCULATE_DATA ="Error al calcular horas anules para el año ";
-	
-	private static final String WINDOW_ITEM_NAME_TITLE ="Nombre : ";
-	private static final String WINDOW_ITEM_YEAR_TITLE ="Año : ";
-	private static final String WINDOW_ITEM_NOT_WORKINGDAY_TITLE ="Días no laborales: ";
-	private static final String WINDOW_ITEM_FREEDAYS_TITLE ="Días libres del calendario: ";
-	private static final String WINDOW_ITEM_HOLIDAY_TITLE ="Vacaciones: ";
-	private static final String WINDOW_ITEM_YEAR_TOTAL_HOURS_TITLE ="Total horas convenio: ";
-	private static final String WINDOW_ITEM_ACTUAL_HOURS_TITLE ="Horas actuales: ";
-	private static final String WINDOW_ITEM_PLANNED_HOURS_TITLE ="Horas planificadas: ";
-	private static final String WINDOW_ITEM_DAY_HOURS_TITLE ="Horas diarias: ";
-	private static final String WINDOW_ITEM_DAY_HOURS_DESC_TITLE ="Descripción: ";
-	private static final String WINDOW_ITEM_EXPORT_DATA_TITLE="Exportar datos";
-	
-	private static final String WINDOW_PANEL_BORDER_PROFILE_TITLE ="Perfil";
-	private static final String WINDOW_PANEL_BORDER_HISTORY_TITLE ="Histórico";
-	private static final String WINDOW_PANEL_BORDER_ANUAL_INFO ="Información anual";
-	private static final String WINDOW_PANEL_BORDER_DIARY_INFO ="Información diaria";
-	
+
+	private static final String WINDOW_TITLE = "Gestión de horas";
+
+	private static final String ERROR_ANUALCONFIGURATION_NOT_EXIST = "No se ha creado ninguno configuración anual. Creala antes de acceder a esta ventana, por favor.";
+	private static final String ERROR_OPERATION_DATECHANGE = "Error al completar operaciones de cambio de fecha";
+	private static final String ERROR_OPERATION_APPLY_CHANGES = "Error al añadir los cambios solicitados";
+
+	private static final String SUCCES_EXPORT_DATA = "Exportación correcta";
+	private static final String ERROR_EXPORT_DATA = "Error al exportar";
+
+	private static final String ERROR_CALCULATE_DATA = "Error al calcular horas anules para el año ";
+
+	private static final String WINDOW_ITEM_NAME_TITLE = "Nombre : ";
+	private static final String WINDOW_ITEM_YEAR_TITLE = "Año : ";
+	private static final String WINDOW_ITEM_NOT_WORKINGDAY_TITLE = "Días no laborales: ";
+	private static final String WINDOW_ITEM_FREEDAYS_TITLE = "Días libres del calendario: ";
+	private static final String WINDOW_ITEM_HOLIDAY_TITLE = "Vacaciones: ";
+	private static final String WINDOW_ITEM_YEAR_TOTAL_HOURS_TITLE = "Total horas convenio: ";
+	private static final String WINDOW_ITEM_ACTUAL_HOURS_TITLE = "Horas actuales: ";
+	private static final String WINDOW_ITEM_PLANNED_HOURS_TITLE = "Horas planificadas: ";
+	private static final String WINDOW_ITEM_DAY_HOURS_TITLE = "Horas diarias: ";
+	private static final String WINDOW_ITEM_DAY_HOURS_DESC_TITLE = "Descripción: ";
+	private static final String WINDOW_ITEM_EXPORT_DATA_TITLE = "Exportar datos";
+
+	private static final String WINDOW_PANEL_BORDER_PROFILE_TITLE = "Perfil";
+	private static final String WINDOW_PANEL_BORDER_HISTORY_TITLE = "Histórico";
+	private static final String WINDOW_PANEL_BORDER_ANUAL_INFO = "Información anual";
+	private static final String WINDOW_PANEL_BORDER_DIARY_INFO = "Información diaria";
+
 	private JUserCalendarPanel jCalendarPanel;
 
 	private JTextField convTextField;
@@ -82,7 +82,7 @@ public class HourManagerWindow extends JFrame implements IWindow {
 
 	private IORMClient orm;
 	private String username;
-	
+
 	public HourManagerWindow(IORMClient orm, String username) {
 		this.orm = orm;
 		this.username = username;
@@ -111,17 +111,21 @@ public class HourManagerWindow extends JFrame implements IWindow {
 			content.add(mainPanel);
 
 			// Paint with green the calendar free days
-			List<Date> freeDays = ORMHelper.getCalendarFreeDaysDate(orm.getAnualConfiguration(), this.username,
+			List<Date> freeDays = ORMHelper.getCalendarFreeDaysDate(
+					orm.getAnualConfiguration(), this.username,
 					jCalendarPanel.getSelectedYear());
 			for (Date date : freeDays)
 				jCalendarPanel.addDayToList(date, LIST_TYPE.CALENDAR_FREEDAY);
 			// Paint with red the anual not working days
-			List<Date> calendarNotWorkingDays = ORMHelper.getCalendarNotWorkingDays(
-					orm.getAnualConfiguration(), this.username, jCalendarPanel.getSelectedYear());
+			List<Date> calendarNotWorkingDays = ORMHelper
+					.getCalendarNotWorkingDays(orm.getAnualConfiguration(),
+							this.username, jCalendarPanel.getSelectedYear());
 			for (Date date : calendarNotWorkingDays)
-				jCalendarPanel.addDayToList(date, LIST_TYPE.USER_NOT_WORKINGDAY);
+				jCalendarPanel
+						.addDayToList(date, LIST_TYPE.USER_NOT_WORKINGDAY);
 
-			List<Date> userHolidays = ORMHelper.getUserHolidays(orm.getAnualHours(), this.username);
+			List<Date> userHolidays = ORMHelper.getUserHolidays(
+					orm.getAnualHours(), this.username);
 			for (Date date : userHolidays)
 				jCalendarPanel.addDayToList(date, LIST_TYPE.USER_HOLIDAYS);
 
@@ -129,7 +133,8 @@ public class HourManagerWindow extends JFrame implements IWindow {
 			pack();
 		} catch (Exception e) {
 			e.printStackTrace();
-			ModalWindowUtils.showErrorPanel(this, HCalendarConstants.ERROR_WINDOW_CREATION);
+			ModalWindowUtils.showErrorPanel(this,
+					HCalendarConstants.ERROR_WINDOW_CREATION);
 		}
 	}
 
@@ -138,8 +143,9 @@ public class HourManagerWindow extends JFrame implements IWindow {
 	private void createUserAndCalendar(Container panel) throws ORMException {
 		// Poner en el calendar el año actual, y si no tiene configuración,
 		// el más cercano hacia arriba y luego para abajo.
-		int yearToShow = Calculator.calculateYearConfigForProfile(orm.getAnualConfiguration(), this.username,
-				Calendar.getInstance().get(Calendar.YEAR));
+		int yearToShow = Calculator.calculateYearConfigForProfile(orm
+				.getAnualConfiguration(), this.username, Calendar.getInstance()
+				.get(Calendar.YEAR));
 
 		JPanel combPanel = new JPanel(new GridLayout(2, 1));
 		JPanel profileAndHist = new JPanel(new GridLayout(2, 1));
@@ -147,13 +153,15 @@ public class HourManagerWindow extends JFrame implements IWindow {
 		JPanel profilePanel = new JPanel(new GridLayout(2, 1));
 		JLabel shownProfile = new JLabel(WINDOW_ITEM_NAME_TITLE + this.username);
 		JLabel shownYear = new JLabel(WINDOW_ITEM_YEAR_TITLE + yearToShow);
-		profilePanel.setBorder(BorderFactory.createTitledBorder(WINDOW_PANEL_BORDER_PROFILE_TITLE));
+		profilePanel.setBorder(BorderFactory
+				.createTitledBorder(WINDOW_PANEL_BORDER_PROFILE_TITLE));
 		profilePanel.add(shownProfile);
 		profilePanel.add(shownYear);
 
 		// Anyadimos botones para el histórico de colores utilizados
 		JPanel histPanel = new JPanel();
-		histPanel.setBorder(BorderFactory.createTitledBorder(WINDOW_PANEL_BORDER_HISTORY_TITLE));
+		histPanel.setBorder(BorderFactory
+				.createTitledBorder(WINDOW_PANEL_BORDER_HISTORY_TITLE));
 		JLabel colorHist = new JLabel(WINDOW_ITEM_NOT_WORKINGDAY_TITLE);
 		JButton redButton = new JButton();
 		redButton.setEnabled(false);
@@ -179,31 +187,37 @@ public class HourManagerWindow extends JFrame implements IWindow {
 		profileAndHist.add(histPanel, BorderLayout.CENTER);
 
 		// Calendar
-		jCalendarPanel = new JUserCalendarPanel(yearToShow, 0, 0, new ICalendarEventListener() {
+		jCalendarPanel = new JUserCalendarPanel(yearToShow, 0, 0,
+				new ICalendarEventListener() {
 
-			@Override
-			public void onDateChanged(Date date, Boolean selected, ICalendarActionProvider actionProvider) {
-				try {
-					calendarOnDateChangedActions(date, selected, actionProvider);
-				} catch (ORMException e) {
-					ModalWindowUtils.showErrorPanel(HourManagerWindow.this,ERROR_OPERATION_DATECHANGE
-							);
-					e.printStackTrace();
-				}
-			}
+					@Override
+					public void onDateChanged(Date date, Boolean selected,
+							ICalendarActionProvider actionProvider) {
+						try {
+							calendarOnDateChangedActions(date, selected,
+									actionProvider);
+						} catch (ORMException e) {
+							ModalWindowUtils.showErrorPanel(
+									HourManagerWindow.this,
+									ERROR_OPERATION_DATECHANGE);
+							e.printStackTrace();
+						}
+					}
 
-			@Override
-			public void onDataInput(IDateEntity entity) {
-				jCalendarPanel.dataInputOcurred(entity);
-				try {
-					orm.addChange(HourManagerWindow.this.username, entity);
-				} catch (ORMException e) {
-					ModalWindowUtils.showErrorPanel(HourManagerWindow.this,ERROR_OPERATION_APPLY_CHANGES
-							);
-					e.printStackTrace();
-				}
-			}
-		}, true, false);
+					@Override
+					public void onDataInput(IDateEntity entity) {
+						jCalendarPanel.dataInputOcurred(entity);
+						try {
+							orm.addChange(HourManagerWindow.this.username,
+									entity);
+						} catch (ORMException e) {
+							ModalWindowUtils.showErrorPanel(
+									HourManagerWindow.this,
+									ERROR_OPERATION_APPLY_CHANGES);
+							e.printStackTrace();
+						}
+					}
+				}, true, false);
 		combPanel.add(profileAndHist);
 		combPanel.add(jCalendarPanel);
 		panel.add(combPanel);
@@ -215,18 +229,20 @@ public class HourManagerWindow extends JFrame implements IWindow {
 		JPanel separatorPanel = new JPanel();
 		// Panel de horas generales
 		JPanel genHoursPanel = new JPanel(new GridLayout(3, 2));
-		genHoursPanel.setBorder(BorderFactory.createTitledBorder(WINDOW_PANEL_BORDER_ANUAL_INFO));
+		genHoursPanel.setBorder(BorderFactory
+				.createTitledBorder(WINDOW_PANEL_BORDER_ANUAL_INFO));
 		JLabel genLabel = new JLabel(WINDOW_ITEM_YEAR_TOTAL_HOURS_TITLE);
 		convTextField = new JTextField();
 		// Obtener horas anuales desde el xml
 		convTextField.setEditable(false);
 		int year = jCalendarPanel.getSelectedYear();
-		if (ORMHelper.getCalendarHours(orm.getAnualConfiguration(), this.username, year) != null) {
-			String yearStr = String.valueOf(ORMHelper.getCalendarHours(orm.getAnualConfiguration(),
-					this.username, year));
+		if (ORMHelper.getCalendarHours(orm.getAnualConfiguration(),
+				this.username, year) != null) {
+			String yearStr = String.valueOf(ORMHelper.getCalendarHours(
+					orm.getAnualConfiguration(), this.username, year));
 			convTextField.setText(yearStr);
 		}
-		
+
 		genLabel.setLabelFor(convTextField);
 		genHoursPanel.add(genLabel, BorderLayout.WEST);
 		genHoursPanel.add(convTextField, BorderLayout.CENTER);
@@ -242,7 +258,8 @@ public class HourManagerWindow extends JFrame implements IWindow {
 		JLabel plannedHours = new JLabel(WINDOW_ITEM_PLANNED_HOURS_TITLE);
 		plannedHoursTextField = new JTextField();
 		plannedHoursTextField.setEditable(false);
-		String plannedH = String.valueOf(Calculator.calculateAnualPlannedHours(orm.getAnualHours(), year, this.username));
+		String plannedH = String.valueOf(Calculator.calculateAnualPlannedHours(
+				orm.getAnualHours(), year, this.username));
 		plannedHoursTextField.setText(plannedH);
 		plannedHours.setLabelFor(plannedHoursTextField);
 		genHoursPanel.add(plannedHours, BorderLayout.WEST);
@@ -250,7 +267,8 @@ public class HourManagerWindow extends JFrame implements IWindow {
 
 		// Panel actualizable de horas diarias
 		JPanel diaryPanel = new JPanel(new GridLayout(2, 2));
-		diaryPanel.setBorder(BorderFactory.createTitledBorder(WINDOW_PANEL_BORDER_DIARY_INFO));
+		diaryPanel.setBorder(BorderFactory
+				.createTitledBorder(WINDOW_PANEL_BORDER_DIARY_INFO));
 		JLabel diaryHoursLabel = new JLabel(WINDOW_ITEM_DAY_HOURS_TITLE);
 		diaryHoursTextField = new JTextField();
 		diaryHoursTextField.setEditable(false);
@@ -261,11 +279,12 @@ public class HourManagerWindow extends JFrame implements IWindow {
 		JLabel desc = new JLabel(WINDOW_ITEM_DAY_HOURS_DESC_TITLE);
 		descTextArea = new JTextArea();
 		descTextArea.setEditable(false);
-		//	Poner el mismo borde y color que al textfield ya que el area se comporta distinto...
+		// Poner el mismo borde y color que al textfield ya que el area se
+		// comporta distinto...
 		descTextArea.setBackground(diaryHoursTextField.getBackground());
 		descTextArea.setBorder(diaryHoursTextField.getBorder());
 		descTextArea.setLineWrap(true);
-		
+
 		desc.setLabelFor(descTextArea);
 		diaryPanel.add(desc, BorderLayout.WEST);
 		diaryPanel.add(descTextArea, BorderLayout.CENTER);
@@ -290,24 +309,30 @@ public class HourManagerWindow extends JFrame implements IWindow {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					DataServices.exportInfo(orm, jCalendarPanel.getSelectedYear(),	HourManagerWindow.this.username, new Observer(){
+				DataServices.exportInfo(orm, jCalendarPanel.getSelectedYear(),
+						HourManagerWindow.this.username, new Observer() {
 
-						@Override
-						public void update(Observable o, Object arg) {
-							Integer result = (Integer)arg;
-							if (result.equals(0))
-								ModalWindowUtils.showSuccesPanel(HourManagerWindow.this, SUCCES_EXPORT_DATA);
-							else
-								ModalWindowUtils.showErrorPanel(HourManagerWindow.this, ERROR_EXPORT_DATA);		
-						}});
-					
-						
+							@Override
+							public void update(Observable o, Object arg) {
+								Integer result = (Integer) arg;
+								if (result.equals(0))
+									ModalWindowUtils.showSuccesPanel(
+											HourManagerWindow.this,
+											SUCCES_EXPORT_DATA);
+								else
+									ModalWindowUtils.showErrorPanel(
+											HourManagerWindow.this,
+											ERROR_EXPORT_DATA);
+							}
+						});
+
 			}
 		});
 		buttonPane.add(exportButton);
 		buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
 		// BOTON CANCELAR
-		JButton cancelButton = new JButton(HCalendarConstants.ACTION_BUTTON_CANCEL_TITLE);
+		JButton cancelButton = new JButton(
+				HCalendarConstants.ACTION_BUTTON_CANCEL_TITLE);
 		cancelButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -320,7 +345,8 @@ public class HourManagerWindow extends JFrame implements IWindow {
 		buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
 
 		// BOTON GUARDAR
-		JButton saveButton = new JButton(HCalendarConstants.ACTION_BUTTON_SAVE_TITLE);
+		JButton saveButton = new JButton(
+				HCalendarConstants.ACTION_BUTTON_SAVE_TITLE);
 		buttonPane.add(saveButton);
 		saveButton.addActionListener(new ActionListener() {
 
@@ -329,7 +355,8 @@ public class HourManagerWindow extends JFrame implements IWindow {
 				try {
 					orm.persist(ENTITY_TYPE.ANUALHOURS);
 					orm.persist(ENTITY_TYPE.USERCONFIGURATION);
-					ModalWindowUtils.showSuccesPanel(HourManagerWindow.this, HCalendarConstants.SUCCES_SAVE_DATA);
+					ModalWindowUtils.showSuccesPanel(HourManagerWindow.this,
+							HCalendarConstants.SUCCES_SAVE_DATA);
 				} catch (ORMException e1) {
 					ModalWindowUtils.showSuccesPanel(HourManagerWindow.this,
 							HCalendarConstants.ERROR_SAVE_DATA);
@@ -347,21 +374,23 @@ public class HourManagerWindow extends JFrame implements IWindow {
 			ICalendarActionProvider actionProvider) throws ORMException {
 		String yearConvHoues;
 		try {
-			yearConvHoues = String.valueOf(ORMHelper.getCalendarHours(orm.getAnualConfiguration(), this.username,
+			yearConvHoues = String.valueOf(ORMHelper.getCalendarHours(
+					orm.getAnualConfiguration(), this.username,
 					1900 + date.getYear()));
 			convTextField.setText(yearConvHoues);
 
-		String plannedH;
-			plannedH = String.valueOf(Calculator.calculateAnualPlannedHours(orm.getAnualHours(), date.getYear() + 1900,
-					this.username));
+			String plannedH;
+			plannedH = String.valueOf(Calculator.calculateAnualPlannedHours(
+					orm.getAnualHours(), date.getYear() + 1900, this.username));
 			plannedHoursTextField.setText(plannedH);
 			// Calcular horas imputadas hasta ahora
-			actualHoursTextField.setText(String.valueOf(Calculator.calculateHoursUntilDate(
-					orm.getAnualHours(), date, this.username)));
+			actualHoursTextField.setText(String.valueOf(Calculator
+					.calculateHoursUntilDate(orm.getAnualHours(), date,
+							this.username)));
 
-
-		Map<Float, String> inputHours;
-			inputHours = ORMHelper.getInputHours(orm.getAnualHours(), date, this.username);
+			Map<Float, String> inputHours;
+			inputHours = ORMHelper.getInputHours(orm.getAnualHours(), date,
+					this.username);
 			Set<Float> keys = inputHours.keySet();
 			Float tHours = new Float(0);
 			String desc = new String();
@@ -372,8 +401,8 @@ public class HourManagerWindow extends JFrame implements IWindow {
 			diaryHoursTextField.setText(String.valueOf(tHours));
 			descTextArea.setText(desc);
 		} catch (Throwable e) {
-			ModalWindowUtils.showErrorPanel(HourManagerWindow.this, ERROR_CALCULATE_DATA
-					+ date.getYear());
+			ModalWindowUtils.showErrorPanel(HourManagerWindow.this,
+					ERROR_CALCULATE_DATA + date.getYear());
 		}
 	}
 
@@ -384,12 +413,12 @@ public class HourManagerWindow extends JFrame implements IWindow {
 
 	@Override
 	public void setData() {
-		//	TODO De momento no hace falta rellenarlo. Nadie escucha cambios
+		// TODO De momento no hace falta rellenarlo. Nadie escucha cambios
 	}
 
 	@Override
 	public void notifyDataChange() {
-		for (IWindowDataHanlder w: childWindows){
+		for (IWindowDataHanlder w : childWindows) {
 			w.setData();
 		}
 	}

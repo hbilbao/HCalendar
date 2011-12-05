@@ -23,9 +23,10 @@ public class NumericValidator extends InputVerifier {
 		this.component = component;
 	}
 
+	@Override
 	public boolean verify(JComponent input) {
 		JTextField textField = (JTextField) input;
-		if (textField.getText()==null || textField.getText().equals(""))
+		if (textField.getText() == null || textField.getText().equals(""))
 			return true;
 		Matcher m = p.matcher(textField.getText());
 		if (!m.matches())

@@ -24,9 +24,11 @@ public class CRUDManager {
 	// Create, Update
 	/**
 	 * Persist the anual hours
-	 * @param anualConfig anual configuration java bean
 	 * 
-	 * @throws CRUDException 
+	 * @param anualConfig
+	 *            anual configuration java bean
+	 * 
+	 * @throws CRUDException
 	 * */
 	public static void saveAnualConfiguration(UserConfiguration anualConfig)
 			throws CRUDException {
@@ -56,9 +58,11 @@ public class CRUDManager {
 
 	/**
 	 * Persist the anual hours
-	 * @param aHours anual hours java bean
 	 * 
-	 * @throws CRUDException 
+	 * @param aHours
+	 *            anual hours java bean
+	 * 
+	 * @throws CRUDException
 	 * */
 	public static void saveAnualHours(AnualHours aHours) throws CRUDException {
 		FileWriter fichero = null;
@@ -88,11 +92,15 @@ public class CRUDManager {
 	// Delete
 	/**
 	 * Deletes a profile from the anual configuration
-	 * @param anualConfiguration anual configuration java bean
-	 * @param anualHours anul hours java bean
-	 * @param profileName profile name to delete
 	 * 
-	 * @throws CRUDException 
+	 * @param anualConfiguration
+	 *            anual configuration java bean
+	 * @param anualHours
+	 *            anul hours java bean
+	 * @param profileName
+	 *            profile name to delete
+	 * 
+	 * @throws CRUDException
 	 * */
 	public static void deleteProfile(UserConfiguration anualConfiguration,
 			AnualHours anualHours, String profileName) throws CRUDException {
@@ -119,7 +127,7 @@ public class CRUDManager {
 	 * Load anual configuration xml file from disk and parse
 	 * 
 	 * @return Anual configuration java bean
-	 * @throws CRUDException 
+	 * @throws CRUDException
 	 * */
 	public static UserConfiguration loadAnualConfigurationFromXML()
 			throws CRUDException {
@@ -155,9 +163,9 @@ public class CRUDManager {
 	 * Load anual hours xml file from disk and parse
 	 * 
 	 * @return AnualHours java bean
-	 * @throws CRUDException 
+	 * @throws CRUDException
 	 * */
-	public static AnualHours loadAnualHoursFromXML() throws CRUDException{
+	public static AnualHours loadAnualHoursFromXML() throws CRUDException {
 		StringBuffer strBuffer = new StringBuffer();
 		FileReader fr = null;
 		try {

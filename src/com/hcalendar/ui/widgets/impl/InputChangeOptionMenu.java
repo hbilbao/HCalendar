@@ -15,25 +15,24 @@ import com.hcalendar.ui.subViews.HolidayInputWindow;
 import com.hcalendar.ui.widgets.IWindowResultListener;
 
 /**
- * Menu class with the following options
- * - CHANGE TO LABORAL
- * - CHANGE TOP NOT WORKING
- * - CHANGE INPUTS OF DAY
- * - CHANGE TO HOLIDAY
+ * Menu class with the following options - CHANGE TO LABORAL - CHANGE TOP NOT
+ * WORKING - CHANGE INPUTS OF DAY - CHANGE TO HOLIDAY
  * */
 public class InputChangeOptionMenu extends JPopupMenu {
 	private static final long serialVersionUID = 1L;
 
 	JMenuItem anItem;
-	String[] changeInputsValues = new String[] { CHANGE_VALUES_LABORAL, CHANGE_VALUES_NOT_WORKING,
-			CHANGE_VALUES_CHANGE_INPUTS, CHANGE_VALUES_HOLIDAY };
+	String[] changeInputsValues = new String[] { CHANGE_VALUES_LABORAL,
+			CHANGE_VALUES_NOT_WORKING, CHANGE_VALUES_CHANGE_INPUTS,
+			CHANGE_VALUES_HOLIDAY };
 
 	private static final String CHANGE_VALUES_LABORAL = "Marcar laboral";
 	private static final String CHANGE_VALUES_NOT_WORKING = "Marcar festivo";
 	private static final String CHANGE_VALUES_CHANGE_INPUTS = "Cambiar imputaciones";
 	private static final String CHANGE_VALUES_HOLIDAY = "Vacaciones";
 
-	public InputChangeOptionMenu(final IWindowResultListener listener, final Date date) {
+	public InputChangeOptionMenu(final IWindowResultListener listener,
+			final Date date) {
 		JMenuItem laboralChoice = new JMenuItem(CHANGE_VALUES_LABORAL);
 		JMenuItem notWorkingChoice = new JMenuItem(CHANGE_VALUES_NOT_WORKING);
 		JMenuItem changeInChoice = new JMenuItem(CHANGE_VALUES_CHANGE_INPUTS);
@@ -62,7 +61,8 @@ public class InputChangeOptionMenu extends JPopupMenu {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Mark date to not working
-				listener.windowResult(new ORMEntity(date, DateType.FREE_DAY, null, null));
+				listener.windowResult(new ORMEntity(date, DateType.FREE_DAY,
+						null, null));
 			}
 		});
 

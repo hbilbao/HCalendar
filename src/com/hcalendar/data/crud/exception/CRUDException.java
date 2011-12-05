@@ -1,4 +1,5 @@
 package com.hcalendar.data.crud.exception;
+
 /**
  * Exception thrown by the CRUD operations
  * */

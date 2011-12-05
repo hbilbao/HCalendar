@@ -444,14 +444,13 @@ public class JUserCalendarPanel extends JPanel implements
 			}
 	}
 
-
-	public void clearAllUserSelections(){
+	public void clearAllUserSelections() {
 		this.calendarFreeDays.clear();
 		this.userHolidays.clear();
 		this.userNotWorkingDays.clear();
 		this.userWorkingDays.clear();
 	}
-	
+
 	private void addEventListener(ICalendarEventListener l) {
 		if (l != null)
 			registeredEventListeners.add(l);
@@ -516,7 +515,7 @@ public class JUserCalendarPanel extends JPanel implements
 		Date date = new Date(year - 1900, month, day);
 		return calendarFreeDays.contains(date);
 	}
-	
+
 	private boolean listContainstDay(int year, int month, int day,
 			LIST_TYPE listType) {
 		Date date = new Date(year - 1900, month, day);

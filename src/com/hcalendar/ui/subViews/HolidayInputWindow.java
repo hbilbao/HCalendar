@@ -28,10 +28,10 @@ import com.hcalendar.ui.widgets.IWindowResultListener;
  * */
 public class HolidayInputWindow extends JFrame {
 
-	private static final String WINDOW_TITLE ="Vacaciones";
-	private static final String WINDOW_PANEL_BORDER_COMMENTS ="Comentarios sobre las vacaciones";
-	private static final String WINDOW_LABEL_COMMENTS ="Comentarios: ";
-	
+	private static final String WINDOW_TITLE = "Vacaciones";
+	private static final String WINDOW_PANEL_BORDER_COMMENTS = "Comentarios sobre las vacaciones";
+	private static final String WINDOW_LABEL_COMMENTS = "Comentarios: ";
+
 	private static final long serialVersionUID = 1L;
 
 	JTextArea descTextArea;
@@ -72,7 +72,8 @@ public class HolidayInputWindow extends JFrame {
 		buttonPane.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
 		buttonPane.add(Box.createHorizontalGlue());
 		// BOTON GUARDAR
-		JButton saveButton = new JButton(HCalendarConstants.ACTION_BUTTON_SAVE_TITLE);
+		JButton saveButton = new JButton(
+				HCalendarConstants.ACTION_BUTTON_SAVE_TITLE);
 		saveButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -89,7 +90,8 @@ public class HolidayInputWindow extends JFrame {
 		buttonPane.add(saveButton);
 		buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
 		// BOTON CANCELAR
-		JButton cancelButton = new JButton(HCalendarConstants.ACTION_BUTTON_CANCEL_TITLE);
+		JButton cancelButton = new JButton(
+				HCalendarConstants.ACTION_BUTTON_CANCEL_TITLE);
 		cancelButton.addActionListener(new ActionListener() {
 
 			@Override

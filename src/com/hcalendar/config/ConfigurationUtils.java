@@ -17,12 +17,13 @@ public class ConfigurationUtils {
 	 * 
 	 * @return full real path to the anual configuration file
 	 * @throws ConfigurationNotInitedException
-	 * @throws IOException 
+	 * @throws IOException
 	 * */
 	public static File getAnualConfigurationFile()
 			throws ConfigurationNotInitedException, IOException {
 		File baseDir = new File(".");
-		File file  = new File(baseDir,HCalendarConstants.ANUALCONFIGURATION_FILE);
+		File file = new File(baseDir,
+				HCalendarConstants.ANUALCONFIGURATION_FILE);
 		return file.getCanonicalFile();
 	}
 
@@ -31,12 +32,12 @@ public class ConfigurationUtils {
 	 * 
 	 * @return full real path to the input hours file
 	 * @throws ConfigurationNotInitedException
-	 * @throws IOException 
+	 * @throws IOException
 	 * */
 	public static File getInputHoursFile()
 			throws ConfigurationNotInitedException, IOException {
 		File baseDir = new File(".");
-		File file  = new File(baseDir,HCalendarConstants.HOUR_INPUT_FILE);
+		File file = new File(baseDir, HCalendarConstants.HOUR_INPUT_FILE);
 		return file.getCanonicalFile();
 	}
 
@@ -45,12 +46,12 @@ public class ConfigurationUtils {
 	 * 
 	 * @return full real path to the csv temp file
 	 * @throws ConfigurationNotInitedException
-	 * @throws IOException 
+	 * @throws IOException
 	 * */
-	public static File getCSVTempFile()
-			throws ConfigurationNotInitedException, IOException {
+	public static File getCSVTempFile() throws ConfigurationNotInitedException,
+			IOException {
 		File baseDir = new File(".");
-		File file  = new File(baseDir,HCalendarConstants.EXPORT_CSV_TEMP_FILE);
+		File file = new File(baseDir, HCalendarConstants.EXPORT_CSV_TEMP_FILE);
 		return file.getCanonicalFile();
 	}
 
@@ -59,12 +60,12 @@ public class ConfigurationUtils {
 	 * 
 	 * @return full real path to the csv temp file
 	 * @throws ConfigurationNotInitedException
-	 * @throws IOException 
+	 * @throws IOException
 	 * */
-	public static File getPDFTempFile()
-			throws ConfigurationNotInitedException, IOException {
+	public static File getPDFTempFile() throws ConfigurationNotInitedException,
+			IOException {
 		File baseDir = new File(".");
-		File file  = new File(baseDir,HCalendarConstants.EXPORT_PDF_TEMP_FILE);
+		File file = new File(baseDir, HCalendarConstants.EXPORT_PDF_TEMP_FILE);
 		return file.getCanonicalFile();
 	}
 
@@ -72,9 +73,9 @@ public class ConfigurationUtils {
 	 * Get the input stream to the pdf xsl stylesheet file. Is inside the jar,
 	 * so we can't get the actual file with the path.
 	 * 
-	 * @return Input stream to the file 
+	 * @return Input stream to the file
 	 * */
-	public static InputStream getPDFStyleSheet(){
+	public static InputStream getPDFStyleSheet() {
 		return Thread
 				.currentThread()
 				.getContextClassLoader()
@@ -89,7 +90,7 @@ public class ConfigurationUtils {
 	 * 
 	 * @return existenz of the file
 	 * @throws ConfigurationNotInitedException
-	 * @throws IOException 
+	 * @throws IOException
 	 * */
 	public static boolean existAnualConfigurationFile()
 			throws ConfigurationNotInitedException, IOException {

@@ -5,8 +5,8 @@ import java.util.List;
 
 public interface IWindowDataHanlder {
 
-	List<IWindowDataHanlder> childWindows =  new ArrayList<IWindowDataHanlder>();
-	
+	List<IWindowDataHanlder> childWindows = new ArrayList<IWindowDataHanlder>();
+
 	public void setData();
 
 	public void notifyDataChange();

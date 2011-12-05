@@ -27,23 +27,23 @@ import com.hcalendar.ui.actions.CreateProfileLauncher;
 import com.hcalendar.ui.actions.HourManagerLauncher;
 import com.hcalendar.ui.helper.ModalWindowUtils;
 
-public class InitScreenWindow extends JFrame  implements IWindow{
+public class InitScreenWindow extends JFrame implements IWindow {
 	private static final long serialVersionUID = 1L;
 
-	private static final String WINDOW_TITLE ="Calendario laboral";
-	
-	private static final String ERROR_RETURNTO_WINDOW ="Error al volver de la ventana de creación de perfil";
-		
-	private static final String WINDOW_PANEL_BORDER_SELECT_TITLE ="Seleccione operación";
-	
-	private static final String ACTION_BUTTON_MANAGE_PROFILE_TITLE ="Gestionar horas del perfil: ";
-	private static final String ACTION_BUTTON_CREATE_PROFILE_TITLE ="Crear nuevo perfil";
-	private static final String ACTION_BUTTON_DELETE_PROFILE_TITLE ="Borrar perfil: ";
-	
+	private static final String WINDOW_TITLE = "Calendario laboral";
+
+	private static final String ERROR_RETURNTO_WINDOW = "Error al volver de la ventana de creación de perfil";
+
+	private static final String WINDOW_PANEL_BORDER_SELECT_TITLE = "Seleccione operación";
+
+	private static final String ACTION_BUTTON_MANAGE_PROFILE_TITLE = "Gestionar horas del perfil: ";
+	private static final String ACTION_BUTTON_CREATE_PROFILE_TITLE = "Crear nuevo perfil";
+	private static final String ACTION_BUTTON_DELETE_PROFILE_TITLE = "Borrar perfil: ";
+
 	JComboBox profilesCombo;
 	JComboBox deleteProfilesCombo;
 	IORMClient orm;
-	
+
 	public InitScreenWindow() {
 		try {
 			orm = ORMManager.getInstance().getORMClient();
@@ -51,11 +51,14 @@ public class InitScreenWindow extends JFrame  implements IWindow{
 			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			this.setTitle(WINDOW_TITLE);
 			JPanel panel = new JPanel();
-			Border border = BorderFactory.createTitledBorder(WINDOW_PANEL_BORDER_SELECT_TITLE);
+			Border border = BorderFactory
+					.createTitledBorder(WINDOW_PANEL_BORDER_SELECT_TITLE);
 			panel.setBorder(border);
 
-			JLabel profilesComboLabel = new JLabel(ACTION_BUTTON_MANAGE_PROFILE_TITLE);
-			List<String> profilesList = ORMHelper.getCurrentProfiles(orm.getAnualConfiguration());
+			JLabel profilesComboLabel = new JLabel(
+					ACTION_BUTTON_MANAGE_PROFILE_TITLE);
+			List<String> profilesList = ORMHelper.getCurrentProfiles(orm
+					.getAnualConfiguration());
 			profilesList.add(HCalendarConstants.NULL_COMBO_INPUT);
 			Collections.reverse(profilesList);
 			profilesCombo = new JComboBox(profilesList.toArray());
@@ -64,12 +67,15 @@ public class InitScreenWindow extends JFrame  implements IWindow{
 			panel.add(profilesCombo, BorderLayout.CENTER);
 			profilesCombo.addActionListener(new HourManagerLauncher(orm));
 
-			AbstractButton newProfileButton = new JToggleButton(ACTION_BUTTON_CREATE_PROFILE_TITLE);
+			AbstractButton newProfileButton = new JToggleButton(
+					ACTION_BUTTON_CREATE_PROFILE_TITLE);
 			newProfileButton.setSize(new Dimension(100, 100));
-			newProfileButton.addActionListener(new CreateProfileLauncher(orm, this));
+			newProfileButton.addActionListener(new CreateProfileLauncher(orm,
+					this));
 			panel.add(newProfileButton);
 
-			JLabel deleteProfilesComboLabel = new JLabel(ACTION_BUTTON_DELETE_PROFILE_TITLE);
+			JLabel deleteProfilesComboLabel = new JLabel(
+					ACTION_BUTTON_DELETE_PROFILE_TITLE);
 			deleteProfilesCombo = new JComboBox(profilesList.toArray());
 			deleteProfilesComboLabel.setLabelFor(deleteProfilesCombo);
 			panel.add(deleteProfilesComboLabel, BorderLayout.WEST);
@@ -78,18 +84,24 @@ public class InitScreenWindow extends JFrame  implements IWindow{
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					String profileName = (String) deleteProfilesCombo.getSelectedItem();
-					if (profileName == null || profileName.equals(HCalendarConstants.NULL_COMBO_INPUT))
+					String profileName = (String) deleteProfilesCombo
+							.getSelectedItem();
+					if (profileName == null
+							|| profileName
+									.equals(HCalendarConstants.NULL_COMBO_INPUT))
 						return;
 					try {
-						CRUDManager.deleteProfile(orm.getAnualConfiguration(), orm.getAnualHours(),
-								profileName);
+						CRUDManager.deleteProfile(orm.getAnualConfiguration(),
+								orm.getAnualHours(), profileName);
 						setData();
-						ModalWindowUtils.showSuccesPanel(InitScreenWindow.this, HCalendarConstants.SUCCES_DELETE);
+						ModalWindowUtils.showSuccesPanel(InitScreenWindow.this,
+								HCalendarConstants.SUCCES_DELETE);
 					} catch (CRUDException crude) {
-						ModalWindowUtils.showErrorPanel(InitScreenWindow.this, HCalendarConstants.ERROR_DELETE);
+						ModalWindowUtils.showErrorPanel(InitScreenWindow.this,
+								HCalendarConstants.ERROR_DELETE);
 					} catch (ORMException orme) {
-						ModalWindowUtils.showErrorPanel(InitScreenWindow.this, HCalendarConstants.ERROR_DELETE);
+						ModalWindowUtils.showErrorPanel(InitScreenWindow.this,
+								HCalendarConstants.ERROR_DELETE);
 					}
 
 				}
@@ -99,7 +111,8 @@ public class InitScreenWindow extends JFrame  implements IWindow{
 			// Show frame
 			this.setVisible(true);
 		} catch (ORMException e) {
-			ModalWindowUtils.showErrorPanel(this, HCalendarConstants.ERROR_WINDOW_CREATION);
+			ModalWindowUtils.showErrorPanel(this,
+					HCalendarConstants.ERROR_WINDOW_CREATION);
 		}
 	}
 
@@ -110,7 +123,8 @@ public class InitScreenWindow extends JFrame  implements IWindow{
 			profilesCombo.removeAllItems();
 			deleteProfilesCombo.addItem(HCalendarConstants.NULL_COMBO_INPUT);
 			profilesCombo.addItem(HCalendarConstants.NULL_COMBO_INPUT);
-			for (String profile : ORMHelper.getCurrentProfiles(orm.getAnualConfiguration())) {
+			for (String profile : ORMHelper.getCurrentProfiles(orm
+					.getAnualConfiguration())) {
 				deleteProfilesCombo.addItem(profile);
 				profilesCombo.addItem(profile);
 			}
@@ -119,7 +133,7 @@ public class InitScreenWindow extends JFrame  implements IWindow{
 					ERROR_RETURNTO_WINDOW);
 		}
 	}
-	
+
 	@Override
 	public void addParentWindow(IWindowDataHanlder window) {
 		childWindows.add(window);
@@ -127,11 +141,11 @@ public class InitScreenWindow extends JFrame  implements IWindow{
 
 	@Override
 	public void notifyDataChange() {
-		for (IWindowDataHanlder w: childWindows){
+		for (IWindowDataHanlder w : childWindows) {
 			w.setData();
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		new InitScreenWindow();
 	}

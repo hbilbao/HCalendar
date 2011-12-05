@@ -22,8 +22,10 @@ public class HourManagerLauncher implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		String userName = (String) ((JComboBox) e.getSource()).getSelectedItem();
-		if (userName == null || userName.equals(HCalendarConstants.NULL_COMBO_INPUT))
+		String userName = (String) ((JComboBox) e.getSource())
+				.getSelectedItem();
+		if (userName == null
+				|| userName.equals(HCalendarConstants.NULL_COMBO_INPUT))
 			return;
 		new HourManagerWindow(this.orm, userName);
 	}

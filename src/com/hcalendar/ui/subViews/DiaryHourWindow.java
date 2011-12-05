@@ -30,9 +30,9 @@ import com.hcalendar.ui.widgets.IWindowResultListener;
  * */
 public class DiaryHourWindow extends JFrame {
 
-	private static final String WINDOW_TITLE ="Imputación diaria";
-	private static final String WINDOW_PANEL_BORDER_DIARYINFO ="Información diaria";
-	
+	private static final String WINDOW_TITLE = "Imputación diaria";
+	private static final String WINDOW_PANEL_BORDER_DIARYINFO = "Información diaria";
+
 	private static final long serialVersionUID = 1L;
 
 	JTextField diaryHoursTextField;
@@ -44,8 +44,8 @@ public class DiaryHourWindow extends JFrame {
 	public DiaryHourWindow(IWindowResultListener listener, Date date) {
 		this.listener = listener;
 		this.date = date;
-//		 this.setSize(1500, 1000);
-//		 this.setMaximumSize(new Dimension(1500, 900));
+		// this.setSize(1500, 1000);
+		// this.setMaximumSize(new Dimension(1500, 900));
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		this.setTitle(WINDOW_TITLE);
 		Container content = this.getContentPane();
@@ -83,7 +83,8 @@ public class DiaryHourWindow extends JFrame {
 		buttonPane.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
 		buttonPane.add(Box.createHorizontalGlue());
 		// BOTON GUARDAR
-		JButton saveButton = new JButton(HCalendarConstants.ACTION_BUTTON_SAVE_TITLE);
+		JButton saveButton = new JButton(
+				HCalendarConstants.ACTION_BUTTON_SAVE_TITLE);
 		saveButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -100,7 +101,8 @@ public class DiaryHourWindow extends JFrame {
 		buttonPane.add(saveButton);
 		buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
 		// BOTON CANCELAR
-		JButton cancelButton = new JButton(HCalendarConstants.ACTION_BUTTON_CANCEL_TITLE);
+		JButton cancelButton = new JButton(
+				HCalendarConstants.ACTION_BUTTON_CANCEL_TITLE);
 		cancelButton.addActionListener(new ActionListener() {
 
 			@Override
