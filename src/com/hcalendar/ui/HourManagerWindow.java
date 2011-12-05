@@ -11,6 +11,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -29,7 +31,6 @@ import com.hcalendar.config.ConfigurationUtils;
 import com.hcalendar.data.DataServices;
 import com.hcalendar.data.IDateEntity;
 import com.hcalendar.data.calculator.Calculator;
-import com.hcalendar.data.exception.BusinessException;
 import com.hcalendar.data.orm.IORMClient;
 import com.hcalendar.data.orm.IORMClient.ENTITY_TYPE;
 import com.hcalendar.data.orm.exception.ORMException;
@@ -86,7 +87,7 @@ public class HourManagerWindow extends JFrame {
 	JTextField convTextField;
 	JTextField actualHoursTextField;
 	JTextField plannedHoursTextField;
-	JTextField descTextField;
+	JTextArea descTextArea;
 	JTextField diaryHoursTextField;
 
 	private IORMClient orm;
@@ -120,7 +121,7 @@ public class HourManagerWindow extends JFrame {
 			content.add(mainPanel);
 
 			// Paint with green the calendar free days
-			List<Date> freeDays = ORMHelper.getCalendarFreeDays(orm.getAnualConfiguration(), this.username,
+			List<Date> freeDays = ORMHelper.getCalendarFreeDaysDate(orm.getAnualConfiguration(), this.username,
 					jCalendarPanel.getSelectedYear());
 			for (Date date : freeDays)
 				jCalendarPanel.addDayToList(date, LIST_TYPE.CALENDAR_FREEDAY);
@@ -268,11 +269,16 @@ public class HourManagerWindow extends JFrame {
 		diaryPanel.add(diaryHoursTextField, BorderLayout.CENTER);
 
 		JLabel desc = new JLabel(WINDOW_ITEM_DAY_HOURS_DESC_TITLE);
-		descTextField = new JTextField();
-		descTextField.setEditable(false);
-		desc.setLabelFor(descTextField);
+		descTextArea = new JTextArea();
+		descTextArea.setEditable(false);
+		//	Poner el mismo borde y color que al textfield ya que el area se comporta distinto...
+		descTextArea.setBackground(diaryHoursTextField.getBackground());
+		descTextArea.setBorder(diaryHoursTextField.getBorder());
+		descTextArea.setLineWrap(true);
+		
+		desc.setLabelFor(descTextArea);
 		diaryPanel.add(desc, BorderLayout.WEST);
-		diaryPanel.add(descTextField, BorderLayout.CENTER);
+		diaryPanel.add(descTextArea, BorderLayout.CENTER);
 
 		// Anyadir los dos paneles secundarios
 		panel.add(diaryPanel);
@@ -294,13 +300,18 @@ public class HourManagerWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
-					if (DataServices.exportToCSV(orm, jCalendarPanel.getSelectedYear(),
-							HourManagerWindow.this.username, HourManagerWindow.this) == 0)
-						ModalWindowUtils.showSuccesPanel(HourManagerWindow.this, SUCCES_EXPORT_DATA);
-				} catch (BusinessException e1) {
-					ModalWindowUtils.showErrorPanel(HourManagerWindow.this, ERROR_EXPORT_DATA);
-				}
+					DataServices.exportInfo(orm, jCalendarPanel.getSelectedYear(),	HourManagerWindow.this.username, new Observer(){
+
+						@Override
+						public void update(Observable o, Object arg) {
+							Integer result = (Integer)arg;
+							if (result.equals(0))
+								ModalWindowUtils.showSuccesPanel(HourManagerWindow.this, SUCCES_EXPORT_DATA);
+							else
+								ModalWindowUtils.showErrorPanel(HourManagerWindow.this, ERROR_EXPORT_DATA);		
+						}});
+					
+						
 			}
 		});
 		buttonPane.add(exportButton);
@@ -369,7 +380,7 @@ public class HourManagerWindow extends JFrame {
 				desc = desc + inputHours.get(f);
 			}
 			diaryHoursTextField.setText(String.valueOf(tHours));
-			descTextField.setText(desc);
+			descTextArea.setText(desc);
 		} catch (Throwable e) {
 			ModalWindowUtils.showErrorPanel(HourManagerWindow.this, ERROR_CALCULATE_DATA
 					+ date.getYear());

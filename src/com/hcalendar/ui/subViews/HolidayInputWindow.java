@@ -15,7 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
 
 import com.hcalendar.HCalendarConstants;
@@ -34,7 +34,7 @@ public class HolidayInputWindow extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
 
-	JTextField descTextField;
+	JTextArea descTextArea;
 
 	IWindowResultListener listener;
 	Date date;
@@ -58,10 +58,11 @@ public class HolidayInputWindow extends JFrame {
 		diaryPanel.setBorder(BorderFactory
 				.createTitledBorder(WINDOW_PANEL_BORDER_COMMENTS));
 		JLabel diaryHoursLabel = new JLabel(WINDOW_LABEL_COMMENTS);
-		descTextField = new JTextField();
-		diaryHoursLabel.setLabelFor(descTextField);
+		descTextArea = new JTextArea();
+		descTextArea.setLineWrap(true);
+		diaryHoursLabel.setLabelFor(descTextArea);
 		diaryPanel.add(diaryHoursLabel, BorderLayout.WEST);
-		diaryPanel.add(descTextField, BorderLayout.CENTER);
+		diaryPanel.add(descTextArea, BorderLayout.CENTER);
 		panel.add(diaryPanel);
 	}
 
@@ -77,7 +78,7 @@ public class HolidayInputWindow extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (HolidayInputWindow.this.listener != null) {
-					String description = descTextField.getText();
+					String description = descTextArea.getText();
 					HolidayInputWindow.this.listener
 							.windowResult(new ORMEntity(date,
 									DateType.HOLIDAYS, null, description));

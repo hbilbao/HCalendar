@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
@@ -35,7 +36,7 @@ public class DiaryHourWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	JTextField diaryHoursTextField;
-	JTextField descTextField;
+	JTextArea descTextArea;
 
 	IWindowResultListener listener;
 	Date date;
@@ -68,10 +69,11 @@ public class DiaryHourWindow extends JFrame {
 		diaryPanel.add(diaryHoursTextField, BorderLayout.CENTER);
 		diaryHoursTextField.setInputVerifier(new NumericValidator(this));
 		JLabel desc = new JLabel("Descripción: ");
-		descTextField = new JTextField();
-		desc.setLabelFor(descTextField);
+		descTextArea = new JTextArea();
+		descTextArea.setLineWrap(true);
+		desc.setLabelFor(descTextArea);
 		diaryPanel.add(desc, BorderLayout.WEST);
-		diaryPanel.add(descTextField, BorderLayout.CENTER);
+		diaryPanel.add(descTextArea, BorderLayout.CENTER);
 		panel.add(diaryPanel);
 	}
 
@@ -88,7 +90,7 @@ public class DiaryHourWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (DiaryHourWindow.this.listener != null) {
 					Float hours = Float.valueOf(diaryHoursTextField.getText());
-					String description = descTextField.getText();
+					String description = descTextArea.getText();
 					DiaryHourWindow.this.listener.windowResult(new ORMEntity(
 							date, DateType.WORK_DAY, hours, description));
 					DiaryHourWindow.this.dispose();
