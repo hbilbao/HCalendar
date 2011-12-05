@@ -321,8 +321,8 @@ public class DataServices {
 	 *            year
 	 * @param profileName
 	 *            Username which get the hour input
-	 * @param component
-	 *            canvas to show option panel on it
+	 * @param callback
+	 *            callback interface
 	 * 
 	 * */
 	public static void exportInfo(final IORMClient orm, final int year,
