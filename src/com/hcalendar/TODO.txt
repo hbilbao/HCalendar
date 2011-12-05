@@ -6,10 +6,10 @@
 - [ok] Bloquear el año del hour manager, que abre la conf para un año fijo
 - [ok] No dejar guardar dos perfiles con el mismo nombre
  - javadoc falta en: JUserCalendarPanel, HourManagerWindow PARA DELANTE, vamos todas los window, que hay que cambiar los métodos...
-- Actualización de formularios, algo tipo calculados, cuando cambia algo, PUM. Por lo menos el initWindow
-- [ok]Validacion de datos en las ventanas
-- [ok]Filtrado de fechas al exportar datos
-- [ok]PDF's , hay que poner el filtro aplicado en el PDF y un resumen de cada mes
+- [ok] Actualización de formularios, algo tipo calculados, cuando cambia algo, PUM. Por lo menos el initWindow
+- [ok] Validacion de datos en las ventanas
+- [ok] Filtrado de fechas al exportar datos
+- [ok] PDF's , hay que poner el filtro aplicado en el PDF y un resumen de cada mes
 - Poner nombre apellido en la conf de usuario y el nombre del perfil calcularlo
 - [ok] El filepath hay que cambiarlo, con el base dir nos quitamos toda la mierda que hacemos. El xsl pensar donde tiene que ir
  
