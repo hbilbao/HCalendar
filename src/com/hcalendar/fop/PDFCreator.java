@@ -55,7 +55,7 @@ public class PDFCreator {
 			FOPException, TransformerException, ConfigurationNotInitedException {
 
 		InputStream xsltfileInputStream = ConfigurationUtils.getPDFStyleSheet();
-		File pdffile = new File(ConfigurationUtils.getPDFTempFile());
+		File pdffile = ConfigurationUtils.getPDFTempFile();
 
 		FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
 		// configure foUserAgent as desired

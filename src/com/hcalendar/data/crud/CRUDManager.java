@@ -127,8 +127,7 @@ public class CRUDManager {
 		StringBuffer strBuffer = new StringBuffer();
 		try {
 			// Read from file
-			File archivo = new File(
-					ConfigurationUtils.getAnualConfigurationFile());
+			File archivo = ConfigurationUtils.getAnualConfigurationFile();
 			fr = new FileReader(archivo);
 			BufferedReader br = new BufferedReader(fr);
 			strBuffer.append(br.readLine());
@@ -163,7 +162,7 @@ public class CRUDManager {
 		FileReader fr = null;
 		try {
 			// Read from file
-			File archivo = new File(ConfigurationUtils.getInputHoursFile());
+			File archivo = ConfigurationUtils.getInputHoursFile();
 			fr = new FileReader(archivo);
 			BufferedReader br = new BufferedReader(fr);
 			strBuffer.append(br.readLine());

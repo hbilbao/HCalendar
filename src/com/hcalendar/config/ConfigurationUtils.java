@@ -3,7 +3,6 @@ package com.hcalendar.config;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 
 import com.hcalendar.HCalendarConstants;
 
@@ -12,51 +11,19 @@ import com.hcalendar.HCalendarConstants;
  * */
 public class ConfigurationUtils {
 
-	private static final String JAR_FILE_EXTENSION = ".jar";
-	private static final String CLASS_FILE_EXTENSION = ".class";
-
-	private static String getConfigFolderForEclipse(String path,
-			String className) {
-		return path.substring(0, path.length() - className.length());
-	}
-
-	private static String getConfigFolder()
-			throws ConfigurationNotInitedException {
-		// Eclipse mode
-		Class<ConfigurationUtils> c = ConfigurationUtils.class;
-		String className = c.getSimpleName() + CLASS_FILE_EXTENSION;
-		String path = null;
-		path = c.getResource(className).getPath();
-		int to = path.indexOf(JAR_FILE_EXTENSION);
-		if (to == -1)
-			return getConfigFolderForEclipse(path, className);
-		// jar mode
-		try {
-			File moduleFile = new File(ConfigurationUtils.class
-					.getProtectionDomain().getCodeSource().getLocation()
-					.toURI());
-			path = moduleFile.getAbsolutePath();
-			path = path.replace('/', File.separatorChar);
-			int lastSeparator = path.lastIndexOf(File.separatorChar);
-			System.out.println(path);
-			return path.substring(0, lastSeparator);
-		} catch (URISyntaxException e) {
-			throw new ConfigurationNotInitedException(e);
-		}
-	}
-
 	// File getters
 	/**
 	 * Get the path to the anual configuration file
 	 * 
 	 * @return full real path to the anual configuration file
 	 * @throws ConfigurationNotInitedException
+	 * @throws IOException 
 	 * */
-	public static String getAnualConfigurationFile()
-			throws ConfigurationNotInitedException {
-		String folder = getConfigFolder();
-		return folder + File.separatorChar
-				+ HCalendarConstants.ANUALCONFIGURATION_FILE;
+	public static File getAnualConfigurationFile()
+			throws ConfigurationNotInitedException, IOException {
+		File baseDir = new File(".");
+		File file  = new File(baseDir,HCalendarConstants.ANUALCONFIGURATION_FILE);
+		return file.getCanonicalFile();
 	}
 
 	/**
@@ -64,11 +31,13 @@ public class ConfigurationUtils {
 	 * 
 	 * @return full real path to the input hours file
 	 * @throws ConfigurationNotInitedException
+	 * @throws IOException 
 	 * */
-	public static String getInputHoursFile()
-			throws ConfigurationNotInitedException {
-		String folder = getConfigFolder();
-		return folder + File.separatorChar + HCalendarConstants.HOUR_INPUT_FILE;
+	public static File getInputHoursFile()
+			throws ConfigurationNotInitedException, IOException {
+		File baseDir = new File(".");
+		File file  = new File(baseDir,HCalendarConstants.HOUR_INPUT_FILE);
+		return file.getCanonicalFile();
 	}
 
 	/**
@@ -76,12 +45,13 @@ public class ConfigurationUtils {
 	 * 
 	 * @return full real path to the csv temp file
 	 * @throws ConfigurationNotInitedException
+	 * @throws IOException 
 	 * */
-	public static String getCSVTempFile()
-			throws ConfigurationNotInitedException {
-		String folder = getConfigFolder();
-		return folder + File.separatorChar
-				+ HCalendarConstants.EXPORT_CSV_TEMP_FILE;
+	public static File getCSVTempFile()
+			throws ConfigurationNotInitedException, IOException {
+		File baseDir = new File(".");
+		File file  = new File(baseDir,HCalendarConstants.EXPORT_CSV_TEMP_FILE);
+		return file.getCanonicalFile();
 	}
 
 	/**
@@ -89,12 +59,13 @@ public class ConfigurationUtils {
 	 * 
 	 * @return full real path to the csv temp file
 	 * @throws ConfigurationNotInitedException
+	 * @throws IOException 
 	 * */
-	public static String getPDFTempFile()
-			throws ConfigurationNotInitedException {
-		String folder = getConfigFolder();
-		return folder + File.separatorChar
-				+ HCalendarConstants.EXPORT_PDF_TEMP_FILE;
+	public static File getPDFTempFile()
+			throws ConfigurationNotInitedException, IOException {
+		File baseDir = new File(".");
+		File file  = new File(baseDir,HCalendarConstants.EXPORT_PDF_TEMP_FILE);
+		return file.getCanonicalFile();
 	}
 
 	/**
@@ -118,10 +89,11 @@ public class ConfigurationUtils {
 	 * 
 	 * @return existenz of the file
 	 * @throws ConfigurationNotInitedException
+	 * @throws IOException 
 	 * */
 	public static boolean existAnualConfigurationFile()
-			throws ConfigurationNotInitedException {
-		File file = new File(getAnualConfigurationFile());
+			throws ConfigurationNotInitedException, IOException {
+		File file = getAnualConfigurationFile();
 		return file.exists();
 	}
 
@@ -133,7 +105,7 @@ public class ConfigurationUtils {
 	 * */
 	public static boolean existInputHoursFile() throws IOException,
 			ConfigurationNotInitedException {
-		File file = new File(getInputHoursFile());
+		File file = getInputHoursFile();
 		return file.exists();
 	}
 }

@@ -337,11 +337,11 @@ public class DataServices {
 				String toDate = (String) list.get(2);
 
 				try {
-					String fileToOpen = null;
+					File fileToOpen = null;
 					if (selectedOption
 							.equals(ExportDataWindow.EXPORT_CSV_OPTION_MONTH)) {
-						fileToOpen = ConfigurationUtils.getCSVTempFile();
 						monthResumeCSV(year, profileName, fromDate, toDate, orm);
+						fileToOpen = ConfigurationUtils.getCSVTempFile();
 					} else if (selectedOption
 							.equals(ExportDataWindow.EXPORT_CSV_OPTION_DAY)) {
 						dayliResumeCSV(year, profileName, fromDate, toDate, orm);
@@ -349,7 +349,7 @@ public class DataServices {
 					} else if (selectedOption
 							.equals(ExportDataWindow.EXPORT_PDF_OPTION_DAY)){
 						dayliResumePDF(year, profileName, fromDate, toDate, orm);
-					fileToOpen = ConfigurationUtils.getPDFTempFile();
+						fileToOpen = ConfigurationUtils.getPDFTempFile();
 					}else if (selectedOption
 							.equals(ExportDataWindow.EXPORT_PDF_OPTION_MONTH)){
 						dayliResumePDF(year, profileName, fromDate, toDate, orm);
@@ -361,7 +361,7 @@ public class DataServices {
 					if (!Desktop.isDesktopSupported()) {
 						Process p = Runtime.getRuntime().exec(
 								"rundll32 url.dll,FileProtocolHandler "
-										+ fileToOpen);
+										+ fileToOpen.getAbsolutePath());
 						// use alternative (Runtime.exec)
 						callback.update(null, -1);
 					}
@@ -373,7 +373,7 @@ public class DataServices {
 						callback.update(null, -1);
 					}
 
-					desktop.open(new File(fileToOpen));
+					desktop.open(fileToOpen);
 					callback.update(null, 0);
 				} catch (IOException e) {
 					e.printStackTrace();
