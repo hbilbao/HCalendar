@@ -260,7 +260,8 @@ public class ORMHelper {
 			List<Holidays> result = new ArrayList<AnualHours.UserInput.Holidays>();
 			List<Holidays> list = getUserHolidaysList(anualHours, profileName);
 			for (Holidays hol : list) {
-				if (DateHelper.isBetween(
+				if ((fromDate==null && toDate==null) ||
+					DateHelper.isBetween(
 						DateHelper.xmlGregorianCalendar2Date(hol.getDate()),
 						fromDate, toDate))
 					result.add(hol);
