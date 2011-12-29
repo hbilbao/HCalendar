@@ -138,7 +138,9 @@ public class CRUDManager {
 			File archivo = ConfigurationUtils.getAnualConfigurationFile();
 			fr = new FileReader(archivo);
 			BufferedReader br = new BufferedReader(fr);
-			strBuffer.append(br.readLine());
+			String str;
+			while ((str = br.readLine())!=null)
+				strBuffer.append(str);
 
 			// Parse the XML
 			final JAXBContext jaxbContext = JAXBContext
@@ -173,7 +175,9 @@ public class CRUDManager {
 			File archivo = ConfigurationUtils.getInputHoursFile();
 			fr = new FileReader(archivo);
 			BufferedReader br = new BufferedReader(fr);
-			strBuffer.append(br.readLine());
+			String str;
+			while ((str = br.readLine())!=null)
+				strBuffer.append(str);
 
 			// Parse the XML
 			final JAXBContext jaxbContext = JAXBContext
