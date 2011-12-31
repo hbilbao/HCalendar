@@ -15,7 +15,7 @@ import com.hcalendar.ui.subViews.HolidayInputWindow;
 import com.hcalendar.ui.widgets.IWindowResultListener;
 
 /**
- * Menu class with the following options - CHANGE TO LABORAL - CHANGE TOP NOT
+ * Menu class with the following options - CHANGE TO LABORAL - CHANGE TO NOT
  * WORKING - CHANGE INPUTS OF DAY - CHANGE TO HOLIDAY
  * */
 public class InputChangeOptionMenu extends JPopupMenu {
@@ -32,14 +32,18 @@ public class InputChangeOptionMenu extends JPopupMenu {
 	private static final String CHANGE_VALUES_HOLIDAY = "Vacaciones";
 
 	public InputChangeOptionMenu(final IWindowResultListener listener,
-			final Date date) {
+			final Date date, boolean isWorkingDay) {
 		JMenuItem laboralChoice = new JMenuItem(CHANGE_VALUES_LABORAL);
 		JMenuItem notWorkingChoice = new JMenuItem(CHANGE_VALUES_NOT_WORKING);
 		JMenuItem changeInChoice = new JMenuItem(CHANGE_VALUES_CHANGE_INPUTS);
 		JMenuItem holidayChoice = new JMenuItem(CHANGE_VALUES_HOLIDAY);
-		add(laboralChoice);
+		//	Add choices depending of the type of the day
+		if (!isWorkingDay)
+			add(laboralChoice);
+		else
+			add(changeInChoice);
+		//	static menu options
 		add(notWorkingChoice);
-		add(changeInChoice);
 		add(holidayChoice);
 
 		laboralChoice.addActionListener(new ActionListener() {

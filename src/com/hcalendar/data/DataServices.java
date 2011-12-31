@@ -4,7 +4,6 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -62,16 +61,15 @@ public class DataServices {
 				// Is month is filter?
 				if (!(fromDate.getMonth() <= i && toDate.getMonth() >= i))
 					continue;
-			if (DateHelper.isLeap(year) && i == Calendar.FEBRUARY)
-				daysOnMonth = DateHelper.daysOnMonth[i] + 1;
-			else
-				daysOnMonth = DateHelper.daysOnMonth[i];
+			daysOnMonth = DateHelper.getDaysOnMonth(year, i);
 			float hours = Calculator.calculateHoursUntilDate(
 					orm.getAnualHours(), new Date(year - 1900, i, daysOnMonth),
 					profileName);
 			lastCalculatedHours = i == 0 ? 0 : Calculator
-					.calculateHoursUntilDate(orm.getAnualHours(), new Date(
-							year - 1900, i - 1, daysOnMonth), profileName);
+					.calculateHoursUntilDate(
+							orm.getAnualHours(),
+							new Date(year - 1900, i - 1, DateHelper
+									.getDaysOnMonth(year, i - 1)), profileName);
 			resultMap.put(DateHelper.months[i], hours - lastCalculatedHours);
 		}
 		return resultMap;
@@ -363,14 +361,16 @@ public class DataServices {
 							.equals(ExportDataWindow.EXPORT_PDF_OPTION_MONTH)) {
 						dayliResumePDF(year, profileName, fromDate, toDate, orm);
 						fileToOpen = ConfigurationUtils.getPDFTempFile();
-					} else
+					} else {
 						callback.update(null, -1);
+						return;
+					}
 
-					// Open with excel
+					// Open
 					if (!Desktop.isDesktopSupported()) {
-						Process p = Runtime.getRuntime().exec(
-								"rundll32 url.dll,FileProtocolHandler "
-										+ fileToOpen.getAbsolutePath());
+//						Process p = Runtime.getRuntime().exec(
+//								"rundll32 url.dll,FileProtocolHandler "
+//										+ fileToOpen.getAbsolutePath());
 						// use alternative (Runtime.exec)
 						callback.update(null, -1);
 					}
@@ -392,6 +392,9 @@ public class DataServices {
 					callback.update(null, -1);
 				} catch (BusinessException e) {
 					e.printStackTrace();
+					if (e.getCause() instanceof java.io.FileNotFoundException)
+						callback.update(null, -2);
+					else	
 					callback.update(null, -1);
 				}
 			}

@@ -67,7 +67,7 @@ public class DiaryHourWindow extends JFrame {
 		diaryHoursLabel.setLabelFor(diaryHoursTextField);
 		diaryPanel.add(diaryHoursLabel, BorderLayout.WEST);
 		diaryPanel.add(diaryHoursTextField, BorderLayout.CENTER);
-		diaryHoursTextField.setInputVerifier(new NumericValidator(this));
+		diaryHoursTextField.setInputVerifier(new NumericValidator(this, false));
 		JLabel desc = new JLabel("Descripción: ");
 		descTextArea = new JTextArea();
 		descTextArea.setLineWrap(true);

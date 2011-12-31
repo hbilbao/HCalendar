@@ -52,6 +52,7 @@ public class HourManagerWindow extends JFrame implements IWindow {
 
 	private static final String SUCCES_EXPORT_DATA = "Exportación correcta";
 	private static final String ERROR_EXPORT_DATA = "Error al exportar";
+	private static final String ERROR_EXPORT_DATA_FILE_LOCKED = "Error al exportar. El archivo está siendo usado por otro proceso, cierre el archivo antes de exportar los datos porfavor.";
 
 	private static final String ERROR_CALCULATE_DATA = "Error al calcular horas anules para el año ";
 
@@ -319,7 +320,11 @@ public class HourManagerWindow extends JFrame implements IWindow {
 									ModalWindowUtils.showSuccesPanel(
 											HourManagerWindow.this,
 											SUCCES_EXPORT_DATA);
-								else
+								else if (result.equals(-2))
+									ModalWindowUtils.showErrorPanel(
+										HourManagerWindow.this,
+										ERROR_EXPORT_DATA_FILE_LOCKED);
+								else	
 									ModalWindowUtils.showErrorPanel(
 											HourManagerWindow.this,
 											ERROR_EXPORT_DATA);

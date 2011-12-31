@@ -113,16 +113,16 @@ class ORMClient implements IORMClient {
 				CRUDManager.saveAnualHours(getAnualHours());
 				// Cargar en memoria el fichero
 				setAnualHours(CRUDManager.loadAnualHoursFromXML());
+				reloadEntitys(ENTITY_TYPE.ANUALHOURS);
 			} else if (ENTITY_TYPE.USERCONFIGURATION.equals(entityType)) {
 				CRUDManager.saveAnualConfiguration(getAnualConfiguration());
 				// Cargar en memoria el fichero
 				setUserConfiguration(CRUDManager
 						.loadAnualConfigurationFromXML());
+				reloadEntitys(ENTITY_TYPE.USERCONFIGURATION);
 			}
 		} catch (CRUDException e) {
 			throw new ORMException(e);
-		} finally {
-			reloadEntitys();
 		}
 	}
 
@@ -134,7 +134,7 @@ class ORMClient implements IORMClient {
 	 * */
 	@Override
 	public void rollback() throws ORMException {
-		reloadEntitys();
+		reloadEntitys(null);
 	}
 
 	/**
@@ -174,15 +174,17 @@ class ORMClient implements IORMClient {
 
 	/**
 	 * Discard any unsaved change and reload entities from the xml
+	 * @param entType 
 	 * 
-	 * @return Anual hours
 	 * @throws ORMException
 	 * */
 	@Override
-	public void reloadEntitys() throws ORMException {
+	public void reloadEntitys(ENTITY_TYPE entType) throws ORMException {
 		try {
+			//	FIXME Este clear general esta mal, pero parece que el changedList no se usa pa nada...
 			this.changesList.clear();
 			try {
+				if (entType ==null || entType.equals(ENTITY_TYPE.USERCONFIGURATION))
 				setUserConfiguration(CRUDManager
 						.loadAnualConfigurationFromXML());
 			} catch (CRUDException e) {
@@ -192,6 +194,7 @@ class ORMClient implements IORMClient {
 				}
 			}
 			try {
+				if (entType ==null || entType.equals(ENTITY_TYPE.ANUALHOURS))
 				setAnualHours(CRUDManager.loadAnualHoursFromXML());
 			} catch (CRUDException e) {
 				if (e.getCause() instanceof FileNotFoundException) {

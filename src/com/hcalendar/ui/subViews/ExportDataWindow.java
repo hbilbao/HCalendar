@@ -110,7 +110,7 @@ public class ExportDataWindow extends JFrame {
 			}
 		});
 
-		fromDateTextField.setInputVerifier(new NumericValidator(this));
+		fromDateTextField.setInputVerifier(new NumericValidator(this, true));
 		JLabel desc = new JLabel("Hasta: ");
 		toDateTextField = new JTextField();
 		desc.setLabelFor(toDateTextField);

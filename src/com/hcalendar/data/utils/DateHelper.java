@@ -30,6 +30,14 @@ public class DateHelper {
 	public static final String[] daysOfWeek = { "Lunes", "Martes", "Miércoles",
 			"Jueves", "Viernes", "Sábado", "Domingo" };
 
+	public static int getDaysOnMonth(int year, Integer month)
+			throws DateException {
+			if (DateHelper.isLeap(year) && month == Calendar.FEBRUARY)
+				return daysOnMonth[month] + 1;
+			else
+				return daysOnMonth[month];
+	}
+	
 	public static Date xmlGregorianCalendar2Date(
 			XMLGregorianCalendar xmlGregorianCalendar) {
 		return new Date(xmlGregorianCalendar.getYear() - 1900,

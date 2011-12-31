@@ -283,6 +283,11 @@ public class JUserCalendarPanel extends JPanel implements
 						private void doPop(MouseEvent e) {
 							JButton source = (JButton) e.getSource();
 							int day = Integer.parseInt(source.getText());
+							Date date = new Date(yy - 1900, mm, day);
+							//	Check if the date is a working day
+							boolean isWorkingDay = false;
+							if (!(JUserCalendarPanel.this.userHolidays.contains(date) || JUserCalendarPanel.this.userNotWorkingDays.contains(date)|| JUserCalendarPanel.this.calendarFreeDays.contains(date)))
+								isWorkingDay = true;
 							InputChangeOptionMenu menu = new InputChangeOptionMenu(
 									new IWindowResultListener() {
 
@@ -292,8 +297,9 @@ public class JUserCalendarPanel extends JPanel implements
 											for (ICalendarEventListener l : registeredEventListeners)
 												l.onDataInput(entity);
 										}
-									}, new Date(yy - 1900, mm, day));
+									}, date, isWorkingDay);
 							menu.show(e.getComponent(), e.getX(), e.getY());
+							
 						}
 
 					});
@@ -573,12 +579,18 @@ public class JUserCalendarPanel extends JPanel implements
 		switch (entity.getDateType()) {
 		case FREE_DAY:
 			addDayToList(entity.getDate(), LIST_TYPE.CALENDAR_FREEDAY);
+			removeDayFromList(entity.getDate(), LIST_TYPE.USER_HOLIDAYS);
+			removeDayFromList(entity.getDate(), LIST_TYPE.USER_WORKINGDAY);
 			break;
 		case HOLIDAYS:
 			addDayToList(entity.getDate(), LIST_TYPE.USER_HOLIDAYS);
+			removeDayFromList(entity.getDate(), LIST_TYPE.CALENDAR_FREEDAY);
+			removeDayFromList(entity.getDate(), LIST_TYPE.USER_WORKINGDAY);
 			break;
 		case WORK_DAY:
 			addDayToList(entity.getDate(), LIST_TYPE.USER_WORKINGDAY);
+			removeDayFromList(entity.getDate(), LIST_TYPE.USER_HOLIDAYS);
+			removeDayFromList(entity.getDate(), LIST_TYPE.CALENDAR_FREEDAY);
 			break;
 		}
 		recompute();

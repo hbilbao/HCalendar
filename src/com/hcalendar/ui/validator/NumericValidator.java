@@ -18,16 +18,21 @@ public class NumericValidator extends InputVerifier {
 	private static Pattern p = Pattern.compile(NUMERIC_REGEX);
 
 	private Component component;
+	private boolean isNullable;
 
-	public NumericValidator(Component component) {
+	public NumericValidator(Component component, boolean isNullable) {
 		this.component = component;
+		this.isNullable = isNullable;
 	}
 
 	@Override
 	public boolean verify(JComponent input) {
 		JTextField textField = (JTextField) input;
 		if (textField.getText() == null || textField.getText().equals(""))
-			return true;
+			if (isNullable)
+				return true;
+			else
+				return false;
 		Matcher m = p.matcher(textField.getText());
 		if (!m.matches())
 			ModalWindowUtils
