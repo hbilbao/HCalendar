@@ -40,6 +40,8 @@ public class InitScreenWindow extends JFrame implements IWindow {
 	private static final String ACTION_BUTTON_CREATE_PROFILE_TITLE = "Crear nuevo perfil";
 	private static final String ACTION_BUTTON_DELETE_PROFILE_TITLE = "Borrar perfil: ";
 
+	private static final String DELETE_PROFILE_CONFIRMATION_QUESTION = "Está seguro de que quiere borrar el perfíl?";
+
 	JComboBox profilesCombo;
 	JComboBox deleteProfilesCombo;
 	IORMClient orm;
@@ -89,6 +91,16 @@ public class InitScreenWindow extends JFrame implements IWindow {
 					if (profileName == null
 							|| profileName
 									.equals(HCalendarConstants.NULL_COMBO_INPUT))
+						return;
+					// Confirm delete
+					int delete = ModalWindowUtils
+							.showOptionPanel(
+									InitScreenWindow.this,
+									DELETE_PROFILE_CONFIRMATION_QUESTION,
+									new String[] {
+											HCalendarConstants.ACTION_BUTTON_ACCEPT_TITLE,
+											HCalendarConstants.ACTION_BUTTON_CANCEL_TITLE });
+					if (delete>0)
 						return;
 					try {
 						CRUDManager.deleteProfile(orm.getAnualConfiguration(),
