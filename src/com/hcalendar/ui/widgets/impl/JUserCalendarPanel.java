@@ -117,6 +117,14 @@ public class JUserCalendarPanel extends JPanel implements
 	private boolean enableRightClickActions;
 	private boolean allowYearChange;
 
+	private static final String DAY_SHORT_NAME_MONDAY = "Lunes";
+	private static final String DAY_SHORT_NAME_TUESDAY = "Martes";
+	private static final String DAY_SHORT_NAME_WEDNESDAY = "Miercoles";
+	private static final String DAY_SHORT_NAME_THURSDAY = "Jueves";
+	private static final String DAY_SHORT_NAME_FRIDAY = "Viernes";
+	private static final String DAY_SHORT_NAME_SATURDAY = "Sabado";
+	private static final String DAY_SHORT_NAME_SUNDAY = "Domingo";
+
 	/**
 	 * Construct a Cal, starting with today.
 	 */
@@ -212,13 +220,13 @@ public class JUserCalendarPanel extends JPanel implements
 		bp.setLayout(new GridLayout(7, 7));
 		labs = new JButton[6][7]; // first row is days
 
-		bp.add(b0 = new JButton("DO"));
-		bp.add(new JButton("LU"));
-		bp.add(new JButton("MA"));
-		bp.add(new JButton("MI"));
-		bp.add(new JButton("JU"));
-		bp.add(new JButton("VI"));
-		bp.add(new JButton("SA"));
+		bp.add(b0 = new JButton(DAY_SHORT_NAME_MONDAY));
+		bp.add(new JButton(DAY_SHORT_NAME_TUESDAY));
+		bp.add(new JButton(DAY_SHORT_NAME_WEDNESDAY));
+		bp.add(new JButton(DAY_SHORT_NAME_THURSDAY));
+		bp.add(new JButton(DAY_SHORT_NAME_FRIDAY));
+		bp.add(new JButton(DAY_SHORT_NAME_SATURDAY));
+		bp.add(new JButton(DAY_SHORT_NAME_SUNDAY));
 
 		ActionListener dateSetter = new ActionListener() {
 			@Override
@@ -284,9 +292,13 @@ public class JUserCalendarPanel extends JPanel implements
 							JButton source = (JButton) e.getSource();
 							int day = Integer.parseInt(source.getText());
 							Date date = new Date(yy - 1900, mm, day);
-							//	Check if the date is a working day
+							// Check if the date is a working day
 							boolean isWorkingDay = false;
-							if (!(JUserCalendarPanel.this.userHolidays.contains(date) || JUserCalendarPanel.this.userNotWorkingDays.contains(date)|| JUserCalendarPanel.this.calendarFreeDays.contains(date)))
+							if (!(JUserCalendarPanel.this.userHolidays
+									.contains(date)
+									|| JUserCalendarPanel.this.userNotWorkingDays
+											.contains(date) || JUserCalendarPanel.this.calendarFreeDays
+									.contains(date)))
 								isWorkingDay = true;
 							InputChangeOptionMenu menu = new InputChangeOptionMenu(
 									new IWindowResultListener() {
@@ -299,7 +311,7 @@ public class JUserCalendarPanel extends JPanel implements
 										}
 									}, date, isWorkingDay);
 							menu.show(e.getComponent(), e.getX(), e.getY());
-							
+
 						}
 
 					});
@@ -322,13 +334,11 @@ public class JUserCalendarPanel extends JPanel implements
 		calendar = new GregorianCalendar(yy, mm, dd);
 
 		// Compute how much to leave before the first.
-		// getDay() returns 0 for Sunday, which is just right.
-		leadGap = new GregorianCalendar(yy, mm, 1).get(Calendar.DAY_OF_WEEK) - 1;
-		// System.out.println("leadGap = " + leadGap);
+		// getDay() must returns 0 for the first day (Monday).
+		leadGap = calculateLeapGap(new GregorianCalendar(yy, mm, 1));
 
 		int daysInMonth = DateHelper.daysOnMonth[mm];
 		if (DateHelper.isLeap(calendar.get(Calendar.YEAR)) && mm == 1)
-			// if (isLeap(calendar.get(Calendar.YEAR)) && mm > 1)
 			++daysInMonth;
 
 		// Blank out the labels before 1st day of month
@@ -364,6 +374,16 @@ public class JUserCalendarPanel extends JPanel implements
 		}
 		// Say we need to be drawn on the screen
 		repaint();
+	}
+
+	/**
+	 * Calculate leap day. First day is Monday
+	 * */
+	private int calculateLeapGap(GregorianCalendar date) {
+		int day = date.get(Calendar.DAY_OF_WEEK) == 1 ? 8 : date
+				.get(Calendar.DAY_OF_WEEK);
+		int leadGap = day - 2;
+		return leadGap;
 	}
 
 	/** Set the year, month, and day */
