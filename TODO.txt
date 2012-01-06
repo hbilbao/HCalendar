@@ -17,7 +17,10 @@
  	[fixed] No pinta bien al marcar como festivos.
  	[fixed] La opción de cambiar imputaciones debe estar desactivada si el día no es laboral
  	[fixed] No suma bien las horas del mes en los informes.
- 	En el calendario sale mal siempre el ultimo día.
+ 	[fixed]En el calendario sale mal siempre el ultimo día.
  	[fixed] Marcar como labolar un festivo, y sin guardar intentar volver a poner como festivo. No lo pinta bien.
+ 	[fixed] Preguntar antes de borrar el perfil!
+ 	[fixed] Poner como primer día de la semana el lunes.
+ 	Traducir el datePicker o buscar alternativa
 NOTAS
 - En el Eclipse, se guardan los fichero en la carpeta bin. En el jar, se crea una carpeta en la misma altura que el jar.
