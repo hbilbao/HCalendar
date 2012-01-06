@@ -352,7 +352,7 @@ public class JUserCalendarPanel extends JPanel implements
 		}
 
 		// 7 days/week * up to 6 rows
-		for (int i = leadGap + 1 + daysInMonth; i < 6 * 7; i++) {
+		for (int i = leadGap + daysInMonth; i < 6 * 7; i++) {
 			labs[(i) / 7][(i) % 7].setText("");
 		}
 
