@@ -117,13 +117,13 @@ public class JUserCalendarPanel extends JPanel implements
 	private boolean enableRightClickActions;
 	private boolean allowYearChange;
 
-	private static final String DAY_SHORT_NAME_MONDAY = "Lunes";
-	private static final String DAY_SHORT_NAME_TUESDAY = "Martes";
-	private static final String DAY_SHORT_NAME_WEDNESDAY = "Miercoles";
-	private static final String DAY_SHORT_NAME_THURSDAY = "Jueves";
-	private static final String DAY_SHORT_NAME_FRIDAY = "Viernes";
-	private static final String DAY_SHORT_NAME_SATURDAY = "Sabado";
-	private static final String DAY_SHORT_NAME_SUNDAY = "Domingo";
+	private static final String DAY_SHORT_NAME_MONDAY = DateHelper.daysOfWeek[0];
+	private static final String DAY_SHORT_NAME_TUESDAY = DateHelper.daysOfWeek[1];
+	private static final String DAY_SHORT_NAME_WEDNESDAY = DateHelper.daysOfWeek[2];
+	private static final String DAY_SHORT_NAME_THURSDAY = DateHelper.daysOfWeek[3];
+	private static final String DAY_SHORT_NAME_FRIDAY = DateHelper.daysOfWeek[4];
+	private static final String DAY_SHORT_NAME_SATURDAY = DateHelper.daysOfWeek[5];
+	private static final String DAY_SHORT_NAME_SUNDAY = DateHelper.daysOfWeek[6];
 
 	/**
 	 * Construct a Cal, starting with today.
