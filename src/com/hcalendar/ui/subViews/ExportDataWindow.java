@@ -102,8 +102,7 @@ public class ExportDataWindow extends JFrame {
 					@Override
 					public void update(Observable arg0, Object arg1) {
 						Date date = ((GregorianCalendar) arg1).getTime();
-						fromDateTextField.setText(DateHelper.DATE_FORMAT
-								.format(date));
+						fromDateTextField.setText(DateHelper.formatDate(date));
 					}
 				});
 			}
@@ -125,8 +124,7 @@ public class ExportDataWindow extends JFrame {
 					@Override
 					public void update(Observable arg0, Object arg1) {
 						Date date = ((GregorianCalendar) arg1).getTime();
-						toDateTextField.setText(DateHelper.DATE_FORMAT
-								.format(date));
+						toDateTextField.setText(DateHelper.formatDate(date));
 					}
 				});
 			}

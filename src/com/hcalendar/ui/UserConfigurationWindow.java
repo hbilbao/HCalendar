@@ -464,7 +464,7 @@ public class UserConfigurationWindow extends JFrame implements IWindow {
 			jCalendarPanel.removeDayFromList(date,
 					LIST_TYPE.USER_NOT_WORKINGDAY);
 
-		String formattedDate = DateHelper.DATE_FORMAT.format(date);
+		String formattedDate = DateHelper.formatDate(date);
 		// Lista vacia
 		if (diasLibresTextField.getText() == null
 				|| diasLibresTextField.getText().length() == 0)

@@ -120,9 +120,9 @@ public class WorkInputsDTOXMLReader extends AbstractObjectReader {
 		if (workInputs.getFromFilter() != null
 				&& workInputs.getToFilter() != null) {
 			handler.element(XSL_ELEMENT_MAIN_TEMPLATE_FROMFILTER,
-					DateHelper.DATE_FORMAT.format(workInputs.getFromFilter()));
+					DateHelper.formatDate(workInputs.getFromFilter()));
 			handler.element(XSL_ELEMENT_MAIN_TEMPLATE_TOFILTER,
-					DateHelper.DATE_FORMAT.format(workInputs.getToFilter()));
+					DateHelper.formatDate(workInputs.getToFilter()));
 		}
 		// worked days
 		generateWorkingDays(workInputs.getWorkInput());
@@ -157,7 +157,7 @@ public class WorkInputsDTOXMLReader extends AbstractObjectReader {
 			}
 
 			handler.startElement(XSL_TEMPLATE_WORKING_DAYS);
-			String dateToPrint = DateHelper.DATE_FORMAT.format(DateHelper
+			String dateToPrint = DateHelper.formatDate(DateHelper
 					.xmlGregorianCalendar2Date(workInput.getDate()));
 			handler.element(XSL_ELEMENT_WORKINPUT_TEMPLATE_DATE, dateToPrint);
 			handler.element(XSL_ELEMENT_WORKINPUT_TEMPLATE_HOURS,
@@ -186,7 +186,7 @@ public class WorkInputsDTOXMLReader extends AbstractObjectReader {
 			}
 
 			handler.startElement(XSL_TEMPLATE_HOLIDAY);
-			String dateToPrint = DateHelper.DATE_FORMAT.format(DateHelper
+			String dateToPrint = DateHelper.formatDate(DateHelper
 					.xmlGregorianCalendar2Date(holiday.getDate()));
 			handler.element(XSL_ELEMENT_HOLIDAYS_TEMPLATE_DATE, dateToPrint);
 			handler.element(XSL_ELEMENT_HOLIDAYS_TEMPLATE_COMMENT,
@@ -214,7 +214,7 @@ public class WorkInputsDTOXMLReader extends AbstractObjectReader {
 			}
 
 			handler.startElement(XSL_TEMPLATE_FREEDAY);
-			String dateToPrint = DateHelper.DATE_FORMAT.format(DateHelper
+			String dateToPrint = DateHelper.formatDate(DateHelper
 					.xmlGregorianCalendar2Date(day.getDay()));
 			handler.element(XSL_ELEMENT_FREEDAYS_TEMPLATE_DATE, dateToPrint);
 			handler.element(XSL_ELEMENT_FREEDAYS_TEMPLATE_COMMENT,

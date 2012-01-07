@@ -17,7 +17,7 @@ import com.hcalendar.data.utils.exception.DateException;
 @SuppressWarnings("deprecation")
 public class DateHelper {
 
-	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(
 			"yyyy-MM-dd");
 
 	public final static int daysOnMonth[] = { 31, 28, 31, 30, 31, 30, 31, 31,
@@ -73,6 +73,10 @@ public class DateHelper {
 		return result;
 	}
 
+	public static String formatDate(Date date){
+		return DATE_FORMAT.format(date);
+	}
+	
 	public static XMLGregorianCalendar parse2XMLGregorianCalendar(String strDate)
 			throws DateException {
 		try {

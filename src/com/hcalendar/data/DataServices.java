@@ -194,7 +194,7 @@ public class DataServices {
 			for (WorkedHours days : workedHours) {
 				Date date = DateHelper
 						.xmlGregorianCalendar2Date(days.getDate());
-				writer.append(DateHelper.DATE_FORMAT.format(date));
+				writer.append(DateHelper.formatDate(date));
 				writer.append(HCalendarConstants.EXPORT_CSV_COLUMN_SEPARATOR);
 				writer.append(DateHelper.translateDayOfWeek(date.getDay()));
 				writer.append(HCalendarConstants.EXPORT_CSV_COLUMN_SEPARATOR);
