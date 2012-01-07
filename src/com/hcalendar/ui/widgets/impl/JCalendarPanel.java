@@ -66,7 +66,7 @@ import com.hcalendar.ui.widgets.IWindowResultListener;
  * Calendar panel
  * */
 @SuppressWarnings("deprecation")
-public class JUserCalendarPanel extends JPanel implements
+public class JCalendarPanel extends JPanel implements
 		ICalendarActionProvider {
 
 	private static final long serialVersionUID = 1L;
@@ -128,7 +128,7 @@ public class JUserCalendarPanel extends JPanel implements
 	/**
 	 * Construct a Cal, starting with today.
 	 */
-	public JUserCalendarPanel(ICalendarEventListener eventListener,
+	public JCalendarPanel(ICalendarEventListener eventListener,
 			boolean enableRightClickActions, boolean allowYearChange) {
 		super();
 		this.allowYearChange = allowYearChange;
@@ -146,7 +146,7 @@ public class JUserCalendarPanel extends JPanel implements
 	 * @exception IllegalArgumentException
 	 *                If year out of range
 	 */
-	public JUserCalendarPanel(int year, int month, int today,
+	public JCalendarPanel(int year, int month, int today,
 			ICalendarEventListener eventListener,
 			boolean enableRightClickActions, boolean allowYearChange) {
 		super();
@@ -238,9 +238,9 @@ public class JUserCalendarPanel extends JPanel implements
 					// Notify listeners
 					for (ICalendarEventListener l : registeredEventListeners) {
 						l.onDateChanged(new Date(
-								JUserCalendarPanel.this.yy - 1900,
-								JUserCalendarPanel.this.mm, dd),
-								isDaySelected(dd), JUserCalendarPanel.this);
+								JCalendarPanel.this.yy - 1900,
+								JCalendarPanel.this.mm, dd),
+								isDaySelected(dd), JCalendarPanel.this);
 					}
 				}
 			}
@@ -294,10 +294,10 @@ public class JUserCalendarPanel extends JPanel implements
 							Date date = new Date(yy - 1900, mm, day);
 							// Check if the date is a working day
 							boolean isWorkingDay = false;
-							if (!(JUserCalendarPanel.this.userHolidays
+							if (!(JCalendarPanel.this.userHolidays
 									.contains(date)
-									|| JUserCalendarPanel.this.userNotWorkingDays
-											.contains(date) || JUserCalendarPanel.this.calendarFreeDays
+									|| JCalendarPanel.this.userNotWorkingDays
+											.contains(date) || JCalendarPanel.this.calendarFreeDays
 									.contains(date)))
 								isWorkingDay = true;
 							InputChangeOptionMenu menu = new InputChangeOptionMenu(
@@ -623,10 +623,10 @@ public class JUserCalendarPanel extends JPanel implements
 		c.setLayout(new FlowLayout());
 
 		// for this test driver, hardcode 1995/02/10.
-		c.add(new JUserCalendarPanel(1995, 2 - 1, 10, null, false, true));
+		c.add(new JCalendarPanel(1995, 2 - 1, 10, null, false, true));
 
 		// and beside it, the current month.
-		c.add(new JUserCalendarPanel(null, false, true));
+		c.add(new JCalendarPanel(null, false, true));
 
 		f.pack();
 		f.setVisible(true);

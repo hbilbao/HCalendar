@@ -38,7 +38,7 @@ import com.hcalendar.data.orm.impl.ORMHelper;
 import com.hcalendar.ui.helper.ModalWindowUtils;
 import com.hcalendar.ui.widgets.ICalendarActionProvider;
 import com.hcalendar.ui.widgets.ICalendarActionProvider.LIST_TYPE;
-import com.hcalendar.ui.widgets.impl.JUserCalendarPanel;
+import com.hcalendar.ui.widgets.impl.JCalendarPanel;
 
 public class HourManagerWindow extends JFrame implements IWindow {
 
@@ -73,7 +73,7 @@ public class HourManagerWindow extends JFrame implements IWindow {
 	private static final String WINDOW_PANEL_BORDER_ANUAL_INFO = "Información anual";
 	private static final String WINDOW_PANEL_BORDER_DIARY_INFO = "Información diaria";
 
-	private JUserCalendarPanel jCalendarPanel;
+	private JCalendarPanel jCalendarPanel;
 
 	private JTextField convTextField;
 	private JTextField actualHoursTextField;
@@ -188,7 +188,7 @@ public class HourManagerWindow extends JFrame implements IWindow {
 		profileAndHist.add(histPanel, BorderLayout.CENTER);
 
 		// Calendar
-		jCalendarPanel = new JUserCalendarPanel(yearToShow, 0, 0,
+		jCalendarPanel = new JCalendarPanel(yearToShow, 0, 0,
 				new ICalendarEventListener() {
 
 					@Override

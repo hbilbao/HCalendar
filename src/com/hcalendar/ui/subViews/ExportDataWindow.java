@@ -7,8 +7,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -27,7 +27,7 @@ import javax.swing.WindowConstants;
 
 import com.hcalendar.data.utils.DateHelper;
 import com.hcalendar.ui.validator.NumericValidator;
-import com.qt.datapicker.DatePicker;
+import com.hcalendar.ui.widgets.impl.JCalendarDatePicker;
 
 /**
  * Window to export data
@@ -97,16 +97,15 @@ public class ExportDataWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				DatePicker dp = new DatePicker(new Observer() {
+				new JCalendarDatePicker(new Observer() {
 
 					@Override
 					public void update(Observable arg0, Object arg1) {
-						Date date = ((Calendar) arg1).getTime();
+						Date date = ((GregorianCalendar) arg1).getTime();
 						fromDateTextField.setText(DateHelper.DATE_FORMAT
 								.format(date));
 					}
 				});
-				dp.start(ExportDataWindow.this);
 			}
 		});
 
@@ -121,16 +120,15 @@ public class ExportDataWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				DatePicker dp = new DatePicker(new Observer() {
+				new JCalendarDatePicker(new Observer() {
 
 					@Override
 					public void update(Observable arg0, Object arg1) {
-						Date date = ((Calendar) arg1).getTime();
+						Date date = ((GregorianCalendar) arg1).getTime();
 						toDateTextField.setText(DateHelper.DATE_FORMAT
 								.format(date));
 					}
 				});
-				dp.start(ExportDataWindow.this);
 			}
 		});
 

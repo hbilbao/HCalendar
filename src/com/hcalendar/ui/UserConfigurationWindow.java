@@ -43,7 +43,7 @@ import com.hcalendar.ui.helper.ModalWindowUtils;
 import com.hcalendar.ui.validator.NumericValidator;
 import com.hcalendar.ui.widgets.ICalendarActionProvider;
 import com.hcalendar.ui.widgets.ICalendarActionProvider.LIST_TYPE;
-import com.hcalendar.ui.widgets.impl.JUserCalendarPanel;
+import com.hcalendar.ui.widgets.impl.JCalendarPanel;
 
 public class UserConfigurationWindow extends JFrame implements IWindow {
 
@@ -87,7 +87,7 @@ public class UserConfigurationWindow extends JFrame implements IWindow {
 	private JTextField horasSabado;
 	private JTextField horasDomingo;
 
-	JUserCalendarPanel jCalendarPanel;
+	JCalendarPanel jCalendarPanel;
 	private IORMClient orm;
 
 	private final String DATE_SEPARATOR = "\n";
@@ -112,7 +112,7 @@ public class UserConfigurationWindow extends JFrame implements IWindow {
 
 	private void createCalendar(Container panel) {
 		// Calendar
-		jCalendarPanel = new JUserCalendarPanel(new ICalendarEventListener() {
+		jCalendarPanel = new JCalendarPanel(new ICalendarEventListener() {
 
 			@Override
 			public void onDateChanged(Date date, Boolean selected,
