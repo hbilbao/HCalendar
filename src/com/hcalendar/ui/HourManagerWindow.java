@@ -35,6 +35,8 @@ import com.hcalendar.data.orm.IORMClient;
 import com.hcalendar.data.orm.IORMClient.ENTITY_TYPE;
 import com.hcalendar.data.orm.exception.ORMException;
 import com.hcalendar.data.orm.impl.ORMHelper;
+import com.hcalendar.data.utils.DateHelper;
+import com.hcalendar.data.xml.workedhours.AnualHours.UserInput.WorkedHours;
 import com.hcalendar.ui.helper.ModalWindowUtils;
 import com.hcalendar.ui.widgets.ICalendarActionProvider;
 import com.hcalendar.ui.widgets.ICalendarActionProvider.LIST_TYPE;
@@ -124,7 +126,14 @@ public class HourManagerWindow extends JFrame implements IWindow {
 			for (Date date : calendarNotWorkingDays)
 				jCalendarPanel
 						.addDayToList(date, LIST_TYPE.USER_NOT_WORKINGDAY);
-
+			// Add user holidays working days
+			List<WorkedHours> calendarWorkingDays = ORMHelper
+					.getUsersWorkedHourList(orm.getAnualHours(), this.username);
+			for (WorkedHours wh : calendarWorkingDays)
+				jCalendarPanel
+						.addDayToList(DateHelper.xmlGregorianCalendar2Date(wh.getDate()), LIST_TYPE.USER_WORKINGDAY);
+			
+			// Add user holidays
 			List<Date> userHolidays = ORMHelper.getUserHolidays(
 					orm.getAnualHours(), this.username);
 			for (Date date : userHolidays)
