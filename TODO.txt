@@ -11,8 +11,9 @@
 - [ok] Filtrado de fechas al exportar datos
 - [ok] PDF's , hay que poner el filtro aplicado en el PDF y un resumen de cada mes
 - Poner nombre apellido en la conf de usuario y el nombre del perfil calcularlo
+- Introducir el número de vacaciones disponibles al año, mostrar los restantes en el panel de horas.
 - [ok] El filepath hay que cambiarlo, con el base dir nos quitamos toda la mierda que hacemos. El xsl pensar donde tiene que ir
- - Mejorar ant, quitar la dependencia  ecplise 
+ - [ok] Mejorar ant, quitar la dependencia  ecplise 
  - Bugs:
  	[fixed] No pinta bien al marcar como festivos.
  	[fixed] La opción de cambiar imputaciones debe estar desactivada si el día no es laboral
@@ -21,6 +22,6 @@
  	[fixed] Marcar como labolar un festivo, y sin guardar intentar volver a poner como festivo. No lo pinta bien.
  	[fixed] Preguntar antes de borrar el perfil!
  	[fixed] Poner como primer día de la semana el lunes.
- 	Traducir el datePicker o buscar alternativa
+ 	[fixed] Traducir el datePicker o buscar alternativa
 NOTAS
 - En el Eclipse, se guardan los fichero en la carpeta bin. En el jar, se crea una carpeta en la misma altura que el jar.
