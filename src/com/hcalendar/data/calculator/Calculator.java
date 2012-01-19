@@ -21,6 +21,7 @@ import com.hcalendar.data.utils.exception.DateException;
 import com.hcalendar.data.xml.userconfiguration.UserConfiguration;
 import com.hcalendar.data.xml.userconfiguration.UserConfiguration.User;
 import com.hcalendar.data.xml.userconfiguration.UserConfiguration.User.YearConf;
+import com.hcalendar.data.xml.userconfiguration.UserConfiguration.User.YearConf.WorkingDays;
 import com.hcalendar.data.xml.workedhours.AnualHours;
 import com.hcalendar.data.xml.workedhours.AnualHours.UserInput;
 import com.hcalendar.data.xml.workedhours.AnualHours.UserInput.WorkedHours;
@@ -245,6 +246,30 @@ public class Calculator {
 				sumOfHours = sumOfHours + wHours.getHours();
 		}
 		return sumOfHours;
+	}
+
+	private static float calculateAverageDayWorkingHours(
+			UserConfiguration anualConfiguration, String username, int year) {
+		List<WorkingDays> workingDays = ORMHelper.getUsersWeekWorkinDays(
+				anualConfiguration, username, year);
+		int i = 0;
+		float sum = 0;
+		for (WorkingDays wd : workingDays) {
+			sum = sum + wd.getHours();
+			i = i + 1;
+		}
+		return sum / i;
+	}
+	
+	public static float calculateExceededHours(Float yearRequiredHours, Float yearPlannedHours) {
+		return (yearPlannedHours - yearRequiredHours);
+	}
+
+	public static float calculateExceededDays(
+			UserConfiguration anualConfiguration, String username,
+			Float yearRequiredHours, Float yearPlannedHours, int year) {
+		float avgHours = calculateAverageDayWorkingHours(anualConfiguration, username, year);
+		return ((yearPlannedHours - yearRequiredHours) / avgHours);
 	}
 
 }

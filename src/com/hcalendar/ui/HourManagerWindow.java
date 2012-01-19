@@ -7,6 +7,9 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -74,6 +77,10 @@ public class HourManagerWindow extends JFrame implements IWindow {
 	private static final String WINDOW_PANEL_BORDER_HISTORY_TITLE = "Histórico";
 	private static final String WINDOW_PANEL_BORDER_ANUAL_INFO = "Información anual";
 	private static final String WINDOW_PANEL_BORDER_DIARY_INFO = "Información diaria";
+	// Exceso de horas
+	private static final String WINDOW_PANEL_BORDER_EXCEDEED_HOURS_INFO = "Calculo de vacaciones";
+	private static final String WINDOW_ITEM_EXCEDEED_HOURS_TITLE = "Exceso horario";
+	private static final String WINDOW_ITEM_EXCEDEED_DAYS_TITLE = "Días de vacaciones disponibles";
 
 	private JCalendarPanel jCalendarPanel;
 
@@ -82,6 +89,8 @@ public class HourManagerWindow extends JFrame implements IWindow {
 	private JTextField plannedHoursTextField;
 	private JTextArea descTextArea;
 	private JTextField diaryHoursTextField;
+	private JTextField exceededHoursTextField;
+	private JTextField exceededDaysTextField;
 
 	private IORMClient orm;
 	private String username;
@@ -130,9 +139,10 @@ public class HourManagerWindow extends JFrame implements IWindow {
 			List<WorkedHours> calendarWorkingDays = ORMHelper
 					.getUsersWorkedHourList(orm.getAnualHours(), this.username);
 			for (WorkedHours wh : calendarWorkingDays)
-				jCalendarPanel
-						.addDayToList(DateHelper.xmlGregorianCalendar2Date(wh.getDate()), LIST_TYPE.USER_WORKINGDAY);
-			
+				jCalendarPanel.addDayToList(
+						DateHelper.xmlGregorianCalendar2Date(wh.getDate()),
+						LIST_TYPE.USER_WORKINGDAY);
+
 			// Add user holidays
 			List<Date> userHolidays = ORMHelper.getUserHolidays(
 					orm.getAnualHours(), this.username);
@@ -234,7 +244,7 @@ public class HourManagerWindow extends JFrame implements IWindow {
 	}
 
 	private void createTextFields(JPanel parentPanel) throws ORMException {
-		JPanel panel = new JPanel(new GridLayout(3, 1));
+		JPanel panel = new JPanel(new GridLayout(4, 1));
 
 		JPanel separatorPanel = new JPanel();
 		// Panel de horas generales
@@ -275,6 +285,24 @@ public class HourManagerWindow extends JFrame implements IWindow {
 		genHoursPanel.add(plannedHours, BorderLayout.WEST);
 		genHoursPanel.add(plannedHoursTextField, BorderLayout.CENTER);
 
+		// Panel de horas restantes
+		JPanel excedeedHourPanel = new JPanel(new GridLayout(2, 2));
+		excedeedHourPanel.setBorder(BorderFactory
+				.createTitledBorder(WINDOW_PANEL_BORDER_EXCEDEED_HOURS_INFO));
+		JLabel label = new JLabel(WINDOW_ITEM_EXCEDEED_HOURS_TITLE);
+		exceededHoursTextField = new JTextField();
+		exceededHoursTextField.setEditable(false);
+		label.setLabelFor(exceededHoursTextField);
+		excedeedHourPanel.add(label, BorderLayout.WEST);
+		excedeedHourPanel.add(exceededHoursTextField, BorderLayout.CENTER);
+
+		label = new JLabel(WINDOW_ITEM_EXCEDEED_DAYS_TITLE);
+		exceededDaysTextField = new JTextField();
+		exceededDaysTextField.setEditable(false);
+		label.setLabelFor(exceededDaysTextField);
+		excedeedHourPanel.add(label, BorderLayout.WEST);
+		excedeedHourPanel.add(exceededDaysTextField, BorderLayout.CENTER);
+
 		// Panel actualizable de horas diarias
 		JPanel diaryPanel = new JPanel(new GridLayout(2, 2));
 		diaryPanel.setBorder(BorderFactory
@@ -299,9 +327,10 @@ public class HourManagerWindow extends JFrame implements IWindow {
 		diaryPanel.add(desc, BorderLayout.WEST);
 		diaryPanel.add(descTextArea, BorderLayout.CENTER);
 
-		// Anyadir los dos paneles secundarios
+		// Anyadir los paneles secundarios
 		panel.add(diaryPanel);
 		panel.add(separatorPanel);
+		panel.add(excedeedHourPanel);
 		panel.add(genHoursPanel);
 		// Anyadir el panel al panel principal
 		parentPanel.add(panel);
@@ -331,9 +360,9 @@ public class HourManagerWindow extends JFrame implements IWindow {
 											SUCCES_EXPORT_DATA);
 								else if (result.equals(-2))
 									ModalWindowUtils.showErrorPanel(
-										HourManagerWindow.this,
-										ERROR_EXPORT_DATA_FILE_LOCKED);
-								else	
+											HourManagerWindow.this,
+											ERROR_EXPORT_DATA_FILE_LOCKED);
+								else
 									ModalWindowUtils.showErrorPanel(
 											HourManagerWindow.this,
 											ERROR_EXPORT_DATA);
@@ -386,17 +415,13 @@ public class HourManagerWindow extends JFrame implements IWindow {
 	@SuppressWarnings("deprecation")
 	private void calendarOnDateChangedActions(Date date, Boolean selected,
 			ICalendarActionProvider actionProvider) throws ORMException {
-		String yearConvHoues;
 		try {
-			yearConvHoues = String.valueOf(ORMHelper.getCalendarHours(
-					orm.getAnualConfiguration(), this.username,
-					1900 + date.getYear()));
-			convTextField.setText(yearConvHoues);
-
-			String plannedH;
-			plannedH = String.valueOf(Calculator.calculateAnualPlannedHours(
-					orm.getAnualHours(), date.getYear() + 1900, this.username));
-			plannedHoursTextField.setText(plannedH);
+			//Horas planificadas y del convenio
+			Float yearRequiredHours = ORMHelper.getCalendarHours(orm.getAnualConfiguration(), this.username,1900 + date.getYear());
+			convTextField.setText(String.valueOf(yearRequiredHours));
+			Float yearPlannedHours = Calculator.calculateAnualPlannedHours(orm.getAnualHours(), date.getYear() + 1900, this.username);
+			plannedHoursTextField.setText(String.valueOf(yearPlannedHours));
+			
 			// Calcular horas imputadas hasta ahora
 			actualHoursTextField.setText(String.valueOf(Calculator
 					.calculateHoursUntilDate(orm.getAnualHours(), date,
@@ -414,7 +439,15 @@ public class HourManagerWindow extends JFrame implements IWindow {
 			}
 			diaryHoursTextField.setText(String.valueOf(tHours));
 			descTextArea.setText(desc);
+			
+			//	Calculate hours exceed
+			float exHours = Calculator.calculateExceededHours(yearRequiredHours, yearPlannedHours);
+			float exDays = Calculator.calculateExceededDays(orm.getAnualConfiguration(), this.username, yearRequiredHours, yearPlannedHours, date.getYear()+1900);
+			BigDecimal scaledExDays = new BigDecimal(exDays).setScale(2, RoundingMode.HALF_DOWN);
+			exceededHoursTextField.setText(exHours +" horas");
+			exceededDaysTextField.setText(String.valueOf(scaledExDays));
 		} catch (Throwable e) {
+			e.printStackTrace();
 			ModalWindowUtils.showErrorPanel(HourManagerWindow.this,
 					ERROR_CALCULATE_DATA + date.getYear());
 		}

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.hcalendar.data.dto.AnualConfigurationDTO.WorkingDay;
 import com.hcalendar.data.exception.BusinessException;
 import com.hcalendar.data.orm.exception.ORMException;
 import com.hcalendar.data.utils.DateHelper;
@@ -165,6 +166,32 @@ public class ORMHelper {
 	}
 
 	/**
+	 * get users weekly worked days list for a given profile filtered by the
+	 * given dates year
+	 * 
+	 * @param config
+	 *            user configuration bean
+	 * @param profileName
+	 *            profile name which get the hour input
+	 * @param year
+	 *            year        
+	 * 
+	 * @return Weekly worked days list
+	 * */
+	public static List<WorkingDays> getUsersWeekWorkinDays(
+			UserConfiguration config, String profileName, int year){
+		for (User us : config.getUser()) {
+			if (!us.getName().equals(profileName))
+				continue;
+			for (YearConf yearConfig : us.getYearConf()) {
+				if (yearConfig.getYear() == year)
+					return yearConfig.getWorkingDays();
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * get users holiday list for a given profile
 	 * 
 	 * @param aHours
@@ -260,10 +287,10 @@ public class ORMHelper {
 			List<Holidays> result = new ArrayList<AnualHours.UserInput.Holidays>();
 			List<Holidays> list = getUserHolidaysList(anualHours, profileName);
 			for (Holidays hol : list) {
-				if ((fromDate==null && toDate==null) ||
-					DateHelper.isBetween(
-						DateHelper.xmlGregorianCalendar2Date(hol.getDate()),
-						fromDate, toDate))
+				if ((fromDate == null && toDate == null)
+						|| DateHelper.isBetween(DateHelper
+								.xmlGregorianCalendar2Date(hol.getDate()),
+								fromDate, toDate))
 					result.add(hol);
 			}
 			return result;

@@ -305,6 +305,9 @@ public class UserConfigurationWindow extends JFrame implements IWindow {
 		JLabel year = new JLabel(WINDOW_ITEM_YEAR_TITLE);
 		yearCombo = new JComboBox(
 				HCalendarConstants.ANUAL_CONFIGURATION_YEAR_OPTIONS);
+		// Select actual year
+		yearCombo.setSelectedIndex((new Date().getYear() + 1900)
+				- HCalendarConstants.ANUAL_CONFIGURATION_YEAR_OPTIONS[0]);
 		yearCombo.addActionListener(new ActionListener() {
 
 			@Override
